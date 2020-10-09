@@ -1,30 +1,35 @@
 # LimitGo
 
-LimitGo is a set of Go Libraries that includes collections and utils for concurrency, math, current-limiting, caching and more.
+LimitGo is a set of Go libraries that includes collections and utils for concurrency, math, current-limiting, caching, and more.
 
 ## The following has been proposed:
 
-* Collections
+### Collections
 
-* Concurrency
+### Concurrency
 
-   - blocking queue
+#### blocking queue
 
-* Math
+### Math
 
-   - lcm and gcd
-   - array util
-   - string util
-   - sort
+#### compute
+   
+   * lcm, gcd, bitcount
+   
+#### array util
+   
+#### string util
+   
+#### sort
 
-* Current-Limiting
+### Current-Limiting
 
-   - permit limiter
-   - leaky limiter
-   - sliding window
+   * permit limiter
+   * leaky limiter
+   * sliding window
 
-* Caching
+### Caching
 
-   - LRU
-   - LFU
-   - LRU2
+   * LRU
+   * LFU
+   * LRU2
