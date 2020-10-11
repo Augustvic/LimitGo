@@ -4,13 +4,23 @@ LimitGo is a set of Go libraries that includes collections and utils for concurr
 
 ## The following has been proposed:
 
-### Collections
+### collections
 
-### Concurrency
+#### int_set
+    
+    a set of int object
+    
+#### map
+
+    * equals
+
+#### treeset / treemap
+
+### concurrency
 
 #### blocking queue
 
-### Math
+### math
 
 #### compute
    
@@ -22,13 +32,13 @@ LimitGo is a set of Go libraries that includes collections and utils for concurr
    
 #### sort
 
-### Current-Limiting
+### current-Limiting
 
    * permit limiter
    * leaky limiter
    * sliding window
 
-### Caching
+### caching
 
    * LRU
    * LFU
