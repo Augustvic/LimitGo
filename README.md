@@ -8,11 +8,11 @@ LimitGo is a set of Go libraries that includes collections and utils for concurr
 
 #### int_set
     
-    a set of int object
+   * a set of int object
     
 #### map
 
-    * equals
+   * equals
 
 #### treeset / treemap
 
@@ -32,6 +32,8 @@ LimitGo is a set of Go libraries that includes collections and utils for concurr
    
 #### sort
 
+   * quick sort
+
 ### current-Limiting
 
    * permit limiter
@@ -43,3 +45,9 @@ LimitGo is a set of Go libraries that includes collections and utils for concurr
    * LRU
    * LFU
    * LRU2
+   
+### other
+
+#### util
+
+* Display
