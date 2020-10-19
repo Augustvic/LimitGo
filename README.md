@@ -51,3 +51,4 @@ LimitGo is a set of Go libraries that includes collections and utils for concurr
 #### util
 
 * Display
+* Encode

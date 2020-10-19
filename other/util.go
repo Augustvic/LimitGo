@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
 func Display(name string, x interface{}) {
@@ -69,7 +70,23 @@ func formatAtom(v reflect.Value) string {
 		return strconv.FormatComplex(v.Complex(), 'E', -1, 64)
 	case reflect.Complex128:
 		return strconv.FormatComplex(v.Complex(), 'E', -1, 128)
-	default:
-		return "Unknown Type"
+	case reflect.Chan, reflect.Func, reflect.Ptr,
+		reflect.Slice, reflect.Map:
+		return v.Type().String() + " 0x" +
+			strconv.FormatUint(uint64(v.Pointer()), 16)
+	default: // reflect.Array, reflect.Struct, reflect.Interface
+		return v.Type().String() + " value"
+	}
+}
+
+// 注意传入参数为 struct 时，只会输出（s struct）方法，传输参数为*struct时，只会输出（s *struct）方法
+func Methods(x interface{}) {
+	v := reflect.ValueOf(x)
+	t := v.Type()
+	fmt.Printf("type %s\n", t)
+
+	for i := 0; i < v.NumMethod(); i++ {
+		methodType := v.Method(i).Type()
+		fmt.Printf("func (%s) %s%s\n", t, t.Method(i).Name, strings.TrimPrefix(methodType.String(), "func"))
 	}
 }
