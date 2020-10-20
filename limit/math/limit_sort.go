@@ -3,13 +3,11 @@ package math
 // Sortable represents objects that can be sorted.
 type Sortable interface {
 	// Len returns the number of elements in the collection.
-	Len() int
+	Size() int
 	// Less reports whether the element with index i should sort before the element with index j.
 	Less(i, j int) bool
 	// Swap swaps the elements with indexes i and j.
 	Swap(i, j int)
-	// String returns the string representation of this.
-	String() string
 }
 
 // Sort sorts data by quick sort.
@@ -19,7 +17,7 @@ func Sort(data Sortable) {
 
 // QuickSort sorts data by quick sort.
 func QuickSort(data Sortable) {
-	QuickSortRange(data, 0, data.Len() - 1)
+	QuickSortRange(data, 0, data.Size() - 1)
 }
 
 // QuickSortRange sorts data[l, r] by quick sort.

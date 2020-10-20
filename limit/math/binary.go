@@ -26,7 +26,7 @@ func convertToBin(n int,bin int) string{
 	case n<0:
 		n=n*-1
 		// fmt.Println("变为整数：",n)
-		s:=convertToBin(n,bin)
+		s:= convertToBin(n,bin)
 		// fmt.Println("bin:",s)
 		//取反
 		for i:=0;i<len(s);i++{
@@ -44,7 +44,7 @@ func convertToBin(n int,bin int) string{
 		}
 		//转为bin
 		//+1
-		b=convertToBin(int(n+1),bin)
+		b= convertToBin(int(n+1),bin)
 	}
 	return b
 }

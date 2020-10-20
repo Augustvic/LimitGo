@@ -1,4 +1,4 @@
-package collections
+package _map
 
 func Equals(x, y map[string]int) bool {
 	if len(x) != len(y) {

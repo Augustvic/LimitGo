@@ -21,8 +21,14 @@
   <component name="ChangeListManager">
     <list default="true" id="d79b9acd-0fe0-4a4c-9e6a-345b33ae2c46" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/other/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/other/util.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/collections/int_set.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collections/set/int_set.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/collections/map_util.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collections/map/map_util.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/math/binary.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/math/binary.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/math/compute.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/math/compute.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/math/limit_sort.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/math/limit_sort.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/math/string_util.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/math/string_util.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/other/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/other/util.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/other/util_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/other/util_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +60,9 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="false" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -62,10 +71,15 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\August\go\src\LimitGo\main" />
       <recent name="C:\Users\August\go\src\LimitGo" />
+      <recent name="C:\Users\August\go\src\LimitGo\limit_go\collections\map" />
+      <recent name="C:\Users\August\go\src\LimitGo\limit_go\collections\set" />
+      <recent name="C:\Users\August\go\src\LimitGo\limit_go\collections" />
     </key>
   </component>
   <component name="RunManager">
@@ -123,6 +137,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1237" height="295" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1602770231915" />
+    <state x="142" y="0" key="SettingsEditor" timestamp="1603193115114">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1603193115114" />
     <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1602486503163">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

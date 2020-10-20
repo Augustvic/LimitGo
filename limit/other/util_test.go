@@ -8,7 +8,7 @@ type Director struct {
 
 type Movie struct {
 	Title, Subtitle string
-	Director Director
+	Director        Director
 	Year            int
 	Color           bool
 	Actor           map[string]string
