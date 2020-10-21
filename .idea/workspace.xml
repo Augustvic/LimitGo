@@ -20,15 +20,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d79b9acd-0fe0-4a4c-9e6a-345b33ae2c46" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/limit/collections/object.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/collections/int_set.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collections/set/int_set.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/collections/map_util.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collections/map/map_util.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/math/binary.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/math/binary.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/math/compute.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/math/compute.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/math/limit_sort.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/math/limit_sort.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/math/string_util.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/math/string_util.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/other/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/other/util.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/other/util_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/other/util_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collections/collection.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collections/list.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collections/list.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collections/list/arraylist.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collections/list/arraylist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collections/list/arraylist_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collections/list/arraylist_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/object.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/other/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/other/util.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/other/util_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,28 +76,76 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\August\go\src\LimitGo\limit\collections" />
       <recent name="C:\Users\August\go\src\LimitGo\main" />
       <recent name="C:\Users\August\go\src\LimitGo" />
       <recent name="C:\Users\August\go\src\LimitGo\limit_go\collections\map" />
       <recent name="C:\Users\August\go\src\LimitGo\limit_go\collections\set" />
-      <recent name="C:\Users\August\go\src\LimitGo\limit_go\collections" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="TestDisplay in LimitGo/other" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Test.TestArrayList_Equals in LimitGo/limit/collections/list">
+    <configuration name="TestArrayList_AddAll in LimitGo/limit/collections/list" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="LimitGo" />
-      <working_directory value="$PROJECT_DIR$/other" />
+      <working_directory value="$PROJECT_DIR$/limit/collections/list" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
-      <package value="LimitGo/other" />
+      <package value="LimitGo/limit/collections/list" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestDisplay\E$" />
+      <pattern value="^\QTestArrayList_AddAll\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestArrayList_Clear in LimitGo/limit/collections/list" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="LimitGo" />
+      <working_directory value="$PROJECT_DIR$/limit/collections/list" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="LimitGo/limit/collections/list" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestArrayList_Clear\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestArrayList_Contains in LimitGo/limit/collections/list" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="LimitGo" />
+      <working_directory value="$PROJECT_DIR$/limit/collections/list" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="LimitGo/limit/collections/list" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestArrayList_Contains\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestArrayList_Empty in LimitGo/limit/collections/list" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="LimitGo" />
+      <working_directory value="$PROJECT_DIR$/limit/collections/list" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="LimitGo/limit/collections/list" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestArrayList_Empty\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestArrayList_Equals in LimitGo/limit/collections/list" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="LimitGo" />
+      <working_directory value="$PROJECT_DIR$/limit/collections/list" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="LimitGo/limit/collections/list" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestArrayList_Equals\E$" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.TestDisplay in LimitGo/other" />
+        <item itemvalue="Go Test.TestArrayList_Equals in LimitGo/limit/collections/list" />
+        <item itemvalue="Go Test.TestArrayList_Empty in LimitGo/limit/collections/list" />
+        <item itemvalue="Go Test.TestArrayList_Contains in LimitGo/limit/collections/list" />
+        <item itemvalue="Go Test.TestArrayList_Clear in LimitGo/limit/collections/list" />
+        <item itemvalue="Go Test.TestArrayList_AddAll in LimitGo/limit/collections/list" />
       </list>
     </recent_temporary>
   </component>
@@ -117,33 +166,49 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="421" y="95" key="FileChooserDialogImpl" timestamp="1603095952726">
+    <state x="421" y="95" key="FileChooserDialogImpl" timestamp="1603269817106">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="421" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1603095952726" />
-    <state width="1237" height="295" key="GridCell.Tab.0.bottom" timestamp="1602770231915">
+    <state x="421" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1603269817106" />
+    <state width="1237" height="184" key="GridCell.Tab.0.bottom" timestamp="1603288438426">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="295" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1602770231915" />
-    <state width="1237" height="295" key="GridCell.Tab.0.center" timestamp="1602770231915">
+    <state width="1237" height="184" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603288438426" />
+    <state width="1237" height="184" key="GridCell.Tab.0.center" timestamp="1603288438426">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="295" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1602770231915" />
-    <state width="1237" height="295" key="GridCell.Tab.0.left" timestamp="1602770231915">
+    <state width="1237" height="184" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1603288438426" />
+    <state width="1237" height="184" key="GridCell.Tab.0.left" timestamp="1603288438426">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="295" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1602770231915" />
-    <state width="1237" height="295" key="GridCell.Tab.0.right" timestamp="1602770231915">
+    <state width="1237" height="184" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1603288438426" />
+    <state width="1237" height="184" key="GridCell.Tab.0.right" timestamp="1603288438426">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="295" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1602770231915" />
+    <state width="1237" height="184" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1603288438426" />
+    <state width="1237" height="184" key="GridCell.Tab.1.bottom" timestamp="1603288438426">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="184" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603288438426" />
+    <state width="1237" height="184" key="GridCell.Tab.1.center" timestamp="1603288438426">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="184" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1603288438426" />
+    <state width="1237" height="184" key="GridCell.Tab.1.left" timestamp="1603288438426">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="184" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1603288438426" />
+    <state width="1237" height="184" key="GridCell.Tab.1.right" timestamp="1603288438426">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="184" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1603288438426" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1603193115114">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1603193115114" />
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1602486503163">
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1603264073107">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1602486503163" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1603264073107" />
   </component>
 </project>
