@@ -32,10 +32,10 @@ func TestArrayList_Append(t *testing.T) {
 	var b collections.ListObject = Teacher{1, "Bob", 0}
 	l.Append(&b)
 	if l.GetType().Name() != "Student" || l.Size() != 1 {
-		t.Error("Add operation fail!")
+		t.Error("Append operation fail!")
 	}
 	if l.String() != "{{\"Id\":1,\"Name\":\"Alice\"}}" {
-		t.Error("Add operation fail!")
+		t.Error("Append operation fail!")
 	}
 }
 
@@ -49,7 +49,7 @@ func TestArrayList_AddAll(t *testing.T) {
 	l2.Append(&b)
 	l2.Append(&c)
 	if l1.Size() != 1 || l2.Size() != 2 {
-		t.Error("Add operation fail!")
+		t.Error("Append operation fail!")
 	}
 	l1.AddAll(l2)
 	if l1.Size() != 3 || l2.Size() != 2 {
@@ -125,5 +125,123 @@ func TestArrayList_Equals(t *testing.T) {
 	}
 	if l1.Equals(l3) {
 		t.Error("Equals operation fail!")
+	}
+}
+
+func TestArrayList_Get(t *testing.T) {
+	l := NewArrayList(reflect.TypeOf(Student{}))
+	var a collections.ListObject = Student{1, "Alice"}
+	var b collections.ListObject = Student{2, "Bob"}
+	var c collections.ListObject = Student{3, "Mark"}
+	var d collections.ListObject = Student{4, "Jessie"}
+	l.Append(&a)
+	l.Append(&b)
+	l.Append(&c)
+	l.Append(&d)
+	p := l.Get(2)
+	s := (*p).(Student)
+	if s != c {
+		t.Error("Get operation fail!")
+	}
+}
+
+func TestArrayList_IndexOf(t *testing.T) {
+	l := NewArrayList(reflect.TypeOf(Student{}))
+	var a collections.ListObject = Student{1, "Alice"}
+	var b collections.ListObject = Student{2, "Bob"}
+	var c collections.ListObject = Student{3, "Mark"}
+	var d collections.ListObject = Student{4, "Jessie"}
+	l.Append(&a)
+	l.Append(&b)
+	l.Append(&c)
+	l.Append(&d)
+	i := l.IndexOf(&c)
+	if i != 2 {
+		t.Error("IndexOf operation fail!")
+	}
+}
+
+func TestArrayList_Insert(t *testing.T) {
+	l := NewArrayList(reflect.TypeOf(Student{}))
+	var a collections.ListObject = Student{1, "Alice"}
+	var b collections.ListObject = Student{2, "Bob"}
+	var c collections.ListObject = Student{3, "Mark"}
+	var d collections.ListObject = Student{4, "Jessie"}
+	l.Append(&a)
+	l.Append(&b)
+	l.Append(&d)
+	if l.IndexOf(&d) != 2 || l.Size() != 3 {
+		t.Error("Append operation fail!")
+	}
+	l.Insert(2, &c)
+	if l.IndexOf(&c) != 2 || l.IndexOf(&d) != 3 || l.Size() != 4 {
+		t.Error("Insert operation fail!")
+	}
+}
+
+func TestArrayList_Remove(t *testing.T) {
+	l := NewArrayList(reflect.TypeOf(Student{}))
+	var a collections.ListObject = Student{1, "Alice"}
+	var b collections.ListObject = Student{2, "Bob"}
+	var c collections.ListObject = Student{3, "Mark"}
+	var d collections.ListObject = Student{4, "Jessie"}
+	l.Append(&a)
+	l.Append(&b)
+	l.Append(&c)
+	l.Append(&d)
+	l.Remove(&c)
+	if l.IndexOf(&d) != 2 || l.Contains(&c) || l.Size() != 3 {
+		t.Error("Remove operation fail!")
+	}
+}
+
+func TestArrayList_Set(t *testing.T) {
+	l := NewArrayList(reflect.TypeOf(Student{}))
+	var a collections.ListObject = Student{1, "Alice"}
+	var b collections.ListObject = Student{2, "Bob"}
+	var c collections.ListObject = Student{3, "Mark"}
+	var d collections.ListObject = Student{4, "Jessie"}
+	l.Append(&a)
+	l.Append(&b)
+	l.Append(&c)
+	l.Set(1, &d)
+	if l.IndexOf(&d) != 1 || l.Contains(&b) || !l.Contains(&d) || l.Size() != 3 {
+		t.Error("Set operation fail!")
+	}
+}
+
+func TestArrayList_GetIterator(t *testing.T) {
+	l := NewArrayList(reflect.TypeOf(Student{}))
+	var a collections.ListObject = Student{1, "Alice"}
+	var b collections.ListObject = Student{2, "Bob"}
+	var c collections.ListObject = Student{3, "Mark"}
+	var d collections.ListObject = Student{4, "Jessie"}
+	l.Append(&a)
+	l.Append(&b)
+	l.Append(&c)
+	l.Append(&d)
+	var s = ""
+	it := l.GetIterator()
+	for it.HashNext() {
+		p := it.Next()
+		stu := (*p).(Student)
+		s += stu.Name
+	}
+	if s != "AliceBobMarkJessie" {
+		t.Error("Iterator fail!")
+	}
+}
+
+func TestArrayList_IntType(t *testing.T) {
+	l := NewArrayList(reflect.TypeOf(0))
+	var a collections.ListObject = 1
+	var b collections.ListObject = 2
+	var c collections.ListObject = 3
+	l.Append(&a)
+	l.Append(&b)
+	l.Append(&c)
+	p := l.Get(1)
+	if (*p).(int) != 2 {
+		t.Error("Int fail!")
 	}
 }

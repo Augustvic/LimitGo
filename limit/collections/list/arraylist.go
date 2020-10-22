@@ -8,7 +8,7 @@ import (
 	"reflect"
 )
 
-// ArrayList is one of the implementations of the List and is based on slice.
+// ArrayList is one of the implementations of the List based on origin slice.
 type ArrayList struct {
 	elements []*collections.ListObject
 	t reflect.Type
@@ -66,6 +66,7 @@ func (l *ArrayList) Insert(index int, p *collections.ListObject) {
 	if reflect.TypeOf(*p) != l.GetType() {
 		return
 	}
+	l.elements = append(l.elements, nil)
 	copy(l.elements[index+1:], l.elements[index:])
 	l.elements[index] = p
 }
