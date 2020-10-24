@@ -23,6 +23,5 @@ func (s *Student) String() string {
 }
 
 func main() {
-
 }
 

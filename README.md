@@ -6,19 +6,21 @@ LimitGo is a set of Go libraries that includes collections and utils for concurr
 
 ### collections
 
-#### int_set
+#### list
     
-   * a set of int object
+   * arraylist, linkedlist
     
 #### map
 
    * equals
+   
+#### queue
 
-#### treeset / treemap
+#### stack
+
+#### set
 
 ### concurrency
-
-#### blocking queue
 
 ### math
 
@@ -49,6 +51,3 @@ LimitGo is a set of Go libraries that includes collections and utils for concurr
 ### other
 
 #### util
-
-* Display
-* Encode

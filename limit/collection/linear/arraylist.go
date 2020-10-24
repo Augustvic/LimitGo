@@ -1,7 +1,7 @@
-package list
+package linear
 
 import (
-	"LimitGo/limit/collections"
+	"LimitGo/limit/collection"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -10,7 +10,7 @@ import (
 
 // ArrayList is one of the implementations of the List based on origin slice.
 type ArrayList struct {
-	elements []*collections.ListObject
+	elements []*collection.LinearObject
 	t reflect.Type
 }
 
@@ -21,28 +21,28 @@ type ArrayListIterator struct {
 	LastRet int
 }
 
-// NewArrayList returns a new arraylist.
+// NewArrayList returns a new ArrayList.
 func NewArrayList(t reflect.Type) *ArrayList {
-	fmt.Println()
-	l := ArrayList{}
-	l.elements = make([]*collections.ListObject, 0, 10)
-	l.t = t
+	l := ArrayList{make([]*collection.LinearObject, 0, 10), t}
 	return &l
 }
 
 // Size returns the number of elements in this list.
 func (l *ArrayList) Size() int {
+	l.checkInit()
 	return len(l.elements)
 }
 
 // Empty returns true if this list contains no element.
 func (l *ArrayList) Empty() bool {
-	return len(l.elements) == 0
+	l.checkInit()
+	return l.Size() == 0
 }
 
 // Contains returns true if this list contains the specific element.
-func (l *ArrayList) Contains(p *collections.ListObject) bool {
-	if reflect.TypeOf(*p) != l.GetType() {
+func (l *ArrayList) Contains(p *collection.LinearObject) bool {
+	l.checkInit()
+	if l.checkNil(p) || !l.checkType(p) {
 		return false
 	}
 	for _, v := range l.elements {
@@ -54,74 +54,97 @@ func (l *ArrayList) Contains(p *collections.ListObject) bool {
 }
 
 // Append appends the specified element to the end of this list.
-func (l *ArrayList) Append(p *collections.ListObject) {
-	if reflect.TypeOf(*p) != l.GetType() {
-		return
+func (l *ArrayList) Append(p *collection.LinearObject) bool {
+	l.checkInit()
+	if l.checkNil(p) || !l.checkType(p) {
+		return false
 	}
 	l.elements = append(l.elements, p)
+	return true
 }
 
 // Insert the specified element at the specified position in this list.
-func (l *ArrayList) Insert(index int, p *collections.ListObject) {
-	if reflect.TypeOf(*p) != l.GetType() {
-		return
+func (l *ArrayList) Insert(index int, p *collection.LinearObject) bool {
+	l.checkInit()
+	if !l.checkIndex(index) || l.checkNil(p) || !l.checkType(p) {
+		return false
 	}
 	l.elements = append(l.elements, nil)
 	copy(l.elements[index+1:], l.elements[index:])
 	l.elements[index] = p
+	return true
 }
 
-// Appends all of the elements in the specified list to the end of this list.
-func (l *ArrayList) AddAll(list collections.List) {
-	if list.GetType() != l.t {
-		return
+// AddAll appends all of the elements in the specified list to the end of this list.
+func (l *ArrayList) AddAll(list *collection.Linear) bool {
+	l.checkInit()
+	if list == nil || *list == nil || (*list).Empty() {
+		return true
 	}
-	it := list.GetIterator()
+	if (*list).GetType() != l.t {
+		return false
+	}
+	it := (*list).GetIterator()
 	for it.HashNext() {
 		v := it.Next()
 		l.Append(v)
 	}
+	return true
 }
 
 // Remove the first occurrence of the specified element from this list.
-//
-func (l *ArrayList) Remove(p *collections.ListObject) {
-	if reflect.TypeOf(*p) != l.GetType() {
-		return
+func (l *ArrayList) Remove(p *collection.LinearObject) bool {
+	l.checkInit()
+	if l.checkNil(p) {
+		return true
+	}
+	if !l.checkType(p) {
+		return false
 	}
 	for i := 0; i < len(l.elements); i++ {
 		if *p == *(l.elements[i]) {
 			l.RemoveAt(i)
-			return
+			return true
 		}
 	}
+	return false
 }
 
 // Removes the element at the specified position in this list.
-func (l *ArrayList) RemoveAt(index int) {
+func (l *ArrayList) RemoveAt(index int) *collection.LinearObject {
+	l.checkInit()
+	if !l.checkIndex(index) {
+		return nil
+	}
+	p := l.elements[index]
 	copy(l.elements[index:], l.elements[index+1:])
 	l.elements = l.elements[:l.Size()-1]
+	return p
 }
 
 // Removes all of the elements from this list.
-func (l *ArrayList) Clear() {
+func (l *ArrayList) Clear() bool{
 	l.elements = l.elements[0:0]
+	return true
 }
 
 // Equals returns true only if the corresponding pairs of the elements
 // in the two lists are equal.
 // Notice that equal means "==", not same address.
-func (l *ArrayList) Equals(list collections.List) bool {
-	if l.t != list.GetType() {
+func (l *ArrayList) Equals(list *collection.List) bool {
+	l.checkInit()
+	if list == nil || *list == nil {
 		return false
 	}
-	flag := l.Size() == list.Size()
-	if !flag {
+	if l.t != (*list).GetType() {
+		return false
+	}
+	if l.Size() != (*list).Size() {
 		return false
 	}
 	for i := 0; i < l.Size(); i++ {
 		p1 := l.Get(i)
-		p2 := list.Get(i)
+		p2 := (*list).Get(i)
 		if *p1 != *p2 {
 			return false
 		}
@@ -131,6 +154,7 @@ func (l *ArrayList) Equals(list collections.List) bool {
 
 // String returns a string representation of this list.
 func (l *ArrayList) String() string {
+	l.checkInit()
 	var buf bytes.Buffer
 	buf.WriteByte('{')
 	for i := 0; i < len(l.elements); i++ {
@@ -159,8 +183,9 @@ func (l *ArrayList) String() string {
 }
 
 // Get returns the element at the specified position in this list.
-func (l *ArrayList) Get(index int) *collections.ListObject {
-	if index < 0 || index >= l.Size() {
+func (l *ArrayList) Get(index int) *collection.LinearObject {
+	l.checkInit()
+	if !l.checkIndex(index) {
 		panic("Index out of range!")
 	}
 	return l.elements[index]
@@ -168,17 +193,20 @@ func (l *ArrayList) Get(index int) *collections.ListObject {
 
 // Set replaces the element at the specified position in this list with
 //the specified element.
-func (l *ArrayList) Set(index int, p *collections.ListObject) {
-	if reflect.TypeOf(*p) != l.t || index >= l.Size() {
-		return
+func (l *ArrayList) Set(index int, p *collection.LinearObject) bool {
+	l.checkInit()
+	if !l.checkIndex(index) || l.checkNil(p) || !l.checkType(p) || index >= l.Size() {
+		return false
 	}
 	l.elements[index] = p
+	return true
 }
 
 // IndexOf returns the index of the first occurrence of the
 //specified element
-func (l *ArrayList) IndexOf(p *collections.ListObject) int {
-	if reflect.TypeOf(*p) != l.t {
+func (l *ArrayList) IndexOf(p *collection.LinearObject) int {
+	l.checkInit()
+	if l.checkNil(p) || reflect.TypeOf(*p) != l.t {
 		return -1
 	}
 	for i := 0; i < l.Size(); i++ {
@@ -190,12 +218,14 @@ func (l *ArrayList) IndexOf(p *collections.ListObject) int {
 }
 
 // GetIterator returns an iterator over the elements in this list.
-func (l *ArrayList) GetIterator() collections.ListItr {
-	 return &ArrayListIterator{l, 0, -1}
+func (l *ArrayList) GetIterator() collection.LinearItr {
+	l.checkInit()
+	return &ArrayListIterator{l, 0, -1}
 }
 
 // GetType returns type of the elements in this list.
 func (l *ArrayList) GetType() reflect.Type {
+	l.checkInit()
 	return l.t
 }
 
@@ -207,11 +237,32 @@ func (it *ArrayListIterator) HashNext() bool {
 }
 
 // Next returns the next element in the iteration.
-func (it *ArrayListIterator) Next() *collections.ListObject {
+func (it *ArrayListIterator) Next() *collection.LinearObject {
 	if it.HashNext() {
 		lastRet := it.Cursor
 		it.Cursor++
 		return it.List.elements[lastRet]
 	}
 	return nil
+}
+
+// checkNil return true if p is nil or *p if nil
+func (l *ArrayList) checkNil(p *collection.LinearObject) bool {
+	return p == nil || (*p) == nil
+}
+
+// checkIndex return true if index within the range
+func (l *ArrayList) checkIndex(index int) bool {
+	return index >= 0 && index < l.Size()
+}
+
+// checkType returns true if type matches
+func (l *ArrayList) checkType(p *collection.LinearObject) bool {
+	return reflect.TypeOf(*p) == l.t
+}
+
+func (l *ArrayList) checkInit() {
+	if l.elements == nil {
+		l.elements = make([]*collection.LinearObject, 0, 10)
+	}
 }

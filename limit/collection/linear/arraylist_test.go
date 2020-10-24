@@ -1,7 +1,7 @@
-package list
+package linear
 
 import (
-	"LimitGo/limit/collections"
+	"LimitGo/limit/collection"
 	"reflect"
 	"testing"
 )
@@ -17,6 +17,23 @@ type Teacher struct {
 	Sex int
 }
 
+func TestArrayListAll(t *testing.T) {
+	TestNewArrayList(t)
+	TestArrayList_Append(t)
+	TestArrayList_AddAll(t)
+	TestArrayList_Clear(t)
+	TestArrayList_Contains(t)
+	TestArrayList_Empty(t)
+	TestArrayList_Equals(t)
+	TestArrayList_Get(t)
+	TestArrayList_IndexOf(t)
+	TestArrayList_Insert(t)
+	TestArrayList_Remove(t)
+	TestArrayList_Set(t)
+	TestArrayList_GetIterator(t)
+	TestArrayList_IntType(t)
+}
+
 func TestNewArrayList(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(Student{}))
 	if l.GetType().Name() != "Student" || l.Size() != 0 ||
@@ -27,9 +44,9 @@ func TestNewArrayList(t *testing.T) {
 
 func TestArrayList_Append(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
+	var a collection.LinearObject = Student{1, "Alice"}
 	l.Append(&a)
-	var b collections.ListObject = Teacher{1, "Bob", 0}
+	var b collection.LinearObject = Teacher{1, "Bob", 0}
 	l.Append(&b)
 	if l.GetType().Name() != "Student" || l.Size() != 1 {
 		t.Error("Append operation fail!")
@@ -41,17 +58,18 @@ func TestArrayList_Append(t *testing.T) {
 
 func TestArrayList_AddAll(t *testing.T) {
 	l1 := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
+	var a collection.LinearObject = Student{1, "Alice"}
 	l1.Append(&a)
 	l2 := NewArrayList(reflect.TypeOf(Student{}))
-	var b collections.ListObject = Student{2, "Bob"}
-	var c collections.ListObject = Student{3, "Mark"}
+	var b collection.LinearObject = Student{2, "Bob"}
+	var c collection.LinearObject = Student{3, "Mark"}
 	l2.Append(&b)
 	l2.Append(&c)
 	if l1.Size() != 1 || l2.Size() != 2 {
 		t.Error("Append operation fail!")
 	}
-	l1.AddAll(l2)
+	var ll2 collection.Linear = l2
+	l1.AddAll(&ll2)
 	if l1.Size() != 3 || l2.Size() != 2 {
 		t.Error("AddAll operation fail!")
 	}
@@ -62,9 +80,9 @@ func TestArrayList_AddAll(t *testing.T) {
 
 func TestArrayList_Clear(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
-	var b collections.ListObject = Student{2, "Bob"}
-	var c collections.ListObject = Student{3, "Mark"}
+	var a collection.LinearObject = Student{1, "Alice"}
+	var b collection.LinearObject = Student{2, "Bob"}
+	var c collection.LinearObject = Student{3, "Mark"}
 	l.Append(&a)
 	l.Append(&b)
 	l.Append(&c)
@@ -76,10 +94,10 @@ func TestArrayList_Clear(t *testing.T) {
 
 func TestArrayList_Contains(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
-	var b collections.ListObject = Student{2, "Bob"}
-	var c collections.ListObject = Student{3, "Mark"}
-	var d collections.ListObject = Student{4, "Jessie"}
+	var a collection.LinearObject = Student{1, "Alice"}
+	var b collection.LinearObject = Student{2, "Bob"}
+	var c collection.LinearObject = Student{3, "Mark"}
+	var d collection.LinearObject = Student{4, "Jessie"}
 	l.Append(&a)
 	l.Append(&b)
 	l.Append(&c)
@@ -96,8 +114,8 @@ func TestArrayList_Empty(t *testing.T) {
 	if !l.Empty() {
 		t.Error("Empty operation fail!")
 	}
-	var a collections.ListObject = Student{1, "Alice"}
-	var b collections.ListObject = Student{2, "Bob"}
+	var a collection.LinearObject = Student{1, "Alice"}
+	var b collection.LinearObject = Student{2, "Bob"}
 	l.Append(&a)
 	l.Append(&b)
 	if l.Empty() {
@@ -108,32 +126,32 @@ func TestArrayList_Empty(t *testing.T) {
 
 func TestArrayList_Equals(t *testing.T) {
 	l1 := NewArrayList(reflect.TypeOf(Student{}))
-	l2 := NewArrayList(reflect.TypeOf(Student{}))
-	l3 := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
-	var b collections.ListObject = Student{2, "Bob"}
-	var c collections.ListObject = Student{3, "Mark"}
-	var d collections.ListObject = Student{4, "Jessie"}
+	var l2 collection.List = NewArrayList(reflect.TypeOf(Student{}))
+	var l3 collection.List = NewArrayList(reflect.TypeOf(Student{}))
+	var a collection.LinearObject = Student{1, "Alice"}
+	var b collection.LinearObject = Student{2, "Bob"}
+	var c collection.LinearObject = Student{3, "Mark"}
+	var d collection.LinearObject = Student{4, "Jessie"}
 	l1.Append(&a)
 	l1.Append(&b)
 	l2.Append(&a)
 	l2.Append(&b)
 	l3.Append(&c)
 	l3.Append(&d)
-	if !l1.Equals(l2) {
+	if !l1.Equals(&l2) {
 		t.Error("Equals operation fail!")
 	}
-	if l1.Equals(l3) {
+	if l1.Equals(&l3) {
 		t.Error("Equals operation fail!")
 	}
 }
 
 func TestArrayList_Get(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
-	var b collections.ListObject = Student{2, "Bob"}
-	var c collections.ListObject = Student{3, "Mark"}
-	var d collections.ListObject = Student{4, "Jessie"}
+	var a collection.LinearObject = Student{1, "Alice"}
+	var b collection.LinearObject = Student{2, "Bob"}
+	var c collection.LinearObject = Student{3, "Mark"}
+	var d collection.LinearObject = Student{4, "Jessie"}
 	l.Append(&a)
 	l.Append(&b)
 	l.Append(&c)
@@ -147,10 +165,10 @@ func TestArrayList_Get(t *testing.T) {
 
 func TestArrayList_IndexOf(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
-	var b collections.ListObject = Student{2, "Bob"}
-	var c collections.ListObject = Student{3, "Mark"}
-	var d collections.ListObject = Student{4, "Jessie"}
+	var a collection.LinearObject = Student{1, "Alice"}
+	var b collection.LinearObject = Student{2, "Bob"}
+	var c collection.LinearObject = Student{3, "Mark"}
+	var d collection.LinearObject = Student{4, "Jessie"}
 	l.Append(&a)
 	l.Append(&b)
 	l.Append(&c)
@@ -163,10 +181,10 @@ func TestArrayList_IndexOf(t *testing.T) {
 
 func TestArrayList_Insert(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
-	var b collections.ListObject = Student{2, "Bob"}
-	var c collections.ListObject = Student{3, "Mark"}
-	var d collections.ListObject = Student{4, "Jessie"}
+	var a collection.LinearObject = Student{1, "Alice"}
+	var b collection.LinearObject = Student{2, "Bob"}
+	var c collection.LinearObject = Student{3, "Mark"}
+	var d collection.LinearObject = Student{4, "Jessie"}
 	l.Append(&a)
 	l.Append(&b)
 	l.Append(&d)
@@ -177,14 +195,17 @@ func TestArrayList_Insert(t *testing.T) {
 	if l.IndexOf(&c) != 2 || l.IndexOf(&d) != 3 || l.Size() != 4 {
 		t.Error("Insert operation fail!")
 	}
+	if l.Insert(10, &c) {
+		t.Error("Insert operation fail!")
+	}
 }
 
 func TestArrayList_Remove(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
-	var b collections.ListObject = Student{2, "Bob"}
-	var c collections.ListObject = Student{3, "Mark"}
-	var d collections.ListObject = Student{4, "Jessie"}
+	var a collection.LinearObject = Student{1, "Alice"}
+	var b collection.LinearObject = Student{2, "Bob"}
+	var c collection.LinearObject = Student{3, "Mark"}
+	var d collection.LinearObject = Student{4, "Jessie"}
 	l.Append(&a)
 	l.Append(&b)
 	l.Append(&c)
@@ -197,10 +218,10 @@ func TestArrayList_Remove(t *testing.T) {
 
 func TestArrayList_Set(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
-	var b collections.ListObject = Student{2, "Bob"}
-	var c collections.ListObject = Student{3, "Mark"}
-	var d collections.ListObject = Student{4, "Jessie"}
+	var a collection.LinearObject = Student{1, "Alice"}
+	var b collection.LinearObject = Student{2, "Bob"}
+	var c collection.LinearObject = Student{3, "Mark"}
+	var d collection.LinearObject = Student{4, "Jessie"}
 	l.Append(&a)
 	l.Append(&b)
 	l.Append(&c)
@@ -212,10 +233,10 @@ func TestArrayList_Set(t *testing.T) {
 
 func TestArrayList_GetIterator(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(Student{}))
-	var a collections.ListObject = Student{1, "Alice"}
-	var b collections.ListObject = Student{2, "Bob"}
-	var c collections.ListObject = Student{3, "Mark"}
-	var d collections.ListObject = Student{4, "Jessie"}
+	var a collection.LinearObject = Student{1, "Alice"}
+	var b collection.LinearObject = Student{2, "Bob"}
+	var c collection.LinearObject = Student{3, "Mark"}
+	var d collection.LinearObject = Student{4, "Jessie"}
 	l.Append(&a)
 	l.Append(&b)
 	l.Append(&c)
@@ -234,9 +255,9 @@ func TestArrayList_GetIterator(t *testing.T) {
 
 func TestArrayList_IntType(t *testing.T) {
 	l := NewArrayList(reflect.TypeOf(0))
-	var a collections.ListObject = 1
-	var b collections.ListObject = 2
-	var c collections.ListObject = 3
+	var a collection.LinearObject = 1
+	var b collection.LinearObject = 2
+	var c collection.LinearObject = 3
 	l.Append(&a)
 	l.Append(&b)
 	l.Append(&c)
