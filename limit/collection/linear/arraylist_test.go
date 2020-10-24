@@ -185,17 +185,22 @@ func TestArrayList_Insert(t *testing.T) {
 	var b collection.LinearObject = Student{2, "Bob"}
 	var c collection.LinearObject = Student{3, "Mark"}
 	var d collection.LinearObject = Student{4, "Jessie"}
-	l.Append(&a)
+	var e collection.LinearObject = Student{5, "Mary"}
 	l.Append(&b)
 	l.Append(&d)
-	if l.IndexOf(&d) != 2 || l.Size() != 3 {
+	if l.IndexOf(&d) != 1 || l.Size() != 2 {
 		t.Error("Append operation fail!")
 	}
-	l.Insert(2, &c)
-	if l.IndexOf(&c) != 2 || l.IndexOf(&d) != 3 || l.Size() != 4 {
+	l.Insert(1, &c)
+	if l.IndexOf(&c) != 1 || l.IndexOf(&d) != 2 || l.Size() != 3 {
 		t.Error("Insert operation fail!")
 	}
-	if l.Insert(10, &c) {
+	l.Insert(-1, &a)
+	if l.IndexOf(&a) != 0 || l.IndexOf(&b) != 1 || l.Size() != 4 {
+		t.Error("Insert operation fail!")
+	}
+	l.Insert(10, &e)
+	if l.IndexOf(&e) != 4 || l.Size() != 5 {
 		t.Error("Insert operation fail!")
 	}
 }

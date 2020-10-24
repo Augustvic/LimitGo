@@ -101,8 +101,7 @@ func (l *LinkedList) Append(p *collection.LinearObject) bool {
 	if l.checkNil(p) || !l.checkType(p) {
 		return false
 	}
-	l.linkLast(p)
-	return true
+	return l.linkLast(p)
 }
 
 // Insert the specified element at the specified position in this list.
@@ -128,7 +127,7 @@ func (l *LinkedList) AddAll(list *collection.Linear) bool {
 	if l.t != (*list).GetType() {
 		return false
 	}
-	it := l.GetIterator()
+	it := (*list).GetIterator()
 	for it.HashNext() {
 		p := it.Next()
 		l.linkLast(p)
@@ -179,7 +178,7 @@ func (l *LinkedList) Remove(p *collection.LinearObject) bool {
 	if l.checkNil(p) {
 		return true
 	}
-	if l.checkType(p) {
+	if !l.checkType(p) {
 		return false
 	}
 	return l.unlink(l.nodeBy(p))
@@ -215,7 +214,7 @@ func (l *LinkedList) Equals(list *collection.List) bool {
 	for it1.HashNext() && it2.HashNext() {
 		p1 := it1.Next()
 		p2 := it2.Next()
-		if (*p1) != (*p2) {
+		if !reflect.DeepEqual(*p1, *p2) {
 			return false
 		}
 	}
@@ -249,7 +248,7 @@ func (l *LinkedList) IndexOf(p *collection.LinearObject) int {
 	}
 	index := 0
 	for node := l.head; node != nil; node = node.next {
-		if *node.item == *p {
+		if reflect.DeepEqual(*node.item, *p) {
 			return index
 		}
 		index++
@@ -259,10 +258,7 @@ func (l *LinkedList) IndexOf(p *collection.LinearObject) int {
 
 // Peek returns the head of this queue, or nil if this queue is empty
 func (l *LinkedList) First() *collection.LinearObject {
-	if l.size == 0 {
-		return nil
-	}
-	return l.head.item
+	return l.GetFirst()
 }
 
 // Poll returns and removes the head of this queue, or nil if this queue is empty
@@ -275,10 +271,7 @@ func (l *LinkedList) Poll() *collection.LinearObject {
 
 // Add inserts the specified element to the end of this queue.
 func (l *LinkedList) Add(p *collection.LinearObject) bool {
-	if l.checkNil(p) || !l.checkType(p) {
-		return false
-	}
-	return l.linkLast(p)
+	return l.Append(p)
 }
 
 // AddFirst inserts the specified element at the front of this deque.
@@ -380,7 +373,7 @@ func (l *LinkedList) checkIndex(index int) bool {
 }
 
 func (l *LinkedList) checkType(p *collection.LinearObject) bool {
-	return reflect.TypeOf(*p) == l.t
+	return  reflect.TypeOf(*p) == l.t
 }
 
 func (l *LinkedList) linkFirst(p *collection.LinearObject) bool {
@@ -489,7 +482,7 @@ func (l *LinkedList) node(index int) *Node {
 
 func (l *LinkedList) nodeBy(p *collection.LinearObject) *Node {
 	for node := l.head; node != nil; node = node.next {
-		if *node.item == *p {
+		if reflect.DeepEqual(*node.item, *p) {
 			return node
 		}
 	}

@@ -46,7 +46,7 @@ func (l *ArrayList) Contains(p *collection.LinearObject) bool {
 		return false
 	}
 	for _, v := range l.elements {
-		if *v == *p {
+		if reflect.DeepEqual(*v, *p) {
 			return true
 		}
 	}
@@ -66,11 +66,19 @@ func (l *ArrayList) Append(p *collection.LinearObject) bool {
 // Insert the specified element at the specified position in this list.
 func (l *ArrayList) Insert(index int, p *collection.LinearObject) bool {
 	l.checkInit()
-	if !l.checkIndex(index) || l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) || !l.checkType(p) {
 		return false
 	}
+	if index < 0 {
+		index = 0
+	}
+	if index >= l.Size() {
+		index = l.Size()
+	}
 	l.elements = append(l.elements, nil)
-	copy(l.elements[index+1:], l.elements[index:])
+	if index < l.Size() {
+		copy(l.elements[index+1:], l.elements[index:])
+	}
 	l.elements[index] = p
 	return true
 }
@@ -102,7 +110,7 @@ func (l *ArrayList) Remove(p *collection.LinearObject) bool {
 		return false
 	}
 	for i := 0; i < len(l.elements); i++ {
-		if *p == *(l.elements[i]) {
+		if reflect.DeepEqual(*p, *(l.elements[i])) {
 			l.RemoveAt(i)
 			return true
 		}
@@ -129,8 +137,8 @@ func (l *ArrayList) Clear() bool{
 }
 
 // Equals returns true only if the corresponding pairs of the elements
-// in the two lists are equal.
-// Notice that equal means "==", not same address.
+// in the two lists are deep equal.
+// Notice that equal do not means same address.
 func (l *ArrayList) Equals(list *collection.List) bool {
 	l.checkInit()
 	if list == nil || *list == nil {
@@ -145,7 +153,7 @@ func (l *ArrayList) Equals(list *collection.List) bool {
 	for i := 0; i < l.Size(); i++ {
 		p1 := l.Get(i)
 		p2 := (*list).Get(i)
-		if *p1 != *p2 {
+		if !reflect.DeepEqual(*p1, *p2) {
 			return false
 		}
 	}
@@ -210,7 +218,7 @@ func (l *ArrayList) IndexOf(p *collection.LinearObject) int {
 		return -1
 	}
 	for i := 0; i < l.Size(); i++ {
-		if *p == *(l.elements[i]) {
+		if reflect.DeepEqual(*p, *(l.elements[i])) {
 			return i
 		}
 	}

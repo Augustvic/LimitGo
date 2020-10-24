@@ -1,26 +1,18 @@
 package main
 
-type Interface interface {
-	String() string
+import (
+	"LimitGo/limit/collection"
+	"unsafe"
+)
+
+type People interface {}
+
+type Integer struct {
+	equals func(unsafe.Pointer, unsafe.Pointer) bool
+	value *collection.LinearObject
 }
 
-type Student struct {
-	name string
-	t Teacher
-}
-
-type Teacher struct {
-	name string
-	sex int
-}
-
-func (s *Student) GetName() string{
-	return s.name
-}
-
-func (s *Student) String() string {
-	return "[ Alice ]"
-}
+type Student struct {}
 
 func main() {
 }
