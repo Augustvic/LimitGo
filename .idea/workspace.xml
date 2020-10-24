@@ -21,12 +21,15 @@
   <component name="ChangeListManager">
     <list default="true" id="d79b9acd-0fe0-4a4c-9e6a-345b33ae2c46" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/limit/collection/linear/arraylist.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/arraylist.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/limit/collection/linear/arraylist_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/arraylist_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/limit/collection/linear/linkedlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/linkedlist.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/limit/collection/linear/linkedlist_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/linkedlist_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/limit/collection/linear/queue.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/queue.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collection/map/map_util.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collection/set/int_set.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collection/set/int_set_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/math/limit_sort.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/math/string_util.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/other/util.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

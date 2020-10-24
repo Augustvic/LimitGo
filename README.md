@@ -6,35 +6,19 @@ LimitGo is a set of Go libraries that includes collections and utils for concurr
 
 ### collections
 
-#### list
+#### linear structure
     
-   * arraylist, linkedlist
-    
+   * arraylist, linkedlist, queue, stack, deque
+   
 #### map
 
-   * equals
+   * skiplistmap
    
-#### queue
-
-#### stack
-
 #### set
 
-### concurrency
+   * set, sortedset
 
-### math
-
-#### compute
-   
-   * lcm, gcd, bitcount
-   
-#### array util
-   
-#### string util
-   
-#### sort
-
-   * quick sort
+### math, string, array
 
 ### current-Limiting
 
@@ -47,7 +31,4 @@ LimitGo is a set of Go libraries that includes collections and utils for concurr
    * LRU
    * LFU
    * LRU2
-   
-### other
-
-#### util
+ 

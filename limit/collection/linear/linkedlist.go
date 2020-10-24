@@ -20,22 +20,21 @@ type LinkedList struct {
 	head *Node
 	tail *Node
 	size int
-	t reflect.Type
+	t    reflect.Type
 }
 
 // LinkedListIterator represents the specific iterator of the LinkedList
 type LinkedListIterator struct {
-	list *LinkedList
-	next *Node
+	list    *LinkedList
+	next    *Node
 	lastRet *Node
 }
 
 // NewArrayList returns a new LinkedList.
-func NewLinkedList(t reflect.Type) *LinkedList{
+func NewLinkedList(t reflect.Type) *LinkedList {
 	l := LinkedList{nil, nil, 0, t}
 	return &l
 }
-
 
 // Size returns the number of elements in this collection.
 func (l *LinkedList) Size() int {
@@ -373,7 +372,7 @@ func (l *LinkedList) checkIndex(index int) bool {
 }
 
 func (l *LinkedList) checkType(p *collection.LinearObject) bool {
-	return  reflect.TypeOf(*p) == l.t
+	return reflect.TypeOf(*p) == l.t
 }
 
 func (l *LinkedList) linkFirst(p *collection.LinearObject) bool {

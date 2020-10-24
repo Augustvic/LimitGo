@@ -11,12 +11,12 @@ import (
 // ArrayList is one of the implementations of the List based on origin slice.
 type ArrayList struct {
 	elements []*collection.LinearObject
-	t reflect.Type
+	t        reflect.Type
 }
 
 // ArrayListIterator represents the specific iterator of the ArrayList
 type ArrayListIterator struct {
-	List *ArrayList
+	List    *ArrayList
 	Cursor  int
 	LastRet int
 }
@@ -131,7 +131,7 @@ func (l *ArrayList) RemoveAt(index int) *collection.LinearObject {
 }
 
 // Removes all of the elements from this list.
-func (l *ArrayList) Clear() bool{
+func (l *ArrayList) Clear() bool {
 	l.elements = l.elements[0:0]
 	return true
 }
