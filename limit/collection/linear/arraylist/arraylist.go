@@ -1,4 +1,4 @@
-package linear
+package arraylist
 
 import (
 	"LimitGo/limit/collection"
@@ -10,20 +10,26 @@ import (
 
 // ArrayList is one of the implementations of the List based on origin slice.
 type ArrayList struct {
-	elements []*collection.LinearObject
+	elements []*collection.Object
 	t        reflect.Type
 }
 
 // ArrayListIterator represents the specific iterator of the ArrayList
 type ArrayListIterator struct {
-	List    *ArrayList
-	Cursor  int
-	LastRet int
+	list    *ArrayList
+	cursor  int
+	lastRet int
+}
+
+// New returns a new ArrayList.
+func New(t reflect.Type) *ArrayList {
+	l := ArrayList{make([]*collection.Object, 0, 10), t}
+	return &l
 }
 
 // NewArrayList returns a new ArrayList.
-func NewArrayList(t reflect.Type) *ArrayList {
-	l := ArrayList{make([]*collection.LinearObject, 0, 10), t}
+func NewArrayList(cap int, t reflect.Type) *ArrayList {
+	l := ArrayList{make([]*collection.Object, 0, cap), t}
 	return &l
 }
 
@@ -40,7 +46,7 @@ func (l *ArrayList) Empty() bool {
 }
 
 // Contains returns true if this list contains the specific element.
-func (l *ArrayList) Contains(p *collection.LinearObject) bool {
+func (l *ArrayList) Contains(p *collection.Object) bool {
 	l.checkInit()
 	if l.checkNil(p) || !l.checkType(p) {
 		return false
@@ -54,7 +60,7 @@ func (l *ArrayList) Contains(p *collection.LinearObject) bool {
 }
 
 // Append appends the specified element to the end of this list.
-func (l *ArrayList) Append(p *collection.LinearObject) bool {
+func (l *ArrayList) Append(p *collection.Object) bool {
 	l.checkInit()
 	if l.checkNil(p) || !l.checkType(p) {
 		return false
@@ -64,7 +70,7 @@ func (l *ArrayList) Append(p *collection.LinearObject) bool {
 }
 
 // Insert the specified element at the specified position in this list.
-func (l *ArrayList) Insert(index int, p *collection.LinearObject) bool {
+func (l *ArrayList) Insert(index int, p *collection.Object) bool {
 	l.checkInit()
 	if l.checkNil(p) || !l.checkType(p) {
 		return false
@@ -101,7 +107,7 @@ func (l *ArrayList) AddAll(list *collection.Linear) bool {
 }
 
 // Remove the first occurrence of the specified element from this list.
-func (l *ArrayList) Remove(p *collection.LinearObject) bool {
+func (l *ArrayList) Remove(p *collection.Object) bool {
 	l.checkInit()
 	if l.checkNil(p) {
 		return true
@@ -119,7 +125,7 @@ func (l *ArrayList) Remove(p *collection.LinearObject) bool {
 }
 
 // Removes the element at the specified position in this list.
-func (l *ArrayList) RemoveAt(index int) *collection.LinearObject {
+func (l *ArrayList) RemoveAt(index int) *collection.Object {
 	l.checkInit()
 	if !l.checkIndex(index) {
 		return nil
@@ -191,7 +197,7 @@ func (l *ArrayList) String() string {
 }
 
 // Get returns the element at the specified position in this list.
-func (l *ArrayList) Get(index int) *collection.LinearObject {
+func (l *ArrayList) Get(index int) *collection.Object {
 	l.checkInit()
 	if !l.checkIndex(index) {
 		panic("Index out of range!")
@@ -201,7 +207,7 @@ func (l *ArrayList) Get(index int) *collection.LinearObject {
 
 // Set replaces the element at the specified position in this list with
 //the specified element.
-func (l *ArrayList) Set(index int, p *collection.LinearObject) bool {
+func (l *ArrayList) Set(index int, p *collection.Object) bool {
 	l.checkInit()
 	if !l.checkIndex(index) || l.checkNil(p) || !l.checkType(p) || index >= l.Size() {
 		return false
@@ -212,7 +218,7 @@ func (l *ArrayList) Set(index int, p *collection.LinearObject) bool {
 
 // IndexOf returns the index of the first occurrence of the
 //specified element
-func (l *ArrayList) IndexOf(p *collection.LinearObject) int {
+func (l *ArrayList) IndexOf(p *collection.Object) int {
 	l.checkInit()
 	if l.checkNil(p) || reflect.TypeOf(*p) != l.t {
 		return -1
@@ -226,7 +232,7 @@ func (l *ArrayList) IndexOf(p *collection.LinearObject) int {
 }
 
 // GetIterator returns an iterator over the elements in this list.
-func (l *ArrayList) GetIterator() collection.LinearItr {
+func (l *ArrayList) GetIterator() collection.Itr {
 	l.checkInit()
 	return &ArrayListIterator{l, 0, -1}
 }
@@ -239,23 +245,35 @@ func (l *ArrayList) GetType() reflect.Type {
 
 // HashNext returns true if the iteration has more elements.
 func (it *ArrayListIterator) HashNext() bool {
-	cursor := it.Cursor
-	size := it.List.Size()
+	cursor := it.cursor
+	size := it.list.Size()
 	return cursor != size
 }
 
 // Next returns the next element in the iteration.
-func (it *ArrayListIterator) Next() *collection.LinearObject {
+func (it *ArrayListIterator) Next() *collection.Object {
 	if it.HashNext() {
-		lastRet := it.Cursor
-		it.Cursor++
-		return it.List.elements[lastRet]
+		lastRet := it.cursor
+		it.cursor++
+		return it.list.elements[lastRet]
 	}
 	return nil
 }
 
+// Remove removes from the underlying collection the last element returned
+// by this iterator.
+func (it *ArrayListIterator) Remove() (*collection.Object, bool) {
+	if it.lastRet < 0 {
+		return nil, false
+	}
+	p := it.list.RemoveAt(it.lastRet)
+	it.cursor = it.lastRet
+	it.lastRet = -1
+	return p, true
+}
+
 // checkNil return true if p is nil or *p if nil
-func (l *ArrayList) checkNil(p *collection.LinearObject) bool {
+func (l *ArrayList) checkNil(p *collection.Object) bool {
 	return p == nil || (*p) == nil
 }
 
@@ -265,12 +283,12 @@ func (l *ArrayList) checkIndex(index int) bool {
 }
 
 // checkType returns true if type matches
-func (l *ArrayList) checkType(p *collection.LinearObject) bool {
+func (l *ArrayList) checkType(p *collection.Object) bool {
 	return reflect.TypeOf(*p) == l.t
 }
 
 func (l *ArrayList) checkInit() {
 	if l.elements == nil {
-		l.elements = make([]*collection.LinearObject, 0, 10)
+		l.elements = make([]*collection.Object, 0, 10)
 	}
 }

@@ -1,3 +1,3 @@
 package collection
 
-type LinearObject interface{}
+type Object interface{}

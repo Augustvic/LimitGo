@@ -1,4 +1,4 @@
-package linear
+package linkedlist
 
 import (
 	"LimitGo/limit/collection"
@@ -9,7 +9,7 @@ import (
 )
 
 type Node struct {
-	item *collection.LinearObject
+	item *collection.Object
 	prev *Node
 	next *Node
 }
@@ -30,9 +30,15 @@ type LinkedListIterator struct {
 	lastRet *Node
 }
 
-// NewArrayList returns a new LinkedList.
-func NewLinkedList(t reflect.Type) *LinkedList {
+// New returns a new LinkedList.
+func New(t reflect.Type) *LinkedList {
 	l := LinkedList{nil, nil, 0, t}
+	return &l
+}
+
+// NewLinkedList returns a new LinkedList.
+func NewLinkedList(head *Node, tail *Node, size int, t reflect.Type) *LinkedList {
+	l := LinkedList{head, tail, size, t}
 	return &l
 }
 
@@ -47,7 +53,7 @@ func (l *LinkedList) Empty() bool {
 }
 
 // GetIterator returns an iterator over the elements in this collection.
-func (l *LinkedList) GetIterator() collection.LinearItr {
+func (l *LinkedList) GetIterator() collection.Itr {
 	return &LinkedListIterator{l, l.head, nil}
 }
 
@@ -88,7 +94,7 @@ func (l *LinkedList) Clear() bool {
 }
 
 // Contains returns true if this list contains the specific element.
-func (l *LinkedList) Contains(p *collection.LinearObject) bool {
+func (l *LinkedList) Contains(p *collection.Object) bool {
 	if l.checkNil(p) || !l.checkType(p) {
 		return false
 	}
@@ -96,7 +102,7 @@ func (l *LinkedList) Contains(p *collection.LinearObject) bool {
 }
 
 // Append appends the specified element to the end of this list.
-func (l *LinkedList) Append(p *collection.LinearObject) bool {
+func (l *LinkedList) Append(p *collection.Object) bool {
 	if l.checkNil(p) || !l.checkType(p) {
 		return false
 	}
@@ -104,7 +110,7 @@ func (l *LinkedList) Append(p *collection.LinearObject) bool {
 }
 
 // Insert the specified element at the specified position in this list.
-func (l *LinkedList) Insert(index int, p *collection.LinearObject) bool {
+func (l *LinkedList) Insert(index int, p *collection.Object) bool {
 	if l.checkNil(p) || !l.checkType(p) {
 		return false
 	}
@@ -173,7 +179,7 @@ func (l *LinkedList) AddAllHead(list *collection.Linear) bool {
 }
 
 // Remove the first occurrence of the specified element from this list.
-func (l *LinkedList) Remove(p *collection.LinearObject) bool {
+func (l *LinkedList) Remove(p *collection.Object) bool {
 	if l.checkNil(p) {
 		return true
 	}
@@ -184,7 +190,7 @@ func (l *LinkedList) Remove(p *collection.LinearObject) bool {
 }
 
 // Removes the element at the specified position in this list.
-func (l *LinkedList) RemoveAt(index int) *collection.LinearObject {
+func (l *LinkedList) RemoveAt(index int) *collection.Object {
 	if !l.checkIndex(index) {
 		return nil
 	}
@@ -221,7 +227,7 @@ func (l *LinkedList) Equals(list *collection.List) bool {
 }
 
 // Get returns the element at the specified position in this list.
-func (l *LinkedList) Get(index int) *collection.LinearObject {
+func (l *LinkedList) Get(index int) *collection.Object {
 	if !l.checkIndex(index) {
 		return nil
 	}
@@ -230,7 +236,7 @@ func (l *LinkedList) Get(index int) *collection.LinearObject {
 
 // Set replaces the element at the specified position in this list with
 //the specified element.
-func (l *LinkedList) Set(index int, p *collection.LinearObject) bool {
+func (l *LinkedList) Set(index int, p *collection.Object) bool {
 	if !l.checkIndex(index) || l.checkNil(p) || !l.checkType(p) {
 		return false
 	}
@@ -241,7 +247,7 @@ func (l *LinkedList) Set(index int, p *collection.LinearObject) bool {
 
 // IndexOf returns the index of the first occurrence of the
 //specified element
-func (l *LinkedList) IndexOf(p *collection.LinearObject) int {
+func (l *LinkedList) IndexOf(p *collection.Object) int {
 	if l.checkNil(p) || !l.checkType(p) {
 		return -1
 	}
@@ -256,12 +262,12 @@ func (l *LinkedList) IndexOf(p *collection.LinearObject) int {
 }
 
 // Peek returns the head of this queue, or nil if this queue is empty
-func (l *LinkedList) First() *collection.LinearObject {
+func (l *LinkedList) First() *collection.Object {
 	return l.GetFirst()
 }
 
 // Poll returns and removes the head of this queue, or nil if this queue is empty
-func (l *LinkedList) Poll() *collection.LinearObject {
+func (l *LinkedList) Poll() *collection.Object {
 	if l.size == 0 {
 		return nil
 	}
@@ -269,12 +275,12 @@ func (l *LinkedList) Poll() *collection.LinearObject {
 }
 
 // Add inserts the specified element to the end of this queue.
-func (l *LinkedList) Add(p *collection.LinearObject) bool {
+func (l *LinkedList) Add(p *collection.Object) bool {
 	return l.Append(p)
 }
 
 // AddFirst inserts the specified element at the front of this deque.
-func (l *LinkedList) AddFirst(p *collection.LinearObject) bool {
+func (l *LinkedList) AddFirst(p *collection.Object) bool {
 	if l.checkNil(p) || !l.checkType(p) {
 		return false
 	}
@@ -282,7 +288,7 @@ func (l *LinkedList) AddFirst(p *collection.LinearObject) bool {
 }
 
 // AddLast inserts the specified element at the end of this deque.
-func (l *LinkedList) AddLast(p *collection.LinearObject) bool {
+func (l *LinkedList) AddLast(p *collection.Object) bool {
 	if l.checkNil(p) || !l.checkType(p) {
 		return false
 	}
@@ -291,7 +297,7 @@ func (l *LinkedList) AddLast(p *collection.LinearObject) bool {
 
 // RemoveFirst removes and returns the head of this deque,
 // or returns nil if this deque is empty.
-func (l *LinkedList) RemoveFirst() *collection.LinearObject {
+func (l *LinkedList) RemoveFirst() *collection.Object {
 	if l.size == 0 {
 		return nil
 	}
@@ -300,7 +306,7 @@ func (l *LinkedList) RemoveFirst() *collection.LinearObject {
 
 // RemoveLast removes and returns the tail of this deque,
 // or returns nil if this deque is empty.
-func (l *LinkedList) RemoveLast() *collection.LinearObject {
+func (l *LinkedList) RemoveLast() *collection.Object {
 	if l.size == 0 {
 		return nil
 	}
@@ -308,7 +314,7 @@ func (l *LinkedList) RemoveLast() *collection.LinearObject {
 }
 
 // GetFirst returns the head of this queue, or nil if this deque is empty.
-func (l *LinkedList) GetFirst() *collection.LinearObject {
+func (l *LinkedList) GetFirst() *collection.Object {
 	if l.size == 0 {
 		return nil
 	}
@@ -316,7 +322,7 @@ func (l *LinkedList) GetFirst() *collection.LinearObject {
 }
 
 // GetLast returns the tail of this queue, or nil if this deque is empty.
-func (l *LinkedList) GetLast() *collection.LinearObject {
+func (l *LinkedList) GetLast() *collection.Object {
 	if l.size == 0 {
 		return nil
 	}
@@ -325,7 +331,7 @@ func (l *LinkedList) GetLast() *collection.LinearObject {
 
 // Pop removes and returns the top element of this stack,
 // or returns nil if this stack is empty.
-func (l *LinkedList) Pop() *collection.LinearObject {
+func (l *LinkedList) Pop() *collection.Object {
 	if l.size == 0 {
 		return nil
 	}
@@ -333,7 +339,7 @@ func (l *LinkedList) Pop() *collection.LinearObject {
 }
 
 // Push inserts the specified element at the top of this stack.
-func (l *LinkedList) Push(p *collection.LinearObject) {
+func (l *LinkedList) Push(p *collection.Object) {
 	if l.checkNil(p) || !l.checkType(p) {
 		return
 	}
@@ -341,7 +347,7 @@ func (l *LinkedList) Push(p *collection.LinearObject) {
 }
 
 // Peek returns the top element of this stack, or nil if this stack is empty.
-func (l *LinkedList) Peek() *collection.LinearObject {
+func (l *LinkedList) Peek() *collection.Object {
 	if l.tail == nil {
 		return nil
 	}
@@ -354,7 +360,7 @@ func (it *LinkedListIterator) HashNext() bool {
 }
 
 // Next returns the next element in the iteration.
-func (it *LinkedListIterator) Next() *collection.LinearObject {
+func (it *LinkedListIterator) Next() *collection.Object {
 	if it.HashNext() {
 		it.lastRet = it.next
 		it.next = it.next.next
@@ -363,7 +369,24 @@ func (it *LinkedListIterator) Next() *collection.LinearObject {
 	return nil
 }
 
-func (l *LinkedList) checkNil(p *collection.LinearObject) bool {
+// Remove removes from the underlying collection the last element returned
+// by this iterator.
+func (it *LinkedListIterator) Remove() (*collection.Object, bool) {
+	if it.lastRet == nil {
+		return nil, false
+	}
+	last := it.lastRet
+	lastNext := it.lastRet.next
+	it.list.unlink(it.lastRet)
+	if it.next == it.lastRet {
+		it.next = lastNext
+	}
+	it.lastRet = nil
+	return last.item, true
+}
+
+
+func (l *LinkedList) checkNil(p *collection.Object) bool {
 	return p == nil || (*p) == nil
 }
 
@@ -371,11 +394,11 @@ func (l *LinkedList) checkIndex(index int) bool {
 	return index >= 0 && index < l.size
 }
 
-func (l *LinkedList) checkType(p *collection.LinearObject) bool {
+func (l *LinkedList) checkType(p *collection.Object) bool {
 	return reflect.TypeOf(*p) == l.t
 }
 
-func (l *LinkedList) linkFirst(p *collection.LinearObject) bool {
+func (l *LinkedList) linkFirst(p *collection.Object) bool {
 	node := &Node{p, nil, l.head}
 	if l.head == nil {
 		l.head = node
@@ -388,7 +411,7 @@ func (l *LinkedList) linkFirst(p *collection.LinearObject) bool {
 	return true
 }
 
-func (l *LinkedList) linkLast(p *collection.LinearObject) bool {
+func (l *LinkedList) linkLast(p *collection.Object) bool {
 	node := &Node{p, l.tail, nil}
 	if l.tail == nil {
 		l.head = node
@@ -401,7 +424,7 @@ func (l *LinkedList) linkLast(p *collection.LinearObject) bool {
 	return true
 }
 
-func (l *LinkedList) linkBefore(p *collection.LinearObject, node *Node) bool {
+func (l *LinkedList) linkBefore(p *collection.Object, node *Node) bool {
 	prev := node.prev
 	if prev == nil {
 		return l.linkFirst(p)
@@ -414,7 +437,7 @@ func (l *LinkedList) linkBefore(p *collection.LinearObject, node *Node) bool {
 	}
 }
 
-func (l *LinkedList) unlinkFirst() *collection.LinearObject {
+func (l *LinkedList) unlinkFirst() *collection.Object {
 	node := l.head
 	if l.size == 1 {
 		l.head = nil
@@ -429,7 +452,7 @@ func (l *LinkedList) unlinkFirst() *collection.LinearObject {
 	return node.item
 }
 
-func (l *LinkedList) unlinkLast() *collection.LinearObject {
+func (l *LinkedList) unlinkLast() *collection.Object {
 	node := l.tail
 	if l.size == 1 {
 		l.head = nil
@@ -479,7 +502,7 @@ func (l *LinkedList) node(index int) *Node {
 	}
 }
 
-func (l *LinkedList) nodeBy(p *collection.LinearObject) *Node {
+func (l *LinkedList) nodeBy(p *collection.Object) *Node {
 	for node := l.head; node != nil; node = node.next {
 		if reflect.DeepEqual(*node.item, *p) {
 			return node
