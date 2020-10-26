@@ -18,7 +18,7 @@ type Set struct {
 // SetIterator represents the specific iterator of the Set.
 // Note: SetIterator is just a snapshot of current elements.
 type SetIterator struct {
-	set *Set
+	set     *Set
 	keys    []collection.Object
 	cursor  int
 	lastRet int
@@ -32,13 +32,13 @@ func New(t reflect.Type) *Set {
 
 // Size returns the number of elements in this collection.
 func (s *Set) Size() int {
-	s.init()
+	s.checkInit()
 	return len(s.m)
 }
 
 // Empty returns true if this collection contains no element.
 func (s *Set) Empty() bool {
-	s.init()
+	s.checkInit()
 	return len(s.m) == 0
 }
 
@@ -88,7 +88,7 @@ func (s *Set) Contains(p *collection.Object) bool {
 	if s.checkNil(p) || !s.checkType(p) {
 		return false
 	}
-	s.init()
+	s.checkInit()
 	_, ok := s.m[*p]
 	return ok
 }
@@ -98,7 +98,7 @@ func (s *Set) Add(p *collection.Object) bool {
 	if s.checkNil(p) || !s.checkType(p) {
 		return false
 	}
-	s.init()
+	s.checkInit()
 	s.m[*p] = Exists
 	return true
 }
@@ -108,7 +108,7 @@ func (s *Set) Remove(p *collection.Object) bool {
 	if s.checkNil(p) || !s.checkType(p) {
 		return false
 	}
-	s.init()
+	s.checkInit()
 	delete(s.m, *p)
 	return true
 }
@@ -118,7 +118,7 @@ func (s *Set) AddAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
 	}
-	s.init()
+	s.checkInit()
 	if s.t != (*list).GetType() {
 		return false
 	}
@@ -136,7 +136,7 @@ func (s *Set) RetainAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
 	}
-	s.init()
+	s.checkInit()
 	if s.t != (*list).GetType() {
 		return false
 	}
@@ -156,7 +156,7 @@ func (s *Set) RemoveAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
 	}
-	s.init()
+	s.checkInit()
 	if s.t != (*list).GetType() {
 		return false
 	}
@@ -170,7 +170,7 @@ func (s *Set) RemoveAll(list *collection.Linear) bool {
 // Equals returns true only if the corresponding pairs of the elements
 //in the two sets are equal.
 func (s *Set) Equals(set *Set) bool {
-	s.init()
+	s.checkInit()
 	if set == nil || set.Size() != s.Size() {
 		return false
 	}
@@ -224,7 +224,7 @@ func getKeys(m *map[collection.Object]struct{}) []collection.Object {
 	return keys
 }
 
-func (s *Set) init() {
+func (s *Set) checkInit() {
 	if s.m == nil {
 		s.m = make(map[collection.Object]struct{})
 	}

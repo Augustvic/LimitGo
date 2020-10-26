@@ -8,6 +8,6 @@ import (
 
 // New returns a new queue based on LinkedList.
 func New(t reflect.Type) *collection.Stack{
-	var st collection.Stack = linkedlist.NewLinkedList(nil, nil, 0, t)
+	var st collection.Stack = linkedlist.New(t)
 	return &st
 }

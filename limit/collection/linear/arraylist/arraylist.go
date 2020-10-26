@@ -8,6 +8,8 @@ import (
 	"reflect"
 )
 
+const initCap int = 8
+
 // ArrayList is one of the implementations of the List based on origin slice.
 type ArrayList struct {
 	elements []*collection.Object
@@ -23,13 +25,7 @@ type ArrayListIterator struct {
 
 // New returns a new ArrayList.
 func New(t reflect.Type) *ArrayList {
-	l := ArrayList{make([]*collection.Object, 0, 10), t}
-	return &l
-}
-
-// NewArrayList returns a new ArrayList.
-func NewArrayList(cap int, t reflect.Type) *ArrayList {
-	l := ArrayList{make([]*collection.Object, 0, cap), t}
+	l := ArrayList{make([]*collection.Object, 0, initCap), t}
 	return &l
 }
 
@@ -289,6 +285,6 @@ func (l *ArrayList) checkType(p *collection.Object) bool {
 
 func (l *ArrayList) checkInit() {
 	if l.elements == nil {
-		l.elements = make([]*collection.Object, 0, 10)
+		l.elements = make([]*collection.Object, 0, initCap)
 	}
 }

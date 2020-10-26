@@ -21,11 +21,12 @@
   <component name="ChangeListManager">
     <list default="true" id="d79b9acd-0fe0-4a4c-9e6a-345b33ae2c46" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/limit/collection/linear/arraylist/arraylist.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/arraylist/arraylist.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/limit/collection/linear/arraylist/arraylist_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/arraylist/arraylist_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/limit/collection/linear/linkedlist/linkedlist_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/linkedlist/linkedlist_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collection/linear/deque/arraydeque/arraydeque.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/deque/arraydeque/arraydeque.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collection/linear/linkedlist/linkedlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/linkedlist/linkedlist.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/limit/collection/linear/set/set.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/set/set.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/limit/collection/linear/set/set_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/set/set_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collection/linear/stack/stack.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/linear/stack/stack.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +62,7 @@
     <property name="configurable.Module.GOPATH.is.expanded" value="false" />
     <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../HelloWorld" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -79,69 +80,69 @@
       <recent name="C:\Users\August\go\src\LimitGo\limit\collection\linear\deque\arraydeque" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestLinkedListAll in LimitGo/limit/collection/linear/linkedlist">
-    <configuration name="TestArrayListAll in LimitGo/limit/collection/linear/arraylist" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Test.TestArrayDequeAll in LimitGo/limit/collection/linear/deque/arraydeque">
+    <configuration name="TestArrayDequeAll in LimitGo/limit/collection/linear/deque/arraydeque" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="LimitGo" />
-      <working_directory value="$PROJECT_DIR$/limit/collection/linear/arraylist" />
+      <working_directory value="$PROJECT_DIR$/limit/collection/linear/deque/arraydeque" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
-      <package value="LimitGo/limit/collection/linear/arraylist" />
+      <package value="LimitGo/limit/collection/linear/deque/arraydeque" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestArrayListAll\E$" />
+      <pattern value="^\QTestArrayDequeAll\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestArrayList_GetIterator in LimitGo/limit/collection/linear/arraylist" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestArrayDeque_DoubleLen in LimitGo/limit/collection/linear/deque/arraydeque" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="LimitGo" />
-      <working_directory value="$PROJECT_DIR$/limit/collection/linear/arraylist" />
+      <working_directory value="$PROJECT_DIR$/limit/collection/linear/deque/arraydeque" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
-      <package value="LimitGo/limit/collection/linear/arraylist" />
+      <package value="LimitGo/limit/collection/linear/deque/arraydeque" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestArrayList_GetIterator\E$" />
+      <pattern value="^\QTestArrayDeque_DoubleLen\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestLinkedListAll in LimitGo/limit/collection/linear/linkedlist" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestArrayDeque_GetLast in LimitGo/limit/collection/linear/deque/arraydeque" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="LimitGo" />
-      <working_directory value="$PROJECT_DIR$/limit/collection/linear/linkedlist" />
+      <working_directory value="$PROJECT_DIR$/limit/collection/linear/deque/arraydeque" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
-      <package value="LimitGo/limit/collection/linear/linkedlist" />
+      <package value="LimitGo/limit/collection/linear/deque/arraydeque" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestLinkedListAll\E$" />
+      <pattern value="^\QTestArrayDeque_GetLast\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestLinkedList_GetIterator in LimitGo/limit/collection/linear/linkedlist" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestArrayDeque_RemoveFirst in LimitGo/limit/collection/linear/deque/arraydeque" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="LimitGo" />
-      <working_directory value="$PROJECT_DIR$/limit/collection/linear/linkedlist" />
+      <working_directory value="$PROJECT_DIR$/limit/collection/linear/deque/arraydeque" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
-      <package value="LimitGo/limit/collection/linear/linkedlist" />
+      <package value="LimitGo/limit/collection/linear/deque/arraydeque" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestLinkedList_GetIterator\E$" />
+      <pattern value="^\QTestArrayDeque_RemoveFirst\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestSetAll in LimitGo/limit/collection/linear/set" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestArrayDeque_RemoveLast in LimitGo/limit/collection/linear/deque/arraydeque" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="LimitGo" />
-      <working_directory value="$PROJECT_DIR$/limit/collection/linear/set" />
+      <working_directory value="$PROJECT_DIR$/limit/collection/linear/deque/arraydeque" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
-      <package value="LimitGo/limit/collection/linear/set" />
+      <package value="LimitGo/limit/collection/linear/deque/arraydeque" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestSetAll\E$" />
+      <pattern value="^\QTestArrayDeque_RemoveLast\E$" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.TestLinkedListAll in LimitGo/limit/collection/linear/linkedlist" />
-        <item itemvalue="Go Test.TestLinkedList_GetIterator in LimitGo/limit/collection/linear/linkedlist" />
-        <item itemvalue="Go Test.TestArrayListAll in LimitGo/limit/collection/linear/arraylist" />
-        <item itemvalue="Go Test.TestArrayList_GetIterator in LimitGo/limit/collection/linear/arraylist" />
-        <item itemvalue="Go Test.TestSetAll in LimitGo/limit/collection/linear/set" />
+        <item itemvalue="Go Test.TestArrayDequeAll in LimitGo/limit/collection/linear/deque/arraydeque" />
+        <item itemvalue="Go Test.TestArrayDeque_DoubleLen in LimitGo/limit/collection/linear/deque/arraydeque" />
+        <item itemvalue="Go Test.TestArrayDeque_RemoveLast in LimitGo/limit/collection/linear/deque/arraydeque" />
+        <item itemvalue="Go Test.TestArrayDeque_RemoveFirst in LimitGo/limit/collection/linear/deque/arraydeque" />
+        <item itemvalue="Go Test.TestArrayDeque_GetLast in LimitGo/limit/collection/linear/deque/arraydeque" />
       </list>
     </recent_temporary>
   </component>
@@ -162,49 +163,49 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="421" y="95" key="FileChooserDialogImpl" timestamp="1603269817106">
+    <state x="421" y="95" key="FileChooserDialogImpl" timestamp="1603701896573">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="421" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1603269817106" />
-    <state width="1237" height="265" key="GridCell.Tab.0.bottom" timestamp="1603696632957">
+    <state x="421" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1603701896573" />
+    <state width="1237" height="265" key="GridCell.Tab.0.bottom" timestamp="1603718884061">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="265" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603696632957" />
+    <state width="1237" height="265" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603718884061" />
     <state width="1877" height="320" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603334011377" />
-    <state width="1237" height="265" key="GridCell.Tab.0.center" timestamp="1603696632957">
+    <state width="1237" height="265" key="GridCell.Tab.0.center" timestamp="1603718884061">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="265" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1603696632957" />
+    <state width="1237" height="265" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1603718884061" />
     <state width="1877" height="320" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603334011377" />
-    <state width="1237" height="265" key="GridCell.Tab.0.left" timestamp="1603696632957">
+    <state width="1237" height="265" key="GridCell.Tab.0.left" timestamp="1603718884061">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="265" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1603696632957" />
+    <state width="1237" height="265" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1603718884061" />
     <state width="1877" height="320" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603334011377" />
-    <state width="1237" height="265" key="GridCell.Tab.0.right" timestamp="1603696632957">
+    <state width="1237" height="265" key="GridCell.Tab.0.right" timestamp="1603718884061">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="265" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1603696632957" />
+    <state width="1237" height="265" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1603718884061" />
     <state width="1877" height="320" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603334011377" />
-    <state width="1237" height="265" key="GridCell.Tab.1.bottom" timestamp="1603696632957">
+    <state width="1237" height="265" key="GridCell.Tab.1.bottom" timestamp="1603718884061">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="265" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603696632957" />
+    <state width="1237" height="265" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603718884061" />
     <state width="1877" height="320" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603334011377" />
-    <state width="1237" height="265" key="GridCell.Tab.1.center" timestamp="1603696632957">
+    <state width="1237" height="265" key="GridCell.Tab.1.center" timestamp="1603718884061">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="265" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1603696632957" />
+    <state width="1237" height="265" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1603718884061" />
     <state width="1877" height="320" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603334011377" />
-    <state width="1237" height="265" key="GridCell.Tab.1.left" timestamp="1603696632957">
+    <state width="1237" height="265" key="GridCell.Tab.1.left" timestamp="1603718884061">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="265" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1603696632957" />
+    <state width="1237" height="265" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1603718884061" />
     <state width="1877" height="320" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603334011377" />
-    <state width="1237" height="265" key="GridCell.Tab.1.right" timestamp="1603696632957">
+    <state width="1237" height="265" key="GridCell.Tab.1.right" timestamp="1603718884061">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="265" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1603696632957" />
+    <state width="1237" height="265" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1603718884061" />
     <state width="1877" height="320" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603334011377" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1603193115114">
       <screen x="0" y="0" width="1280" height="680" />
@@ -214,9 +215,9 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="0" y="0" width="1007" height="640" key="dock-window-1/0.0.1280.680@0.0.1280.680" timestamp="1603437166630" />
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1603616731465">
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1603718262689">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1603616731465" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1603718262689" />
   </component>
 </project>

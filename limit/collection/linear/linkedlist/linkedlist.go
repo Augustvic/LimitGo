@@ -36,12 +36,6 @@ func New(t reflect.Type) *LinkedList {
 	return &l
 }
 
-// NewLinkedList returns a new LinkedList.
-func NewLinkedList(head *Node, tail *Node, size int, t reflect.Type) *LinkedList {
-	l := LinkedList{head, tail, size, t}
-	return &l
-}
-
 // Size returns the number of elements in this collection.
 func (l *LinkedList) Size() int {
 	return l.size
