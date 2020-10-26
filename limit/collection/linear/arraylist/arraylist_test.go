@@ -37,8 +37,8 @@ func TestArrayListAll(t *testing.T) {
 func TestNew(t *testing.T) {
 	l := New(reflect.TypeOf(Student{}))
 	if l.GetType().Name() != "Student" || l.Size() != 0 ||
-		len(l.elements) != 0 || cap(l.elements) != 10{
-		t.Error("Create arraylist fail!")
+		len(l.elements) != 0 || cap(l.elements) != 10 {
+		t.Error("Create ArrayList fail!")
 	}
 }
 
@@ -248,12 +248,15 @@ func TestArrayList_GetIterator(t *testing.T) {
 	l.Append(&d)
 	var s = ""
 	it := l.GetIterator()
-	for it.HashNext() {
+	for i := 0; it.HashNext(); i++ {
 		p := it.Next()
 		stu := (*p).(Student)
 		s += stu.Name
+		if i >= 2 {
+			it.Remove()
+		}
 	}
-	if s != "AliceBobMarkJessie" {
+	if l.Size() != 2 || s != "AliceBobMarkJessie" {
 		t.Error("Iterator fail!")
 	}
 }

@@ -194,9 +194,9 @@ func (it *SetIterator) HashNext() bool {
 // Next returns the next element in the iteration.
 func (it *SetIterator) Next() *collection.Object {
 	if it.HashNext() {
-		lastRet := it.cursor
+		it.lastRet = it.cursor
 		it.cursor++
-		return &it.keys[lastRet]
+		return &it.keys[it.lastRet]
 	}
 	return nil
 }
@@ -207,11 +207,13 @@ func (it *SetIterator) Remove() (*collection.Object, bool) {
 	if it.lastRet < 0 {
 		return nil, false
 	}
-	key := &it.keys[it.lastRet]
+	key := it.keys[it.lastRet]
 	copy(it.keys[it.lastRet:], it.keys[it.lastRet+1:])
-	it.set.Remove(key)
+	it.keys = it.keys[:len(it.keys)-1]
+	it.set.Remove(&key)
+	it.cursor = it.lastRet
 	it.lastRet = -1
-	return key, true
+	return &key, true
 }
 
 func getKeys(m *map[collection.Object]struct{}) []collection.Object {

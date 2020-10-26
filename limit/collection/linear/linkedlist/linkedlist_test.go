@@ -249,12 +249,15 @@ func TestLinkedList_GetIterator(t *testing.T) {
 	l.Append(&d)
 	var s = ""
 	it := l.GetIterator()
-	for it.HashNext() {
+	for i := 0; it.HashNext(); i++ {
 		p := it.Next()
 		stu := (*p).(Student)
 		s += stu.Name
+		if i >= 2 {
+			it.Remove()
+		}
 	}
-	if s != "AliceBobMarkJessie" {
+	if l.Size() != 2 || s != "AliceBobMarkJessie" {
 		t.Error("Iterator fail!")
 	}
 }

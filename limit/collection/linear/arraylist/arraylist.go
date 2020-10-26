@@ -253,9 +253,9 @@ func (it *ArrayListIterator) HashNext() bool {
 // Next returns the next element in the iteration.
 func (it *ArrayListIterator) Next() *collection.Object {
 	if it.HashNext() {
-		lastRet := it.cursor
+		it.lastRet = it.cursor
 		it.cursor++
-		return it.list.elements[lastRet]
+		return it.list.elements[it.lastRet]
 	}
 	return nil
 }
