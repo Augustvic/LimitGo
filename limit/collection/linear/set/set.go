@@ -15,9 +15,9 @@ type Set struct {
 	t reflect.Type
 }
 
-// SetIterator represents the specific iterator of the Set.
+// Iterator represents the specific iterator of the Set.
 // Note: SetIterator is just a snapshot of current elements.
-type SetIterator struct {
+type Iterator struct {
 	set     *Set
 	keys    []collection.Object
 	cursor  int
@@ -32,20 +32,18 @@ func New(t reflect.Type) *Set {
 
 // Size returns the number of elements in this collection.
 func (s *Set) Size() int {
-	s.checkInit()
 	return len(s.m)
 }
 
 // Empty returns true if this collection contains no element.
 func (s *Set) Empty() bool {
-	s.checkInit()
 	return len(s.m) == 0
 }
 
 // GetIterator returns an iterator over the elements in this collection.
 func (s *Set) GetIterator() collection.Itr {
 	keys := getKeys(&s.m)
-	it := SetIterator{s, keys, 0, -1}
+	it := Iterator{s, keys, 0, -1}
 	return &it
 }
 
@@ -88,7 +86,6 @@ func (s *Set) Contains(p *collection.Object) bool {
 	if s.checkNil(p) || !s.checkType(p) {
 		return false
 	}
-	s.checkInit()
 	_, ok := s.m[*p]
 	return ok
 }
@@ -98,7 +95,6 @@ func (s *Set) Add(p *collection.Object) bool {
 	if s.checkNil(p) || !s.checkType(p) {
 		return false
 	}
-	s.checkInit()
 	s.m[*p] = Exists
 	return true
 }
@@ -108,7 +104,6 @@ func (s *Set) Remove(p *collection.Object) bool {
 	if s.checkNil(p) || !s.checkType(p) {
 		return false
 	}
-	s.checkInit()
 	delete(s.m, *p)
 	return true
 }
@@ -118,7 +113,6 @@ func (s *Set) AddAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
 	}
-	s.checkInit()
 	if s.t != (*list).GetType() {
 		return false
 	}
@@ -136,7 +130,6 @@ func (s *Set) RetainAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
 	}
-	s.checkInit()
 	if s.t != (*list).GetType() {
 		return false
 	}
@@ -156,7 +149,6 @@ func (s *Set) RemoveAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
 	}
-	s.checkInit()
 	if s.t != (*list).GetType() {
 		return false
 	}
@@ -170,7 +162,6 @@ func (s *Set) RemoveAll(list *collection.Linear) bool {
 // Equals returns true only if the corresponding pairs of the elements
 //in the two sets are equal.
 func (s *Set) Equals(set *Set) bool {
-	s.checkInit()
 	if set == nil || set.Size() != s.Size() {
 		return false
 	}
@@ -185,14 +176,14 @@ func (s *Set) Equals(set *Set) bool {
 }
 
 // HashNext returns true if the iteration has more elements.
-func (it *SetIterator) HashNext() bool {
+func (it *Iterator) HashNext() bool {
 	cursor := it.cursor
 	size := len(it.keys)
 	return cursor != size
 }
 
 // Next returns the next element in the iteration.
-func (it *SetIterator) Next() *collection.Object {
+func (it *Iterator) Next() *collection.Object {
 	if it.HashNext() {
 		it.lastRet = it.cursor
 		it.cursor++
@@ -203,7 +194,7 @@ func (it *SetIterator) Next() *collection.Object {
 
 // Remove removes from the underlying collection the last element returned
 // by this iterator.
-func (it *SetIterator) Remove() (*collection.Object, bool) {
+func (it *Iterator) Remove() (*collection.Object, bool) {
 	if it.lastRet < 0 {
 		return nil, false
 	}
@@ -222,12 +213,6 @@ func getKeys(m *map[collection.Object]struct{}) []collection.Object {
 		keys = append(keys, k)
 	}
 	return keys
-}
-
-func (s *Set) checkInit() {
-	if s.m == nil {
-		s.m = make(map[collection.Object]struct{})
-	}
 }
 
 func (s *Set) checkNil(p *collection.Object) bool {

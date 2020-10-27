@@ -23,8 +23,8 @@ type LinkedList struct {
 	t    reflect.Type
 }
 
-// LinkedListIterator represents the specific iterator of the LinkedList
-type LinkedListIterator struct {
+// Iterator represents the specific iterator of the LinkedList
+type Iterator struct {
 	list    *LinkedList
 	next    *Node
 	lastRet *Node
@@ -48,7 +48,7 @@ func (l *LinkedList) Empty() bool {
 
 // GetIterator returns an iterator over the elements in this collection.
 func (l *LinkedList) GetIterator() collection.Itr {
-	return &LinkedListIterator{l, l.head, nil}
+	return &Iterator{l, l.head, nil}
 }
 
 // GetType returns type of the elements in this collection.
@@ -349,12 +349,12 @@ func (l *LinkedList) Peek() *collection.Object {
 }
 
 // HashNext returns true if the iteration has more elements.
-func (it *LinkedListIterator) HashNext() bool {
+func (it *Iterator) HashNext() bool {
 	return it.next != nil
 }
 
 // Next returns the next element in the iteration.
-func (it *LinkedListIterator) Next() *collection.Object {
+func (it *Iterator) Next() *collection.Object {
 	if it.HashNext() {
 		it.lastRet = it.next
 		it.next = it.next.next
@@ -365,7 +365,7 @@ func (it *LinkedListIterator) Next() *collection.Object {
 
 // Remove removes from the underlying collection the last element returned
 // by this iterator.
-func (it *LinkedListIterator) Remove() (*collection.Object, bool) {
+func (it *Iterator) Remove() (*collection.Object, bool) {
 	if it.lastRet == nil {
 		return nil, false
 	}

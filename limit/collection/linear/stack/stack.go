@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-// New returns a new queue based on LinkedList.
+// New returns a new stack based on LinkedList.
 func New(t reflect.Type) *collection.Stack{
 	var st collection.Stack = linkedlist.New(t)
 	return &st

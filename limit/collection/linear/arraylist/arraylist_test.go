@@ -37,7 +37,7 @@ func TestArrayListAll(t *testing.T) {
 func TestNew(t *testing.T) {
 	l := New(reflect.TypeOf(Student{}))
 	if l.GetType().Name() != "Student" || l.Size() != 0 ||
-		len(l.elements) != 0 || cap(l.elements) != 10 {
+		len(l.elements) != 0 || cap(l.elements) != 8 {
 		t.Error("Create ArrayList fail!")
 	}
 }

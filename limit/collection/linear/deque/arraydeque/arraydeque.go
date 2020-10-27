@@ -17,8 +17,8 @@ type ArrayDeque struct {
 	t        reflect.Type
 }
 
-// ArrayDequeIterator represents the specific iterator of the ArrayDeque
-type ArrayDequeIterator struct {
+// Iterator represents the specific iterator of the ArrayDeque
+type Iterator struct {
 	list    *ArrayDeque
 	cursor  int
 	lastRet int
@@ -42,7 +42,7 @@ func (q *ArrayDeque) Empty() bool {
 
 // GetIterator returns an iterator over the elements in this collection.
 func (q *ArrayDeque) GetIterator() collection.Itr {
-	return &ArrayDequeIterator{q, q.head, -1, q.tail}
+	return &Iterator{q, q.head, -1, q.tail}
 }
 
 // GetType returns type of the elements in this collection.
@@ -85,7 +85,6 @@ func (q *ArrayDeque) Clear() bool {
 
 // Contains returns true if this collection contains the specific element.
 func (q *ArrayDeque) Contains(p *collection.Object) bool {
-	q.checkInit()
 	if q.checkNil(p) || !q.checkType(p) {
 		return false
 	}
@@ -104,7 +103,6 @@ func (q *ArrayDeque) Contains(p *collection.Object) bool {
 
 // AddFirst inserts the specified element at the front of this deque.
 func (q *ArrayDeque) AddFirst(p *collection.Object) bool {
-	q.checkInit()
 	if q.checkNil(p) || !q.checkType(p) {
 		return false
 	}
@@ -118,7 +116,6 @@ func (q *ArrayDeque) AddFirst(p *collection.Object) bool {
 
 // AddLast inserts the specified element at the end of this deque.
 func (q *ArrayDeque) AddLast(p *collection.Object) bool {
-	q.checkInit()
 	if q.checkNil(p) || !q.checkType(p) {
 		return false
 	}
@@ -133,7 +130,6 @@ func (q *ArrayDeque) AddLast(p *collection.Object) bool {
 // RemoveFirst removes and returns the head of this deque,
 // or returns nil if this deque is empty.
 func (q *ArrayDeque) RemoveFirst() *collection.Object {
-	q.checkInit()
 	h := q.head
 	result := q.elements[h]
 	if result == nil {
@@ -147,7 +143,6 @@ func (q *ArrayDeque) RemoveFirst() *collection.Object {
 // RemoveLast removes and returns the tail of this deque,
 // or returns nil if this deque is empty.
 func (q *ArrayDeque) RemoveLast() *collection.Object {
-	q.checkInit()
 	t := (q.tail - 1) & (len(q.elements) - 1)
 	result := q.elements[t]
 	if result == nil {
@@ -160,23 +155,21 @@ func (q *ArrayDeque) RemoveLast() *collection.Object {
 
 // GetFirst returns the head of this queue, or nil if this deque is empty.
 func (q *ArrayDeque) GetFirst() *collection.Object {
-	q.checkInit()
 	return q.elements[q.head]
 }
 
 // GetLast returns the tail of this queue, or nil if this deque is empty.
 func (q *ArrayDeque) GetLast() *collection.Object {
-	q.checkInit()
 	return q.elements[(q.tail-1)&(len(q.elements)-1)]
 }
 
 // HashNext returns true if the iteration has more elements.
-func (it *ArrayDequeIterator) HashNext() bool {
+func (it *Iterator) HashNext() bool {
 	return it.cursor != it.fence
 }
 
 // Next returns the next element in the iteration.
-func (it *ArrayDequeIterator) Next() *collection.Object {
+func (it *Iterator) Next() *collection.Object {
 	if it.HashNext() {
 		result := it.list.elements[it.cursor]
 		it.lastRet = it.cursor
@@ -188,7 +181,7 @@ func (it *ArrayDequeIterator) Next() *collection.Object {
 
 // Remove removes from the underlying collection the last element returned
 // by this iterator.
-func (it *ArrayDequeIterator) Remove() (*collection.Object, bool) {
+func (it *Iterator) Remove() (*collection.Object, bool) {
 	if it.lastRet < 0 {
 		return nil, false
 	}
@@ -204,7 +197,6 @@ func (it *ArrayDequeIterator) Remove() (*collection.Object, bool) {
 }
 
 func (q *ArrayDeque) removeAt(index int) *collection.Object {
-	q.checkInit()
 	removed := q.elements[index]
 	if !q.checkIndex(index) || removed == nil {
 		return nil
@@ -263,12 +255,6 @@ func (q *ArrayDeque) checkIndex(index int) bool {
 // checkType returns true if type matches
 func (q *ArrayDeque) checkType(p *collection.Object) bool {
 	return reflect.TypeOf(*p) == q.t
-}
-
-func (q *ArrayDeque) checkInit() {
-	if q.elements == nil {
-		q.elements = make([]*collection.Object, initLen, initLen)
-	}
 }
 
 func (q *ArrayDeque) doubleLen() {
