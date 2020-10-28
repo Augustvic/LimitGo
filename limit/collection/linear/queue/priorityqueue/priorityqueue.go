@@ -28,6 +28,10 @@ func New(t reflect.Type, precede func(p1 *collection.Object, p2 *collection.Obje
 		t, precede}
 }
 
+func (q *PriorityQueue) GetFunc() func(p1 *collection.Object, p2 *collection.Object) bool {
+	return q.precede
+}
+
 // Size returns the number of elements in this collection.
 func (q *PriorityQueue) Size() int {
 	return len(q.elements)

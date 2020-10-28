@@ -4,21 +4,27 @@ import (
 	"reflect"
 )
 
-type Linear interface {
+type Collection interface {
 	// Size returns the number of elements in this collection.
 	Size() int
 	// Empty returns true if this collection contains no element.
 	Empty() bool
-	// GetIterator returns an iterator over the elements in this collection.
-	GetIterator() Itr
-	// GetType returns type of the elements in this collection.
-	GetType() reflect.Type
 	// String returns a string representation of this collection.
 	String() string
 	// Removes all of the elements from this collection.
 	Clear() bool
+}
+
+// Interface of linear data structure.
+type Linear interface {
+	// GetIterator returns an iterator over the elements in this collection.
+	GetIterator() Itr
 	// Contains returns true if this list contains the specific element.
 	Contains(p *Object) bool
+	// GetType returns type of the elements in this collection.
+	GetType() reflect.Type
+	// All Methods from Collection
+	Collection
 }
 
 // List is an interface much similar to java.util.List.
@@ -44,21 +50,8 @@ type List interface {
 	// IndexOf returns the index of the first occurrence of the
 	//specified element
 	IndexOf(p *Object) int
-
-	// Size returns the number of elements in this collection.
-	Size() int
-	// Empty returns true if this collection contains no element.
-	Empty() bool
-	// GetIterator returns an iterator over the elements in this collection.
-	GetIterator() Itr
-	// GetType returns type of the elements in this collection.
-	GetType() reflect.Type
-	// String returns a string representation of this collection.
-	String() string
-	// Removes all of the elements from this collection.
-	Clear() bool
-	// Contains returns true if this list contains the specific element.
-	Contains(p *Object) bool
+	// All Methods from Linear
+	Linear
 }
 
 // Queue is an interface much similar to java.util.Queue.
@@ -69,21 +62,8 @@ type Queue interface {
 	Poll() *Object
 	// Add inserts the specified element to the end of this queue.
 	Add(p *Object) bool
-
-	// Size returns the number of elements in this collection.
-	Size() int
-	// Empty returns true if this collection contains no element.
-	Empty() bool
-	// GetIterator returns an iterator over the elements in this collection.
-	GetIterator() Itr
-	// GetType returns type of the elements in this collection.
-	GetType() reflect.Type
-	// String returns a string representation of this collection.
-	String() string
-	// Removes all of the elements from this collection.
-	Clear() bool
-	// Contains returns true if this collection contains the specific element.
-	Contains(p *Object) bool
+	// All Methods from Linear
+	Linear
 }
 
 // Deque is an interface much similar to java.util.Deque.
@@ -102,21 +82,8 @@ type Deque interface {
 	GetFirst() *Object
 	// GetLast returns the tail of this queue, or nil if this deque is empty.
 	GetLast() *Object
-
-	// Size returns the number of elements in this collection.
-	Size() int
-	// Empty returns true if this collection contains no element.
-	Empty() bool
-	// GetIterator returns an iterator over the elements in this collection.
-	GetIterator() Itr
-	// GetType returns type of the elements in this collection.
-	GetType() reflect.Type
-	// String returns a string representation of this collection.
-	String() string
-	// Removes all of the elements from this collection.
-	Clear() bool
-	// Contains returns true if this collection contains the specific element.
-	Contains(p *Object) bool
+	// All Methods from Linear
+	Linear
 }
 
 // Stack is an interface much similar to java.util.Stack.
@@ -128,40 +95,12 @@ type Stack interface {
 	Push(p *Object)
 	// Peek returns the top element of this stack, or nil if this stack is empty.
 	Peek() *Object
-
-	// Size returns the number of elements in this collection.
-	Size() int
-	// Empty returns true if this collection contains no element.
-	Empty() bool
-	// GetIterator returns an iterator over the elements in this collection.
-	GetIterator() Itr
-	// GetType returns type of the elements in this collection.
-	GetType() reflect.Type
-	// String returns a string representation of this collection.
-	String() string
-	// Removes all of the elements from this collection.
-	Clear() bool
-	// Contains returns true if this collection contains the specific element.
-	Contains(p *Object) bool
+	// All Methods from Linear
+	Linear
 }
 
 // Set is an interface much similar to java.util.Set.
 type Set interface {
-	// Size returns the number of elements in this collection.
-	Size() int
-	// Empty returns true if this collection contains no element.
-	Empty() bool
-	// GetIterator returns an iterator over the elements in this collection.
-	GetIterator() Itr
-	// GetType returns type of the elements in this collection.
-	GetType() reflect.Type
-	// String returns a string representation of this collection.
-	String() string
-	// Removes all of the elements from this collection.
-	Clear() bool
-	// Contains returns true if this list contains the specific element.
-	Contains(p *Object) bool
-
 	// Add inserts the specified element to this collection.
 	Add(p *Object) bool
 	// Remove the first occurrence of the specified element from this collection.
@@ -177,9 +116,127 @@ type Set interface {
 	// Equals returns true only if the corresponding pairs of the elements
 	//in the two sets are equal.
 	Equals(set *Set) bool
+	// All Methods from Linear
+	Linear
 }
 
-// An iterator over a linear collection
+type SortedSet interface {
+	// SubSet returns a view of the portion of this set whose elements range from
+	// fromElement to toElement.  If fromElement and toElement are equal,
+	// the returned set is empty unless fromInclusive and toInclusive are both true.
+	SubSet(fromElement *Object, fromInclusive bool, toElement *Object, toInclusive bool) *SortedSet
+	// HeadSet returns a view of the portion of this set whose elements are
+	// less than (or equal to, if inclusive is true) toElement
+	HeadSet(toElement *Object, inclusive bool) *SortedSet
+	// TailSet returns a view of the portion of this set whose elements are
+	// greater than (or equal to, if inclusive is true) fromElement.
+	TailSet(fromElement *Object, inclusive bool) *SortedSet
+	// First returns the first (lowest) element currently in this set.
+	First() *Object
+	// Last returns the last (highest) element currently in this set.
+	Last() *Object
+	// Lower returns the greatest element in this set strictly less than the given
+	// element, or null if there is no such element.
+	Lower(p *Object) *Object
+	// Floor returns the greatest element in this set less than or equal to
+	// the given element, or null if there is no such element.
+	Floor(p *Object) *Object
+	// Ceiling returns the least element in this set greater than or equal to
+	// the given element, or null if there is no such element.
+	Ceiling(p *Object) *Object
+	// Higher returns the least element in this set strictly greater than the
+	// given element, or null if there is no such element.
+	Higher(p *Object) *Object
+	// PollFirst retrieves and removes the first (lowest) element, or
+	// returns null if this set is empty.
+	PollFirst() *Object
+	// PollLast retrieves and removes the last (highest) element, or
+	// returns null if this set is empty.
+	PollLast() *Object
+	// DescendingSet returns a reverse order view of the elements contained
+	// in this set.
+	DescendingSet() *SortedSet
+	// All Methods from Set
+	Set
+}
+
+// Map is an interface much similar to java.util.Map.
+type Map interface {
+	// GetEntryIterator returns iterator of entry.
+	GetEntryIterator() Itr
+	// ContainsKey returns true if this map contains a mapping for the specified key.
+	ContainsKey(key *Object) bool
+	// ContainsValue returns true if this map maps one or more keys to the
+	// specified value.
+	ContainsValue(value *Object) bool
+	// Get returns the value to which the specified key is mapped, or null
+	// if this map contains no mapping for the key.
+	Get(key *Object) *Object
+	// Associates the specified value with the specified key in this map.
+	Put(key *Object, value *Object) *Object
+    // Remove removes the mapping for a key from this map if it is present.
+	Remove(key *Object) *Object
+	// PutAll copies all of the mappings from the specified map to this map.
+	PutAll(m *Map)
+	// KeySet returns a Set view of the keys contained in this map.
+	KeySet() *Set
+	// Values returns a List view of the values contained in this map.
+	Values() *List
+	// EntrySet returns a Set view of the mappings contained in this map.
+	EntrySet() *Set
+	// Equals returns true only if the corresponding pairs of the elements
+	//in the two maps are equal.
+	Equals(list *Map) bool
+	// All Methods from Collection
+	Collection
+}
+
+type SortedMap interface {
+	// SubMap returns a view of the portion of this map whose keys range
+	// from "fromKey" to "toKey".  If "fromKey" and "toKey" are equal,
+	// the returned map is empty.)
+	SubMap(fromKey *Object, fromInclusive bool, toKey *Object, toInclusive bool) *SortedMap
+	// HeadMap returns a view of the portion of this map whose keys are strictly
+	// less than toKey.
+	HeadMap(toKey *Object, inclusive bool) *SortedMap
+	// TailMap returns a view of the portion of this map whose keys are greater than
+	// or equal to fromKey.
+	TailMap(fromKey *Object, inclusive bool) *SortedMap
+	// FirstKey returns the first (lowest) key currently in this map.
+	FirstKey() *Object
+	// LastKey returns the last (highest) key currently in this map.
+	LastKey() *Object
+	// SortedKeySet returns a SortedSet view of the keys contained in this map.
+	SortedKeySet() *SortedSet
+	// LowerEntry returns a key-value mapping associated with the greatest key
+	// strictly less than the given key, or nil if there is no such key.
+	LowerEntry(key *Object) *Entry
+	// FloorEntry returns a key-value mapping associated with the greatest key
+	// less than or equal to the given key, or nil if there is no such key.
+	FloorEntry(key *Object) *Entry
+	// CeilingEntry returns a key-value mapping associated with the least key
+	// greater than or equal to the given key, or nil if there is no such key.
+	CeilingEntry(key *Object) *Entry
+	// HigherEntry returns a key-value mapping associated with the least key
+	// strictly greater than the given key, or nil if there is no such key.
+	HigherEntry(key *Object) *Entry
+	// Entry returns a key-value mapping associated with the least key
+	// in this map, or nil if the map is empty.
+	FirstEntry() *Entry
+	// LastEntry returns a key-value mapping associated with the greatest
+	// key in this map, or nil if the map is empty.
+	LastEntry() *Entry
+	// PollFirstEntry removes and returns a key-value mapping associated with 
+	// the least key in this map, or nil if the map is empty. 
+	PollFirstEntry() *Entry
+	// PollLastEntry removes and returns a key-value mapping associated with
+	// the greatest key in this map, or null if the map is empty.
+	PollLastEntry() *Entry
+	// All Methods from Map
+	Map
+}
+
+// An iterator over a collection
 type Itr interface {
 	// HashNext returns true if the iteration has more elements.
 	HashNext() bool
