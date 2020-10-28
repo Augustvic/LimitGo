@@ -107,7 +107,7 @@ func (q *PriorityQueue) Poll() *collection.Object {
 	result := q.elements[0]
 	x := q.elements[len(q.elements) - 1]
 	q.elements = q.elements[0:len(q.elements)-1]
-	if q.Size() != 0 {
+	if len(q.elements) != 0 {
 		q.siftDown(0, x)
 	}
 	return result
@@ -181,10 +181,34 @@ func (q *PriorityQueue) removeAt(index int) *collection.Object {
 	return p
 }
 
-func (q *PriorityQueue) siftDown(index int, object *collection.Object) {
-
+func (q *PriorityQueue) siftDown(k int, x *collection.Object) {
+	half := q.Size() >> 1
+	for k < half {
+		child := k << 1 + 1
+		p := q.elements[child]
+		right := child + 1
+		if right < q.Size() && q.precede(q.elements[right], p) {
+			child = right
+			p = q.elements[child]
+		}
+		if q.precede(x, p) {
+			break
+		}
+		q.elements[k] = p
+		k = child
+	}
+	q.elements[k] = x
 }
 
-func (q *PriorityQueue) siftUp(index int, object *collection.Object) {
-
+func (q *PriorityQueue) siftUp(k int, x *collection.Object) {
+	for k > 0 {
+		parent := (k - 1) >> 1
+		e := q.elements[parent]
+		if q.precede(e, x) {
+			break
+		}
+		q.elements[k] = e
+		k = parent
+	}
+	q.elements[k] = x
 }
