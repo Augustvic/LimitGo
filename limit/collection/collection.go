@@ -173,7 +173,7 @@ type Map interface {
 	// if this map contains no mapping for the key.
 	Get(key *Object) *Object
 	// Associates the specified value with the specified key in this map.
-	Put(key *Object, value *Object) *Object
+	Put(key *Object, value *Object) (bool, *Object)
     // Remove removes the mapping for a key from this map if it is present.
 	Remove(key *Object) *Object
 	// PutAll copies all of the mappings from the specified map to this map.
@@ -202,10 +202,6 @@ type SortedMap interface {
 	// TailMap returns a view of the portion of this map whose keys are greater than
 	// or equal to fromKey.
 	TailMap(fromKey *Object, inclusive bool) *SortedMap
-	// FirstKey returns the first (lowest) key currently in this map.
-	FirstKey() *Object
-	// LastKey returns the last (highest) key currently in this map.
-	LastKey() *Object
 	// SortedKeySet returns a SortedSet view of the keys contained in this map.
 	SortedKeySet() *SortedSet
 	// LowerEntry returns a key-value mapping associated with the greatest key
