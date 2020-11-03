@@ -163,7 +163,7 @@ type SortedSet interface {
 // Map is an interface much similar to java.util.Map.
 type Map interface {
 	// GetEntryIterator returns iterator of entry.
-	GetEntryIterator() Itr
+	GetEntryIterator() EntryItr
 	// ContainsKey returns true if this map contains a mapping for the specified key.
 	ContainsKey(key *Object) bool
 	// ContainsValue returns true if this map maps one or more keys to the
@@ -181,7 +181,7 @@ type Map interface {
 	// KeySet returns a Set view of the keys contained in this map.
 	KeySet() *Set
 	// Values returns a List view of the values contained in this map.
-	Values() *List
+	Values() *Linear
 	// EntrySet returns a Set view of the mappings contained in this map.
 	EntrySet() *Set
 	// Equals returns true only if the corresponding pairs of the elements
@@ -232,7 +232,7 @@ type SortedMap interface {
 	Map
 }
 
-// An iterator over a collection
+// An iterator over a linear collection
 type Itr interface {
 	// HashNext returns true if the iteration has more elements.
 	HashNext() bool
@@ -241,4 +241,15 @@ type Itr interface {
 	// Remove removes from the underlying collection the last element returned
 	// by this iterator.
 	Remove() (*Object, bool)
+}
+
+// An iterator over an map
+type EntryItr interface {
+	// HashNext returns true if the iteration has more elements.
+	HashNext() bool
+	// Next returns the next element in the iteration.
+	Next() *Entry
+	// Remove removes from the underlying collection the last element returned
+	// by this iterator.
+	Remove() (*Entry, bool)
 }

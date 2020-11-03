@@ -22,7 +22,9 @@
     <list default="true" id="d79b9acd-0fe0-4a4c-9e6a-345b33ae2c46" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/limit/collection/collection.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/collection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/limit/collection/map/sortedmap.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/map/sortedmap.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collection/map/skiplistmap.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/map/skiplistmap/skiplistmap.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collection/map/submap.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/map/skiplistmap/submap.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/limit/collection/object.go" beforeDir="false" afterPath="$PROJECT_DIR$/limit/collection/object.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,72 +37,64 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/limit/collection/collection.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="204" column="26" lean-forward="true" selection-start-line="204" selection-start-column="26" selection-end-line="204" selection-end-column="26" />
+            <state relative-caret-position="182">
+              <caret line="19" selection-start-line="19" selection-end-line="24" selection-end-column="26" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/limit/collection/map/sortedmap.go">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/skiplistmap.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="249" column="14" lean-forward="true" selection-start-line="249" selection-start-column="14" selection-end-line="249" selection-end-column="14" />
+            <state relative-caret-position="187">
+              <caret line="168" column="14" lean-forward="true" selection-start-line="168" selection-start-column="14" selection-end-line="168" selection-end-column="14" />
               <folding>
-                <element signature="e#14#63#0" expanded="true" />
-                <element signature="n#!!block;n#Size#0" />
-                <element signature="n#!!block;n#Empty#0" />
-                <element signature="n#!!block;n#String#0" />
-                <element signature="n#!!block;n#Clear#0" />
-                <element signature="n#!!block;n#ContainsKey#0" />
-                <element signature="n#!!block;n#ContainsValue#0" />
-                <element signature="n#!!block;n#Get#0" />
-                <element signature="e#3598#3673#0" />
-                <element signature="n#!!block;n#Remove#0" />
-                <element signature="e#4200#4363#0" />
-                <element signature="e#4920#5083#0" />
-                <element signature="e#5546#5551#0" />
-                <element signature="e#5932#6051#0" />
-                <element signature="e#6255#6270#0" />
+                <element signature="e#21#116#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/limit/collection/map/submap.go">
+        <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/submap.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="23" column="22" lean-forward="true" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
+            <state relative-caret-position="248">
+              <caret line="95" column="22" selection-start-line="95" selection-start-column="22" selection-end-line="95" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/limit/collection/linear/linkedlist/linkedlist.go">
+        <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/keyset.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="382" selection-start-line="382" selection-end-line="392" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/limit/collection/linear/queue/queue.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="10" column="24" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/limit/collection/linear/queue/priorityqueue/priorityqueue.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="25" column="88" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="88" />
+            <state relative-caret-position="2002">
+              <caret line="77" column="1" lean-forward="true" selection-start-line="77" selection-start-column="1" selection-end-line="77" selection-end-column="1" />
               <folding>
-                <element signature="e#23#105#0" expanded="true" />
+                <element signature="e#21#70#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/values.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1144">
+              <caret line="44" column="1" lean-forward="true" selection-start-line="44" selection-start-column="1" selection-end-line="44" selection-end-column="1" />
+              <folding>
+                <element signature="e#21#70#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/entryset.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1872">
+              <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
+              <folding>
+                <element signature="e#21#70#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -129,6 +123,15 @@
       <find>Clear</find>
       <find>null</find>
       <find>string(</find>
+      <find>put</find>
+      <find>Index</find>
+      <find>doRemoveFirst</find>
+      <find>findFirst</find>
+      <find>Higher</find>
+      <find>doRemove(</find>
+      <find>Next(</find>
+      <find>EntrySet(</find>
+      <find>values</find>
     </findStrings>
     <replaceStrings>
       <replace>nil</replace>
@@ -152,14 +155,24 @@
         <option value="$PROJECT_DIR$/limit/collection/linear/arraylist/arraylist.go" />
         <option value="$PROJECT_DIR$/limit/collection/linear/set/set.go" />
         <option value="$PROJECT_DIR$/limit/collection/linear/queue/priorityqueue/priorityqueue_test.go" />
-        <option value="$PROJECT_DIR$/limit/collection/object.go" />
         <option value="$PROJECT_DIR$/limit/collection/linear/queue/priorityqueue/priorityqueue.go" />
-        <option value="$PROJECT_DIR$/limit/collection/map/skiplistmap.go" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/limit/collection/linear/set/sortedset/sortedset.go" />
-        <option value="$PROJECT_DIR$/limit/collection/collection.go" />
-        <option value="$PROJECT_DIR$/limit/collection/map/submap.go" />
         <option value="$PROJECT_DIR$/limit/collection/map/sortedmap.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/node.go" />
+        <option value="$PROJECT_DIR$/limit/collection/object.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/submap.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/keyset.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/values.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/entryset.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/skiplistmap/node.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/skiplistmap.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/skiplistmap/keyset.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/skiplistmap/entryset.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/skiplistmap/skiplistmap.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/skiplistmap/submap.go" />
+        <option value="$PROJECT_DIR$/limit/collection/collection.go" />
+        <option value="$PROJECT_DIR$/limit/collection/map/skiplistmap/values.go" />
       </list>
     </option>
   </component>
@@ -247,6 +260,14 @@
             <path>
               <item name="LimitGo" type="b2602c69:ProjectViewProjectNode" />
               <item name="LimitGo" type="462c0819:PsiDirectoryNode" />
+              <item name="limit" type="462c0819:PsiDirectoryNode" />
+              <item name="collection" type="462c0819:PsiDirectoryNode" />
+              <item name="map" type="462c0819:PsiDirectoryNode" />
+              <item name="skiplistmap" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="LimitGo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LimitGo" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -282,11 +303,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\August\go\src\LimitGo\limit\collection\map" />
+      <recent name="C:\Users\August\go\src\LimitGo\limit\collection\map\skiplistmap" />
       <recent name="C:\Users\August\go\src\LimitGo\limit\collection\linear\stack" />
       <recent name="C:\Users\August\go\src\LimitGo\limit\collection\linear\set\sortedset" />
       <recent name="C:\Users\August\go\src\LimitGo\limit\collection\linear" />
-      <recent name="C:\Users\August\go\src\LimitGo\limit\collection\linear\queue\priorityqueue" />
-      <recent name="C:\Users\August\go\src\LimitGo\limit\collection\linear\deque\arraydeque" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -301,7 +322,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Test.TestSetAll in LimitGo/limit/collection/linear/set">
+  <component name="RunManager" selected="Go Test.TestLinkedList_GetIterator in LimitGo/limit/collection/linear/linkedlist">
     <configuration name="TestArrayListAll in LimitGo/limit/collection/linear/arraylist" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="LimitGo" />
       <working_directory value="$PROJECT_DIR$/limit/collection/linear/arraylist" />
@@ -335,15 +356,15 @@
       <pattern value="^TestLinkedListAll$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestPriorityQueue_Poll in LimitGo/limit/collection/linear/queue/priorityqueue" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestLinkedList_GetIterator in LimitGo/limit/collection/linear/linkedlist" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="LimitGo" />
-      <working_directory value="$PROJECT_DIR$/limit/collection/linear/queue/priorityqueue" />
+      <working_directory value="$PROJECT_DIR$/limit/collection/linear/linkedlist" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
-      <package value="LimitGo/limit/collection/linear/queue/priorityqueue" />
+      <package value="LimitGo/limit/collection/linear/linkedlist" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/" />
-      <pattern value="^TestPriorityQueue_Poll$" />
+      <pattern value="^TestLinkedList_GetIterator$" />
       <method v="2" />
     </configuration>
     <configuration name="TestSetAll in LimitGo/limit/collection/linear/set" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -359,31 +380,16 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestLinkedList_GetIterator in LimitGo/limit/collection/linear/linkedlist" />
         <item itemvalue="Go Test.TestSetAll in LimitGo/limit/collection/linear/set" />
         <item itemvalue="Go Test.TestArrayListAll in LimitGo/limit/collection/linear/queue/priorityqueue" />
         <item itemvalue="Go Test.TestLinkedListAll in LimitGo/limit/collection/linear/linkedlist" />
         <item itemvalue="Go Test.TestArrayListAll in LimitGo/limit/collection/linear/arraylist" />
-        <item itemvalue="Go Test.TestPriorityQueue_Poll in LimitGo/limit/collection/linear/queue/priorityqueue" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="TestHistory">
-    <history-entry file="TestPriorityQueue_First_in_LimitGo_limit_collection_linear_queue_priorityqueue - 2020.10.28 at 16h 26m 08s.xml">
-      <configuration name="TestPriorityQueue_First in LimitGo/limit/collection/linear/queue/priorityqueue" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestPriorityQueue_GetIterator_in_LimitGo_limit_collection_linear_queue_priorityqueue - 2020.10.28 at 16h 27m 04s.xml">
-      <configuration name="TestPriorityQueue_GetIterator in LimitGo/limit/collection/linear/queue/priorityqueue" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestPriorityQueue_GetIterator_in_LimitGo_limit_collection_linear_queue_priorityqueue - 2020.10.28 at 16h 27m 25s.xml">
-      <configuration name="TestPriorityQueue_GetIterator in LimitGo/limit/collection/linear/queue/priorityqueue" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestPriorityQueue_Poll_in_LimitGo_limit_collection_linear_queue_priorityqueue - 2020.10.28 at 16h 29m 50s.xml">
-      <configuration name="TestPriorityQueue_Poll in LimitGo/limit/collection/linear/queue/priorityqueue" configurationId="GoTestRunConfiguration" />
-    </history-entry>
-    <history-entry file="TestArrayListAll_in_LimitGo_limit_collection_linear_queue_priorityqueue - 2020.10.28 at 16h 30m 04s.xml">
-      <configuration name="TestArrayListAll in LimitGo/limit/collection/linear/queue/priorityqueue" configurationId="GoTestRunConfiguration" />
-    </history-entry>
     <history-entry file="TestArrayListAll_in_LimitGo_limit_collection_linear_arraylist - 2020.10.28 at 19h 52m 14s.xml">
       <configuration name="TestArrayListAll in LimitGo/limit/collection/linear/arraylist" configurationId="GoTestRunConfiguration" />
     </history-entry>
@@ -399,12 +405,27 @@
     <history-entry file="TestSetAll_in_LimitGo_limit_collection_linear_set - 2020.10.28 at 20h 47m 36s.xml">
       <configuration name="TestSetAll in LimitGo/limit/collection/linear/set" configurationId="GoTestRunConfiguration" />
     </history-entry>
+    <history-entry file="TestSetAll_in_LimitGo_limit_collection_linear_set - 2020.11.03 at 20h 21m 30s.xml">
+      <configuration name="TestSetAll in LimitGo/limit/collection/linear/set" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestLinkedList_GetIterator_in_LimitGo_limit_collection_linear_linkedlist - 2020.11.03 at 20h 21m 56s.xml">
+      <configuration name="TestLinkedList_GetIterator in LimitGo/limit/collection/linear/linkedlist" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestLinkedList_GetIterator_in_LimitGo_limit_collection_linear_linkedlist - 2020.11.03 at 20h 22m 00s.xml">
+      <configuration name="TestLinkedList_GetIterator in LimitGo/limit/collection/linear/linkedlist" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestLinkedList_GetIterator_in_LimitGo_limit_collection_linear_linkedlist - 2020.11.03 at 20h 22m 10s.xml">
+      <configuration name="TestLinkedList_GetIterator in LimitGo/limit/collection/linear/linkedlist" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="TestLinkedList_GetIterator_in_LimitGo_limit_collection_linear_linkedlist - 2020.11.03 at 20h 23m 59s.xml">
+      <configuration name="TestLinkedList_GetIterator in LimitGo/limit/collection/linear/linkedlist" configurationId="GoTestRunConfiguration" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23282135" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2489895" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -562,13 +583,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Go/src/runtime/preempt_amd64.s">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="73">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/limit/collection/linear/deque/arraydeque/arraydeque_test.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="52">
@@ -593,13 +607,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/limit/collection/linear/linkedlist/linkedlist_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="28" column="21" lean-forward="true" selection-start-line="28" selection-start-column="21" selection-end-line="28" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/limit/collection/linear/queue/priorityqueue/priorityqueue_test.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="101">
@@ -621,20 +628,6 @@
             <caret line="11" column="25" lean-forward="true" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
           </first_editor>
           <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/limit/collection/linear/set/sortedset/sortedset.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/limit/collection/object.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -664,30 +657,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/limit/collection/linear/queue/priorityqueue/priorityqueue.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="25" column="88" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="88" />
-          <folding>
-            <element signature="e#23#105#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/limit/collection/linear/set/set.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5262">
-          <caret line="12" column="6" lean-forward="true" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/limit/collection/linear/linkedlist/linkedlist.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="382" selection-start-line="382" selection-end-line="392" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/limit/collection/linear/queue/queue.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
@@ -695,40 +664,116 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/limit/collection/collection.go">
+    <entry file="file://$PROJECT_DIR$/limit/collection/linear/queue/priorityqueue/priorityqueue.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="25" column="88" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="88" />
+          <folding>
+            <element signature="e#23#105#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/map/sortedmap.go" />
+    <entry file="file://$PROJECT_DIR$/limit/collection/linear/set/set.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
-          <caret line="204" column="26" lean-forward="true" selection-start-line="204" selection-start-column="26" selection-end-line="204" selection-end-column="26" />
+          <caret line="88" selection-start-line="88" selection-end-line="88" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/limit/collection/map/submap.go">
+    <entry file="file://$PROJECT_DIR$/limit/collection/object.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="23" column="22" lean-forward="true" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
+        <state relative-caret-position="286">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/limit/collection/map/sortedmap.go">
+    <entry file="file://C:/Go/src/runtime/preempt_amd64.s">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="249" column="14" lean-forward="true" selection-start-line="249" selection-start-column="14" selection-end-line="249" selection-end-column="14" />
+        <state relative-caret-position="73">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/linear/linkedlist/linkedlist_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="473">
+          <caret line="256" selection-start-line="256" selection-end-line="256" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/node.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/linear/linkedlist/linkedlist.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-229">
+          <caret line="356" column="25" selection-start-line="356" selection-start-column="20" selection-end-line="356" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/linear/set/sortedset/sortedset.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/submap.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="95" column="22" selection-start-line="95" selection-start-column="22" selection-end-line="95" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/entryset.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1872">
+          <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
           <folding>
-            <element signature="e#14#63#0" expanded="true" />
-            <element signature="n#!!block;n#Size#0" />
-            <element signature="n#!!block;n#Empty#0" />
-            <element signature="n#!!block;n#String#0" />
-            <element signature="n#!!block;n#Clear#0" />
-            <element signature="n#!!block;n#ContainsKey#0" />
-            <element signature="n#!!block;n#ContainsValue#0" />
-            <element signature="n#!!block;n#Get#0" />
-            <element signature="e#3598#3673#0" />
-            <element signature="n#!!block;n#Remove#0" />
-            <element signature="e#4200#4363#0" />
-            <element signature="e#4920#5083#0" />
-            <element signature="e#5546#5551#0" />
-            <element signature="e#5932#6051#0" />
-            <element signature="e#6255#6270#0" />
+            <element signature="e#21#70#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/keyset.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2002">
+          <caret line="77" column="1" lean-forward="true" selection-start-line="77" selection-start-column="1" selection-end-line="77" selection-end-column="1" />
+          <folding>
+            <element signature="e#21#70#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/skiplistmap.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="168" column="14" lean-forward="true" selection-start-line="168" selection-start-column="14" selection-end-line="168" selection-end-column="14" />
+          <folding>
+            <element signature="e#21#116#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/collection.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="19" selection-start-line="19" selection-end-line="24" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/limit/collection/map/skiplistmap/values.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1144">
+          <caret line="44" column="1" lean-forward="true" selection-start-line="44" selection-start-column="1" selection-end-line="44" selection-end-column="1" />
+          <folding>
+            <element signature="e#21#70#0" expanded="true" />
           </folding>
         </state>
       </provider>

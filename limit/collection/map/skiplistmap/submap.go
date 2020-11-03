@@ -1,4 +1,4 @@
-package _map
+package skiplistmap
 
 import (
 	"LimitGo/limit/collection"
@@ -17,11 +17,16 @@ type SubMap struct {
 	hiInclusive bool
 	// direction
 	isDescending bool
+	size         int
 
 	// Lazily initialized view holders
-	keySetView *KeySet
+	keySetView   *KeySet
 	entrySetView *EntrySet
-	valuesView *Values
+	valuesView   *Values
+}
+
+func (sm *SubMap) InitSize() {
+
 }
 
 // Size returns the number of elements in this collection.
@@ -45,7 +50,7 @@ func (sm *SubMap) Clear() bool {
 }
 
 // GetEntryIterator returns iterator of entry.
-func (sm *SubMap) GetEntryIterator() collection.Itr {
+func (sm *SubMap) GetEntryIterator() collection.EntryItr {
 	return nil
 }
 
@@ -88,7 +93,7 @@ func (sm *SubMap) KeySet() *collection.Set {
 }
 
 // Values returns a List view of the values contained in this map.
-func (sm *SubMap) Values() *collection.List {
+func (sm *SubMap) Values() *collection.Linear {
 	return nil
 }
 

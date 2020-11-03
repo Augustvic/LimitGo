@@ -6,5 +6,7 @@ type Entry interface {
 	GetKey() *Object
 	GetValue() *Object
 	SetValue(p *Object)
-	HashCode()
 }
+
+type equals func(p1 *Object, p2 *Object) bool
+type precede func(p1 *Object, p2 *Object) bool
