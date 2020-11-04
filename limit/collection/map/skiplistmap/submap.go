@@ -2,6 +2,7 @@ package skiplistmap
 
 import (
 	"LimitGo/limit/collection"
+	"reflect"
 )
 
 type SubMap struct {
@@ -17,16 +18,11 @@ type SubMap struct {
 	hiInclusive bool
 	// direction
 	isDescending bool
-	size         int
 
 	// Lazily initialized view holders
 	keySetView   *KeySet
 	entrySetView *EntrySet
 	valuesView   *Values
-}
-
-func (sm *SubMap) InitSize() {
-
 }
 
 // Size returns the number of elements in this collection.
@@ -178,4 +174,12 @@ func (sm *SubMap) PollFirstEntry() *collection.Entry {
 // the greatest key in this map, or null if the map is empty.
 func (sm *SubMap) PollLastEntry() *collection.Entry {
 	return nil
+}
+
+func (sm *SubMap) GetKeyType() reflect.Type {
+	return (*sm.sm).GetKeyType()
+}
+
+func (sm *SubMap) GetValueType() reflect.Type {
+	return (*sm.sm).GetValueType()
 }

@@ -78,7 +78,8 @@ func (sm *SkipListMap) String() string {
 func (sm *SkipListMap) Clear() bool {
 	sm.head = &Index{1, &Node{nil, nil, nil}, nil, nil}
 	sm.size = 0
-	sm.keySet = &KeySet{sm}
+	var t collection.SortedMap = sm
+	sm.keySet = &KeySet{&t}
 	sm.entrySet = &EntrySet{sm}
 	sm.values = &Values{sm}
 	return true
@@ -161,7 +162,9 @@ func (sm *SkipListMap) PutAll(m *collection.Map) {
 
 // KeySet returns a Set view of the keys contained in this map.
 func (sm *SkipListMap) KeySet() *collection.Set {
-	return nil
+	var t collection.SortedMap = sm
+	var s collection.Set = &KeySet{&t}
+	return &s
 }
 
 // Values returns a List view of the values contained in this map.
@@ -197,11 +200,10 @@ func (sm *SkipListMap) SubMap(fromKey *collection.Object, fromInclusive bool, to
 	if fromKey != nil && !sm.checkKeyType(fromKey) {
 		return nil
 	}
-	if toKey != nil && !sm.checkKeyType(fromKey) {
+	if toKey != nil && !sm.checkKeyType(toKey) {
 		return nil
 	}
-	p := &SubMap{sm, fromKey, toKey, fromInclusive, toInclusive, false, sm.size, nil, nil, nil}
-	p.InitSize()
+	p := &SubMap{sm, fromKey, toKey, fromInclusive, toInclusive, false, nil, nil, nil}
 	var ret collection.SortedMap = p
 	return &ret
 }
@@ -574,4 +576,12 @@ func (it *EntryIterator) Remove() (*collection.Entry, bool) {
 	}
 	it.lastRet = nil
 	return &last, true
+}
+
+func (sm *SkipListMap) GetKeyType() reflect.Type {
+	return sm.kt
+}
+
+func (sm *SkipListMap) GetValueType() reflect.Type {
+	return sm.vt
 }

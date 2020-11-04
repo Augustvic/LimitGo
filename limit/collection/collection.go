@@ -187,6 +187,8 @@ type Map interface {
 	// Equals returns true only if the corresponding pairs of the elements
 	//in the two maps are equal.
 	Equals(list *Map) bool
+	GetKeyType() reflect.Type
+	GetValueType() reflect.Type
 	// All Methods from Collection
 	Collection
 }

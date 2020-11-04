@@ -2,16 +2,16 @@
 
 LimitGo is a set of Go libraries that includes collections and utils for concurrency, math, current-limiting, caching, and more.
 
-## Getting Started
-
-
-## Content
+## Feature List
 
 | Category | Utils |
 | :- | :- |
-| Collection | ArrayList, LinkedList, Queue, PriorityQueue, Deque, ArrayDeque, Set, SortedSet, SortedMap |
+| Linear Collection | ArrayList, LinkedList, Queue, PriorityQueue, Deque, ArrayDeque, Set, SortedSet |
+| Map | SkipListMap |
 | Math | Binary, Compute |
 | Limiting | PermitLimiter, LeakyLimiter, SlidingWindow |
 | Caching | LRU, LRU2, LFU |
 
-**See more [details]().**
+## Quick Start
+
+Please see more in [wiki](), which explains detailed introduction and more samples.
