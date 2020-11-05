@@ -78,10 +78,9 @@ func (sm *SkipListMap) String() string {
 func (sm *SkipListMap) Clear() bool {
 	sm.head = &Index{1, &Node{nil, nil, nil}, nil, nil}
 	sm.size = 0
-	var t collection.SortedMap = sm
-	sm.keySet = &KeySet{&t}
-	sm.entrySet = &EntrySet{sm}
-	sm.values = &Values{sm}
+	sm.keySet = nil
+	sm.entrySet = nil
+	sm.values = nil
 	return true
 }
 
@@ -162,6 +161,10 @@ func (sm *SkipListMap) PutAll(m *collection.Map) {
 
 // KeySet returns a Set view of the keys contained in this map.
 func (sm *SkipListMap) KeySet() *collection.Set {
+	if sm.keySet != nil {
+		var s collection.Set = sm.keySet
+		return &s
+	}
 	var t collection.SortedMap = sm
 	var s collection.Set = &KeySet{&t}
 	return &s
@@ -169,12 +172,24 @@ func (sm *SkipListMap) KeySet() *collection.Set {
 
 // Values returns a List view of the values contained in this map.
 func (sm *SkipListMap) Values() *collection.Linear {
-	return nil
+	if sm.values != nil {
+		var s collection.Linear = sm.values
+		return &s
+	}
+	var t collection.SortedMap = sm
+	var s collection.Linear = &Values{&t}
+	return &s
 }
 
 // EntrySet returns a Set view of the mappings contained in this map.
 func (sm *SkipListMap) EntrySet() *collection.Set {
-	return nil
+	if sm.entrySet != nil {
+		var s collection.Set = sm.entrySet
+		return &s
+	}
+	var t collection.SortedMap = sm
+	var s collection.Set = &EntrySet{&t}
+	return &s
 }
 
 // Equals returns true only if the corresponding pairs of the elements
@@ -203,6 +218,9 @@ func (sm *SkipListMap) SubMap(fromKey *collection.Object, fromInclusive bool, to
 	if toKey != nil && !sm.checkKeyType(toKey) {
 		return nil
 	}
+	if !sm.checkSubMap(fromKey, fromInclusive, toKey, toInclusive) {
+		return nil
+	}
 	p := &SubMap{sm, fromKey, toKey, fromInclusive, toInclusive, false, nil, nil, nil}
 	var ret collection.SortedMap = p
 	return &ret
@@ -228,7 +246,8 @@ func (sm *SkipListMap) TailMap(fromKey *collection.Object, inclusive bool) *coll
 
 // SortedKeySet returns a SortedSet view of the keys contained in this map.
 func (sm *SkipListMap) SortedKeySet() *collection.SortedSet {
-	return nil
+	ss := (*sm.KeySet()).(collection.SortedSet)
+	return &ss
 }
 
 // LowerEntry returns a key-value mapping associated with the greatest key
@@ -585,3 +604,8 @@ func (sm *SkipListMap) GetKeyType() reflect.Type {
 func (sm *SkipListMap) GetValueType() reflect.Type {
 	return sm.vt
 }
+
+func (sm *SkipListMap) checkSubMap(fromKey *collection.Object, fromInclusive bool, toKey *collection.Object, toInclusive bool) bool {
+	return false
+}
+

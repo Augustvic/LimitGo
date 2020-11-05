@@ -2,6 +2,9 @@ package skiplistmap
 
 import (
 	"LimitGo/limit/collection"
+	"bytes"
+	"encoding/json"
+	"fmt"
 	"reflect"
 )
 
@@ -26,160 +29,346 @@ type SubMap struct {
 }
 
 // Size returns the number of elements in this collection.
-func (sm *SubMap) Size() int {
-	return 0
+func (m *SubMap) Size() int {
+	count := 0
+	for n := m.loNode(); m.isBeforeEnd(n); n = n.next {
+		count++
+	}
+	return count
 }
 
 // Empty returns true if this collection contains no element.
-func (sm *SubMap) Empty() bool {
-	return false
+func (m *SubMap) Empty() bool {
+	return m.Size() == 0
 }
 
 // String returns a string representation of this collection.
-func (sm *SubMap) String() string {
-	return ""
+func (m *SubMap) String() string {
+	var buf bytes.Buffer
+	buf.WriteByte('{')
+	it := m.GetEntryIterator()
+	for it.HashNext() {
+		entry := (*it.Next()).(collection.Entry)
+		if buf.Len() > len("{") {
+			buf.WriteByte(',')
+		}
+		key := entry.GetKey()
+		value := entry.GetValue()
+		var s string
+		k, err1 := json.Marshal(*key)
+		v, err2 := json.Marshal(*value)
+		if err1 == nil && err2 == nil {
+			s = string(k) + "=" + string(v)
+		} else {
+			s = "nil"
+		}
+		_, _ = fmt.Fprint(&buf, s)
+	}
+	buf.WriteByte('}')
+	return buf.String()
 }
 
 // Removes all of the elements from this collection.
-func (sm *SubMap) Clear() bool {
-	return false
+func (m *SubMap) Clear() bool {
+	for n := m.loNode(); m.isBeforeEnd(n); n = n.next {
+		m.Remove(n.key)
+	}
+	return true
 }
 
 // GetEntryIterator returns iterator of entry.
-func (sm *SubMap) GetEntryIterator() collection.EntryItr {
+func (m *SubMap) GetEntryIterator() collection.EntryItr {
 	return nil
 }
 
 // ContainsKey returns true if this map contains a mapping for the specified key.
-func (sm *SubMap) ContainsKey(key *collection.Object) bool {
-	return false
+func (m *SubMap) ContainsKey(key *collection.Object) bool {
+	if !m.checkKey(key) {
+		return false
+	}
+	return m.inBounds(key) && m.sm.ContainsKey(key);
 }
 
 // ContainsValue returns true if this map maps one or more keys to the
 // specified value.
-func (sm *SubMap) ContainsValue(value *collection.Object) bool {
+func (m *SubMap) ContainsValue(value *collection.Object) bool {
+	if !m.checkValue(value) {
+		return false
+	}
+	for n := m.loNode(); m.isBeforeEnd(n); n = n.next {
+		v := n.GetValue()
+		if v != nil && (*v) != nil && reflect.DeepEqual(*v, *value) {
+			return true
+		}
+	}
 	return false
 }
 
 // Get returns the value to which the specified key is mapped, or null
 // if this map contains no mapping for the key.
-func (sm *SubMap) Get(key *collection.Object) *collection.Object {
-	return nil
+func (m *SubMap) Get(key *collection.Object) *collection.Object {
+	if !m.checkKey(key) {
+		return nil
+	}
+	return m.sm.Get(key)
 }
 
 // Put associates the specified value with the specified key, returns old value
 // if the specified key has been in this map.
-func (sm *SubMap) Put(key *collection.Object, value *collection.Object) (bool, *collection.Object) {
-	return true, nil
+func (m *SubMap) Put(key *collection.Object, value *collection.Object) (bool, *collection.Object) {
+	if !m.checkKey(key) {
+		return false, nil
+	}
+	if !m.checkValue(value) {
+		return false, nil
+	}
+	return m.sm.Put(key, value)
 }
 
 // Remove removes the mapping for a key from this map if it is present.
-func (sm *SubMap) Remove(key *collection.Object) *collection.Object {
-	return nil
+func (m *SubMap) Remove(key *collection.Object) *collection.Object {
+	if !m.checkKey(key) {
+		return nil
+	}
+	return m.Remove(key)
 }
 
 // PutAll copies all of the mappings from the specified map to this map.
-func (sm *SubMap) PutAll(m *collection.Map) {
-
+func (m *SubMap) PutAll(m2 *collection.Map) {
+	if m2 == nil || (*m2) == nil || (*m2).Size() == 0 {
+		return
+	}
+	it := (*m2).GetEntryIterator()
+	for it.HashNext() {
+		entry := (*it.Next()).(collection.Entry)
+		m.Put(entry.GetKey(), entry.GetValue())
+	}
 }
 
 // KeySet returns a Set view of the keys contained in this map.
-func (sm *SubMap) KeySet() *collection.Set {
+func (m *SubMap) KeySet() *collection.Set {
 	return nil
 }
 
 // Values returns a List view of the values contained in this map.
-func (sm *SubMap) Values() *collection.Linear {
+func (m *SubMap) Values() *collection.Linear {
 	return nil
 }
 
 // EntrySet returns a Set view of the mappings contained in this map.
-func (sm *SubMap) EntrySet() *collection.Set {
+func (m *SubMap) EntrySet() *collection.Set {
 	return nil
 }
 
 // Equals returns true only if the corresponding pairs of the elements
 //in the two maps are equal.
-func (sm *SubMap) Equals(m *collection.Map) bool {
-	return false
+func (m *SubMap) Equals(m2 *collection.Map) bool {
+	if m2 == nil || (*m2) == nil || (*m2).Size() == 0 || m.Size() != (*m2).Size() {
+		return false
+	}
+	it := (*m).GetEntryIterator()
+	for it.HashNext() {
+		entry := (*it.Next()).(collection.Entry)
+		if !reflect.DeepEqual(*m.Get(entry.GetKey()), *entry.GetValue()) {
+			return false
+		}
+	}
+	return true
 }
 
 // SubMap returns a view of the portion of this map whose keys range
 // from "fromKey" to "toKey".  If "fromKey" and "toKey" are equal,
 // the returned map is empty.)
-func (sm *SubMap) SubMap(fromKey *collection.Object, fromInclusive bool, toKey *collection.Object, toInclusive bool) *collection.SortedMap {
+func (m *SubMap) SubMap(fromKey *collection.Object, fromInclusive bool, toKey *collection.Object, toInclusive bool) *collection.SortedMap {
 	return nil
 }
 
 // HeadMap returns a view of the portion of this map whose keys are strictly
 // less than toKey.
-func (sm *SubMap) HeadMap(toKey *collection.Object, inclusive bool) *collection.SortedMap {
-	return nil
+func (m *SubMap) HeadMap(toKey *collection.Object, inclusive bool) *collection.SortedMap {
+	if !m.checkKeyType(toKey) || !m.inBounds(toKey) {
+		return nil
+	}
+	return m.SubMap(nil, false, toKey, inclusive)
 }
 
 // TailMap returns a view of the portion of this map whose keys are greater than
 // or equal to fromKey.
-func (sm *SubMap) TailMap(fromKey *collection.Object, inclusive bool) *collection.SortedMap {
-	return nil
+func (m *SubMap) TailMap(fromKey *collection.Object, inclusive bool) *collection.SortedMap {
+	if !m.checkKeyType(fromKey) || !m.inBounds(fromKey) {
+		return nil
+	}
+	return m.SubMap(fromKey, inclusive, nil, false)
 }
 
 // SortedKeySet returns a SortedSet view of the keys contained in this map.
-func (sm *SubMap) SortedKeySet() *collection.SortedSet {
-	return nil
+func (m *SubMap) SortedKeySet() *collection.SortedSet {
+	ss := (*m.KeySet()).(collection.SortedSet)
+	return &ss
 }
 
 // LowerEntry returns a key-value mapping associated with the greatest key
 // strictly less than the given key, or nil if there is no such key.
-func (sm *SubMap) LowerEntry(key *collection.Object) *collection.Entry {
-	return nil
+func (m *SubMap) LowerEntry(key *collection.Object) *collection.Entry {
+	if !m.checkKey(key) {
+		return nil
+	}
+	return m.getNearEntry(key, LT)
 }
 
 // FloorEntry returns a key-value mapping associated with the greatest key
 // less than or equal to the given key, or nil if there is no such key.
-func (sm *SubMap) FloorEntry(key *collection.Object) *collection.Entry {
-	return nil
+func (m *SubMap) FloorEntry(key *collection.Object) *collection.Entry {
+	if !m.checkKey(key) {
+		return nil
+	}
+	return m.getNearEntry(key, LT|EQ)
 }
 
 // CeilingEntry returns a key-value mapping associated with the least key
 // greater than or equal to the given key, or nil if there is no such key.
-func (sm *SubMap) CeilingEntry(key *collection.Object) *collection.Entry {
-	return nil
+func (m *SubMap) CeilingEntry(key *collection.Object) *collection.Entry {
+	if !m.checkKey(key) {
+		return nil
+	}
+	return m.getNearEntry(key, GT|EQ)
 }
 
 // HigherEntry returns a key-value mapping associated with the least key
 // strictly greater than the given key, or nil if there is no such key.
-func (sm *SubMap) HigherEntry(key *collection.Object) *collection.Entry {
-	return nil
+func (m *SubMap) HigherEntry(key *collection.Object) *collection.Entry {
+	if !m.checkKey(key) {
+		return nil
+	}
+	return m.getNearEntry(key, GT)
 }
 
 // Entry returns a key-value mapping associated with the least key
 // in this map, or nil if the map is empty.
-func (sm *SubMap) FirstEntry() *collection.Entry {
-	return nil
+func (m *SubMap) FirstEntry() *collection.Entry {
+	var t collection.Entry = m.loNode()
+	if t == nil {
+		return nil
+	} else {
+		return &t
+	}
 }
 
 // LastEntry returns a key-value mapping associated with the greatest
 // key in this map, or nil if the map is empty.
-func (sm *SubMap) LastEntry() *collection.Entry {
-	return nil
+func (m *SubMap) LastEntry() *collection.Entry {
+	var t collection.Entry = m.hiNode()
+	if t == nil {
+		return nil
+	} else {
+		return &t
+	}
 }
 
 // PollFirstEntry removes and returns a key-value mapping associated with
 // the least key in this map, or nil if the map is empty.
-func (sm *SubMap) PollFirstEntry() *collection.Entry {
-	return nil
+func (m *SubMap) PollFirstEntry() *collection.Entry {
+	return m.removeLowest()
 }
 
 // PollLastEntry removes and returns a key-value mapping associated with
 // the greatest key in this map, or null if the map is empty.
-func (sm *SubMap) PollLastEntry() *collection.Entry {
+func (m *SubMap) PollLastEntry() *collection.Entry {
+	return m.removeHighest()
+}
+
+func (m *SubMap) GetKeyType() reflect.Type {
+	return m.sm.GetKeyType()
+}
+
+func (m *SubMap) GetValueType() reflect.Type {
+	return m.sm.GetValueType()
+}
+
+func (m *SubMap) loNode() *Node {
+	if m.lo == nil {
+		return m.sm.findFirst()
+	} else if m.loInclusive {
+		return m.sm.findNear(m.lo, GT|EQ)
+	} else {
+		return m.sm.findNear(m.lo, GT)
+	}
+}
+
+func (m *SubMap) hiNode() *Node {
+	if m.hi == nil {
+		return m.sm.findLast()
+	} else if m.hiInclusive {
+		return m.sm.findNear(m.hi, LT|EQ)
+	} else {
+		return m.sm.findNear(m.hi, LT)
+	}
+}
+
+func (m *SubMap) isBeforeEnd(node *Node) bool {
+	if node == nil {
+		return false
+	}
+	if m.hi == nil {
+		return true
+	}
+	k := node.key
+	if m.sm.precede(m.hi, k) || (reflect.DeepEqual(*node, *m.hi) && !m.hiInclusive) {
+		return false
+	}
+	return true
+}
+
+func (m *SubMap) inBounds(p *collection.Object) bool {
+	if m.lo != nil && ((reflect.DeepEqual(*p, *m.lo) && !m.loInclusive) || (m.sm.precede(p, m.lo))) {
+		return false
+	}
+	if m.hi != nil && ((reflect.DeepEqual(*p, *m.hi) && !m.hiInclusive) || (m.sm.precede(m.hi, p))) {
+		return false
+	}
+	return true
+}
+
+func (m *SubMap) getNearEntry(key *collection.Object, rel int) *collection.Entry {
 	return nil
 }
 
-func (sm *SubMap) GetKeyType() reflect.Type {
-	return (*sm.sm).GetKeyType()
+func (m *SubMap) removeHighest() *collection.Entry {
+	var n collection.Entry = m.hiNode()
+	if n == nil {
+		return nil
+	} else {
+		m.Remove(n.GetKey())
+		return &n
+	}
 }
 
-func (sm *SubMap) GetValueType() reflect.Type {
-	return (*sm.sm).GetValueType()
+func (m *SubMap) removeLowest() *collection.Entry {
+	var n collection.Entry = m.loNode()
+	if n == nil {
+		return nil
+	} else {
+		m.Remove(n.GetKey())
+		return &n
+	}
+}
+
+func (m *SubMap) checkKey(key *collection.Object) bool {
+	return !m.checkNil(key) && m.checkKeyType(key) && m.inBounds(key)
+}
+
+func (m *SubMap) checkValue(value *collection.Object) bool {
+	return !m.checkNil(value) && m.checkValueType(value)
+}
+
+func (m *SubMap) checkNil(p *collection.Object) bool {
+	return p == nil || (*p) == nil
+}
+
+func (m *SubMap) checkKeyType(p *collection.Object) bool {
+	return reflect.TypeOf(*p) == m.sm.kt
+}
+
+func (m *SubMap) checkValueType(p *collection.Object) bool {
+	return reflect.TypeOf(*p) == m.sm.vt
 }
