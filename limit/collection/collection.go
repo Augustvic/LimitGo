@@ -153,9 +153,6 @@ type SortedSet interface {
 	// PollLast retrieves and removes the last (highest) element, or
 	// returns null if this set is empty.
 	PollLast() *Object
-	// DescendingSet returns a reverse order view of the elements contained
-	// in this set.
-	DescendingSet() *SortedSet
 	// All Methods from Set
 	Set
 }

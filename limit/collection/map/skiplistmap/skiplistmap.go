@@ -45,7 +45,7 @@ func (sm *SkipListMap) Size() int {
 
 // Empty returns true if this collection contains no element.
 func (sm *SkipListMap) Empty() bool {
-	return sm.size == 0
+	return sm.Size() == 0
 }
 
 // String returns a string representation of this collection.
@@ -166,7 +166,8 @@ func (sm *SkipListMap) KeySet() *collection.Set {
 		return &s
 	}
 	var t collection.SortedMap = sm
-	var s collection.Set = &KeySet{&t}
+	sm.keySet = &KeySet{&t}
+	var s collection.Set= sm.keySet
 	return &s
 }
 
@@ -177,7 +178,8 @@ func (sm *SkipListMap) Values() *collection.Linear {
 		return &s
 	}
 	var t collection.SortedMap = sm
-	var s collection.Linear = &Values{&t}
+	sm.values = &Values{&t}
+	var s collection.Linear = sm.values
 	return &s
 }
 
@@ -188,7 +190,8 @@ func (sm *SkipListMap) EntrySet() *collection.Set {
 		return &s
 	}
 	var t collection.SortedMap = sm
-	var s collection.Set = &EntrySet{&t}
+	sm.entrySet = &EntrySet{&t}
+	var s collection.Set = sm.entrySet
 	return &s
 }
 
@@ -212,16 +215,10 @@ func (sm *SkipListMap) Equals(m *collection.Map) bool {
 // from "fromKey" to "toKey".  If "fromKey" and "toKey" are equal,
 // the returned map is empty.)
 func (sm *SkipListMap) SubMap(fromKey *collection.Object, fromInclusive bool, toKey *collection.Object, toInclusive bool) *collection.SortedMap {
-	if fromKey != nil && !sm.checkKeyType(fromKey) {
-		return nil
-	}
-	if toKey != nil && !sm.checkKeyType(toKey) {
-		return nil
-	}
 	if !sm.checkSubMap(fromKey, fromInclusive, toKey, toInclusive) {
 		return nil
 	}
-	p := &SubMap{sm, fromKey, toKey, fromInclusive, toInclusive, false, nil, nil, nil}
+	p := &SubMap{sm, fromKey, toKey, fromInclusive, toInclusive, nil, nil, nil}
 	var ret collection.SortedMap = p
 	return &ret
 }
@@ -257,7 +254,11 @@ func (sm *SkipListMap) LowerEntry(key *collection.Object) *collection.Entry {
 		return nil
 	}
 	var entry collection.Entry = sm.findNear(key, LT)
-	return &entry
+	if entry == nil {
+		return nil
+	} else {
+		return &entry
+	}
 }
 
 // FloorEntry returns a key-value mapping associated with the greatest key
@@ -267,7 +268,11 @@ func (sm *SkipListMap) FloorEntry(key *collection.Object) *collection.Entry {
 		return nil
 	}
 	var entry collection.Entry = sm.findNear(key, LT|EQ)
-	return &entry
+	if entry == nil {
+		return nil
+	} else {
+		return &entry
+	}
 }
 
 // CeilingEntry returns a key-value mapping associated with the least key
@@ -276,8 +281,13 @@ func (sm *SkipListMap) CeilingEntry(key *collection.Object) *collection.Entry {
 	if sm.checkNil(key) || !sm.checkKeyType(key) {
 		return nil
 	}
-	var entry collection.Entry = sm.findNear(key, GT|EQ)
-	return &entry
+	node := sm.findNear(key, GT|EQ)
+	if node == nil {
+		return nil
+	} else {
+		var entry collection.Entry = node
+		return &entry
+	}
 }
 
 // HigherEntry returns a key-value mapping associated with the least key
@@ -286,36 +296,61 @@ func (sm *SkipListMap) HigherEntry(key *collection.Object) *collection.Entry {
 	if sm.checkNil(key) || !sm.checkKeyType(key) {
 		return nil
 	}
-	var entry collection.Entry = sm.findNear(key, GT)
-	return &entry
+	node := sm.findNear(key, GT)
+	if node == nil {
+		return nil
+	} else {
+		var entry collection.Entry = node
+		return &entry
+	}
 }
 
 // Entry returns a key-value mapping associated with the least key
 // in this map, or nil if the map is empty.
 func (sm *SkipListMap) FirstEntry() *collection.Entry {
-	var entry collection.Entry = sm.findFirst()
-	return &entry
+	node := sm.findFirst()
+	if node == nil {
+		return nil
+	} else {
+		var entry collection.Entry = node
+		return &entry
+	}
 }
 
 // LastEntry returns a key-value mapping associated with the greatest
 // key in this map, or nil if the map is empty.
 func (sm *SkipListMap) LastEntry() *collection.Entry {
-	var entry collection.Entry = sm.findLast()
-	return &entry
+	node := sm.findLast()
+	if node == nil {
+		return nil
+	} else {
+		var entry collection.Entry = node
+		return &entry
+	}
 }
 
 // PollFirstEntry removes and returns a key-value mapping associated with
 // the least key in this map, or nil if the map is empty.
 func (sm *SkipListMap) PollFirstEntry() *collection.Entry {
-	var entry collection.Entry = sm.doRemoveFirstEntry()
-	return &entry
+	node := sm.doRemoveFirstEntry()
+	if node == nil {
+		return nil
+	} else {
+		var entry collection.Entry = node
+		return &entry
+	}
 }
 
 // PollLastEntry removes and returns a key-value mapping associated with
 // the greatest key in this map, or null if the map is empty.
 func (sm *SkipListMap) PollLastEntry() *collection.Entry {
-	var entry collection.Entry = sm.doRemoveLastEntry()
-	return &entry
+	node := sm.doRemoveLastEntry()
+	if node == nil {
+		return nil
+	} else {
+		var entry collection.Entry = node
+		return &entry
+	}
 }
 
 func (sm *SkipListMap) checkNil(p *collection.Object) bool {
@@ -331,7 +366,8 @@ func (sm *SkipListMap) checkValueType(p *collection.Object) bool {
 }
 
 func (sm *SkipListMap) doGet(key *collection.Object) *collection.Object {
-	node := sm.findPredecessor(key)
+	prev := sm.findPredecessor(key)
+	node := prev.next
 	for node != nil && !reflect.DeepEqual(*node.key, *key) {
 		if !sm.precede(node.key, key) {
 			return nil
@@ -588,11 +624,7 @@ func (it *EntryIterator) Remove() (*collection.Entry, bool) {
 		return nil, false
 	}
 	var last collection.Entry = it.lastRet
-	lastNext := it.lastRet.next
 	it.sm.doRemove(last.GetKey())
-	if it.next == it.lastRet {
-		it.next = lastNext
-	}
 	it.lastRet = nil
 	return &last, true
 }
@@ -606,6 +638,15 @@ func (sm *SkipListMap) GetValueType() reflect.Type {
 }
 
 func (sm *SkipListMap) checkSubMap(fromKey *collection.Object, fromInclusive bool, toKey *collection.Object, toInclusive bool) bool {
-	return false
+	if fromKey != nil && (!sm.checkKeyType(fromKey) || sm.precede(sm.findLast().key, fromKey)) {
+		return false
+	}
+	if toKey != nil && (!sm.checkKeyType(toKey) || sm.precede(toKey, sm.findFirst().key)) {
+		return false
+	}
+	if fromKey != nil && toKey != nil && sm.precede(toKey, fromKey) {
+		return false
+	}
+	return true
 }
 

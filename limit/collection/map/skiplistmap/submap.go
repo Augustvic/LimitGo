@@ -19,13 +19,19 @@ type SubMap struct {
 	loInclusive bool
 	// inclusion flag for hi
 	hiInclusive bool
-	// direction
-	isDescending bool
+	//// direction
+	//isDescending bool
 
 	// Lazily initialized view holders
 	keySetView   *KeySet
 	entrySetView *EntrySet
 	valuesView   *Values
+}
+
+type SubMapEntryIterator struct {
+	m      *SubMap
+	next    *Node
+	lastRet *Node
 }
 
 // Size returns the number of elements in this collection.
@@ -78,7 +84,9 @@ func (m *SubMap) Clear() bool {
 
 // GetEntryIterator returns iterator of entry.
 func (m *SubMap) GetEntryIterator() collection.EntryItr {
-	return nil
+	it := SubMapEntryIterator{m, nil, nil}
+	it.Init()
+	return &it
 }
 
 // ContainsKey returns true if this map contains a mapping for the specified key.
@@ -147,17 +155,38 @@ func (m *SubMap) PutAll(m2 *collection.Map) {
 
 // KeySet returns a Set view of the keys contained in this map.
 func (m *SubMap) KeySet() *collection.Set {
-	return nil
+	if m.keySetView != nil {
+		var s collection.Set = m.keySetView
+		return &s
+	}
+	var t collection.SortedMap = m
+	m.keySetView = &KeySet{&t}
+	var s collection.Set= m.keySetView
+	return &s
 }
 
 // Values returns a List view of the values contained in this map.
 func (m *SubMap) Values() *collection.Linear {
-	return nil
+	if m.valuesView != nil {
+		var s collection.Linear = m.valuesView
+		return &s
+	}
+	var t collection.SortedMap = m
+	m.valuesView = &Values{&t}
+	var s collection.Linear = m.valuesView
+	return &s
 }
 
 // EntrySet returns a Set view of the mappings contained in this map.
 func (m *SubMap) EntrySet() *collection.Set {
-	return nil
+	if m.entrySetView != nil {
+		var s collection.Set = m.entrySetView
+		return &s
+	}
+	var t collection.SortedMap = m
+	m.entrySetView = &EntrySet{&t}
+	var s collection.Set = m.entrySetView
+	return &s
 }
 
 // Equals returns true only if the corresponding pairs of the elements
@@ -180,7 +209,32 @@ func (m *SubMap) Equals(m2 *collection.Map) bool {
 // from "fromKey" to "toKey".  If "fromKey" and "toKey" are equal,
 // the returned map is empty.)
 func (m *SubMap) SubMap(fromKey *collection.Object, fromInclusive bool, toKey *collection.Object, toInclusive bool) *collection.SortedMap {
-	return nil
+	if !m.checkSubMap(fromKey, fromInclusive, toKey, toInclusive) {
+		return nil
+	}
+	if m.lo == nil {
+		if fromKey == nil {
+			fromKey = m.lo
+			fromInclusive = m.loInclusive
+		} else {
+			if m.sm.precede(fromKey, m.lo) || (reflect.DeepEqual(*fromKey, *m.lo) && !m.loInclusive && fromInclusive) {
+				return nil
+			}
+		}
+	}
+	if m.hi == nil {
+		if toKey == nil {
+			toKey = m.lo
+			toInclusive = m.hiInclusive
+		} else {
+			if m.sm.precede(m.hi, toKey) || (reflect.DeepEqual(*toKey, *m.hi) && !m.hiInclusive && toInclusive) {
+				return nil
+			}
+		}
+	}
+	p := &SubMap{m.sm, fromKey, toKey, fromInclusive, toInclusive, nil, nil, nil}
+	var ret collection.SortedMap = p
+	return &ret
 }
 
 // HeadMap returns a view of the portion of this map whose keys are strictly
@@ -320,17 +374,45 @@ func (m *SubMap) isBeforeEnd(node *Node) bool {
 }
 
 func (m *SubMap) inBounds(p *collection.Object) bool {
-	if m.lo != nil && ((reflect.DeepEqual(*p, *m.lo) && !m.loInclusive) || (m.sm.precede(p, m.lo))) {
-		return false
-	}
-	if m.hi != nil && ((reflect.DeepEqual(*p, *m.hi) && !m.hiInclusive) || (m.sm.precede(m.hi, p))) {
+	if m.tooLow(p) || m.tooHigh(p) {
 		return false
 	}
 	return true
 }
 
+func (m *SubMap) tooLow(p *collection.Object) bool {
+	if m.lo != nil && ((reflect.DeepEqual(*p, *m.lo) && !m.loInclusive) || (m.sm.precede(p, m.lo))) {
+		return true
+	}
+	return false
+}
+
+func (m *SubMap) tooHigh(p *collection.Object) bool {
+	if m.hi != nil && ((reflect.DeepEqual(*p, *m.hi) && !m.hiInclusive) || (m.sm.precede(m.hi, p))) {
+		return true
+	}
+	return false
+}
+
 func (m *SubMap) getNearEntry(key *collection.Object, rel int) *collection.Entry {
-	return nil
+	if m.tooLow(key) {
+		if (rel & LT) != 0 {
+			return nil
+		}
+		return m.lowestEntry()
+	}
+	if m.tooHigh(key) {
+		if (rel & LT) != 0 {
+			return m.highestEntry()
+		}
+		return nil
+	}
+	n := m.sm.findNear(key, rel)
+	if n == nil || !m.inBounds(n.key) {
+		return nil
+	}
+	var e collection.Entry = n
+	return &e
 }
 
 func (m *SubMap) removeHighest() *collection.Entry {
@@ -353,6 +435,24 @@ func (m *SubMap) removeLowest() *collection.Entry {
 	}
 }
 
+func (m *SubMap) lowestEntry() *collection.Entry {
+	n := m.loNode()
+	if !m.isBeforeEnd(n) {
+		return nil
+	}
+	var e collection.Entry = n
+	return &e
+}
+
+func (m *SubMap) highestEntry() *collection.Entry {
+	n := m.hiNode()
+	if n == nil || !m.inBounds(n.key) {
+		return nil
+	}
+	var e collection.Entry = n
+	return &e
+}
+
 func (m *SubMap) checkKey(key *collection.Object) bool {
 	return !m.checkNil(key) && m.checkKeyType(key) && m.inBounds(key)
 }
@@ -371,4 +471,54 @@ func (m *SubMap) checkKeyType(p *collection.Object) bool {
 
 func (m *SubMap) checkValueType(p *collection.Object) bool {
 	return reflect.TypeOf(*p) == m.sm.vt
+}
+
+func (m *SubMap) checkSubMap(fromKey *collection.Object, fromInclusive bool, toKey *collection.Object, toInclusive bool) bool {
+	if fromKey != nil && (!m.checkKeyType(fromKey) || !m.inBounds(fromKey)) {
+		return false
+	}
+	if toKey != nil && (!m.checkKeyType(toKey) || !m.inBounds(toKey)) {
+		return false
+	}
+	return true
+}
+
+// HashNext returns true if the iteration has more elements.
+func (it * SubMapEntryIterator) HashNext() bool {
+	return it.next != nil
+}
+
+// Next returns the next element in the iteration.
+func (it * SubMapEntryIterator) Next() *collection.Entry {
+	if it.HashNext() {
+		it.lastRet = it.next
+		it.next = it.next.next
+		if it.m.tooHigh(it.next.key) {
+			it.next = nil
+		}
+		var t collection.Entry =  it.lastRet
+		return &t
+	}
+	return nil
+}
+
+// Remove removes from the underlying collection the last element returned
+// by this iterator.
+func (it * SubMapEntryIterator) Remove() (*collection.Entry, bool) {
+	if it.lastRet == nil {
+		return nil, false
+	}
+	var last collection.Entry = it.lastRet
+	it.m.sm.doRemove(last.GetKey())
+	it.lastRet = nil
+	return &last, true
+}
+
+func (it * SubMapEntryIterator) Init() {
+	next := it.m.loNode()
+	if next == nil || !it.m.inBounds(next.key) {
+		it.next = nil
+	} else {
+		it.next = next
+	}
 }

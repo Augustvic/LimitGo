@@ -154,8 +154,8 @@ func (ks *KeySet) SubSet(fromElement *collection.Object, fromInclusive bool, toE
 		return nil
 	}
 	sm := (*ks.sm).(*SkipListMap)
-	p := &SubMap{sm, fromElement, toElement, fromInclusive, toInclusive, false, nil, nil, nil}
-	var t collection.SortedMap = p
+	p := SubMap{sm, fromElement, toElement, fromInclusive, toInclusive, nil, nil, nil}
+	var t collection.SortedMap = &p
 	var ret collection.SortedSet = &KeySet{&t}
 	return &ret
 }
@@ -254,12 +254,6 @@ func (ks *KeySet) PollLast() *collection.Object {
 	} else {
 		return (*entry).GetKey()
 	}
-}
-
-// DescendingSet returns a reverse order view of the elements contained
-// in this set.
-func (ks *KeySet) DescendingSet() *collection.SortedSet {
-	return nil
 }
 
 // HashNext returns true if the iteration has more elements.
