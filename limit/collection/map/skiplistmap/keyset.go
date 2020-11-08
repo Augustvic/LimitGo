@@ -86,13 +86,13 @@ func (ks *KeySet) Remove(p *collection.Object) bool {
 	return true
 }
 
-// AddAll appends all of the elements in the specified collection to this set.
+// AddAll appends all of the elements in the specified collection to this hashset.
 // Unsupported operation.
 func (ks *KeySet) AddAll(list *collection.Linear) bool {
 	return false
 }
 
-// Retains only the elements in this set that are contained in the
+// Retains only the elements in this hashset that are contained in the
 // specified collection.
 func (ks *KeySet) RetainAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
@@ -111,7 +111,7 @@ func (ks *KeySet) RetainAll(list *collection.Linear) bool {
 	return true
 }
 
-// Removes from this set all of its elements that are contained in the
+// Removes from this hashset all of its elements that are contained in the
 // specified collection.
 func (ks *KeySet) RemoveAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
@@ -143,9 +143,9 @@ func (ks *KeySet) Equals(set *collection.Set) bool {
 	return true
 }
 
-// SubSet returns a view of the portion of this set whose elements range from
+// SubSet returns a view of the portion of this hashset whose elements range from
 // fromElement to toElement.  If fromElement and toElement are equal,
-// the returned set is empty unless fromInclusive and toInclusive are both true.
+// the returned hashset is empty unless fromInclusive and toInclusive are both true.
 func (ks *KeySet) SubSet(fromElement *collection.Object, fromInclusive bool, toElement *collection.Object, toInclusive bool) *collection.SortedSet {
 	if fromElement != nil && !ks.checkType(fromElement) {
 		return nil
@@ -160,7 +160,7 @@ func (ks *KeySet) SubSet(fromElement *collection.Object, fromInclusive bool, toE
 	return &ret
 }
 
-// HeadSet returns a view of the portion of this set whose elements are
+// HeadSet returns a view of the portion of this hashset whose elements are
 // less than (or equal to, if inclusive is true) toElement
 func (ks *KeySet) HeadSet(toElement *collection.Object, inclusive bool) *collection.SortedSet {
 	if !ks.checkType(toElement) {
@@ -169,7 +169,7 @@ func (ks *KeySet) HeadSet(toElement *collection.Object, inclusive bool) *collect
 	return ks.SubSet(nil, false, toElement, inclusive)
 }
 
-// TailSet returns a view of the portion of this set whose elements are
+// TailSet returns a view of the portion of this hashset whose elements are
 // greater than (or equal to, if inclusive is true) fromElement.
 func (ks *KeySet) TailSet(fromElement *collection.Object, inclusive bool) *collection.SortedSet {
 	if !ks.checkType(fromElement) {
@@ -178,19 +178,19 @@ func (ks *KeySet) TailSet(fromElement *collection.Object, inclusive bool) *colle
 	return ks.SubSet(fromElement, inclusive, nil, false)
 }
 
-// First returns the first (lowest) element currently in this set.
+// First returns the first (lowest) element currently in this hashset.
 func (ks *KeySet) First() *collection.Object {
 	 entry := (*ks.sm).FirstEntry()
 	 return (*entry).GetKey()
 }
 
-// Last returns the last (highest) element currently in this set.
+// Last returns the last (highest) element currently in this hashset.
 func (ks *KeySet) Last() *collection.Object {
 	entry := (*ks.sm).LastEntry()
 	return (*entry).GetKey()
 }
 
-// Lower returns the greatest element in this set strictly less than the given
+// Lower returns the greatest element in this hashset strictly less than the given
 // element, or null if there is no such element.
 func (ks *KeySet) Lower(p *collection.Object) *collection.Object {
 	entry := (*ks.sm).LowerEntry(p)
@@ -201,7 +201,7 @@ func (ks *KeySet) Lower(p *collection.Object) *collection.Object {
 	}
 }
 
-// Floor returns the greatest element in this set less than or equal to
+// Floor returns the greatest element in this hashset less than or equal to
 // the given element, or null if there is no such element.
 func (ks *KeySet) Floor(p *collection.Object) *collection.Object {
 	entry := (*ks.sm).FloorEntry(p)
@@ -212,7 +212,7 @@ func (ks *KeySet) Floor(p *collection.Object) *collection.Object {
 	}
 }
 
-// Ceiling returns the least element in this set greater than or equal to
+// Ceiling returns the least element in this hashset greater than or equal to
 // the given element, or null if there is no such element.
 func (ks *KeySet) Ceiling(p *collection.Object) *collection.Object {
 	entry := (*ks.sm).CeilingEntry(p)
@@ -223,7 +223,7 @@ func (ks *KeySet) Ceiling(p *collection.Object) *collection.Object {
 	}
 }
 
-// Higher returns the least element in this set strictly greater than the
+// Higher returns the least element in this hashset strictly greater than the
 // given element, or null if there is no such element.
 func (ks *KeySet) Higher(p *collection.Object) *collection.Object {
 	entry := (*ks.sm).HigherEntry(p)
@@ -235,7 +235,7 @@ func (ks *KeySet) Higher(p *collection.Object) *collection.Object {
 }
 
 // PollFirst retrieves and removes the first (lowest) element, or
-// returns null if this set is empty.
+// returns null if this hashset is empty.
 func (ks *KeySet) PollFirst() *collection.Object {
 	entry := (*ks.sm).PollFirstEntry()
 	if entry == nil {
@@ -246,7 +246,7 @@ func (ks *KeySet) PollFirst() *collection.Object {
 }
 
 // PollLast retrieves and removes the last (highest) element, or
-// returns null if this set is empty.
+// returns null if this hashset is empty.
 func (ks *KeySet) PollLast() *collection.Object {
 	entry := (*ks.sm).PollLastEntry()
 	if entry == nil {

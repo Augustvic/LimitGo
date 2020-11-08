@@ -1,4 +1,4 @@
-package set
+package hashset
 
 import (
 	"LimitGo/limit/collection"
@@ -10,7 +10,7 @@ import (
 
 var Exists = struct{}{}
 
-type Set struct {
+type HashSet struct {
 	m map[collection.Object]struct{}
 	t reflect.Type
 }
@@ -18,42 +18,42 @@ type Set struct {
 // Iterator represents the specific iterator of the Set.
 // Note: SetIterator is just a snapshot of current elements.
 type Iterator struct {
-	set     *Set
+	set     *HashSet
 	keys    []collection.Object
 	cursor  int
 	lastRet int
 }
 
-// New returns a new set.
-func New(t reflect.Type) *Set {
-	l := Set{make(map[collection.Object]struct{}), t}
+// New returns a new hashset.
+func New(t reflect.Type) *HashSet {
+	l := HashSet{make(map[collection.Object]struct{}), t}
 	return &l
 }
 
 // Size returns the number of elements in this collection.
-func (s *Set) Size() int {
+func (s *HashSet) Size() int {
 	return len(s.m)
 }
 
 // Empty returns true if this collection contains no element.
-func (s *Set) Empty() bool {
+func (s *HashSet) Empty() bool {
 	return len(s.m) == 0
 }
 
 // GetIterator returns an iterator over the elements in this collection.
-func (s *Set) GetIterator() collection.Itr {
+func (s *HashSet) GetIterator() collection.Itr {
 	keys := getKeys(&s.m)
 	it := Iterator{s, keys, 0, -1}
 	return &it
 }
 
 // GetType returns type of the elements in this collection.
-func (s *Set) GetType() reflect.Type {
+func (s *HashSet) GetType() reflect.Type {
 	return s.t
 }
 
 // String returns a string representation of this collection.
-func (s *Set) String() string {
+func (s *HashSet) String() string {
 	var buf bytes.Buffer
 	buf.WriteByte('{')
 	it := s.GetIterator()
@@ -76,13 +76,13 @@ func (s *Set) String() string {
 }
 
 // Removes all of the elements from this collection.
-func (s *Set) Clear() bool {
+func (s *HashSet) Clear() bool {
 	s.m = make(map[collection.Object]struct{})
 	return true
 }
 
 // Contains returns true if this collection contains the specific element.
-func (s *Set) Contains(p *collection.Object) bool {
+func (s *HashSet) Contains(p *collection.Object) bool {
 	if s.checkNil(p) || !s.checkType(p) {
 		return false
 	}
@@ -91,7 +91,7 @@ func (s *Set) Contains(p *collection.Object) bool {
 }
 
 // Add inserts the specified element to this collection.
-func (s *Set) Add(p *collection.Object) bool {
+func (s *HashSet) Add(p *collection.Object) bool {
 	if s.checkNil(p) || !s.checkType(p) {
 		return false
 	}
@@ -100,7 +100,7 @@ func (s *Set) Add(p *collection.Object) bool {
 }
 
 // Remove the first occurrence of the specified element from this collection.
-func (s *Set) Remove(p *collection.Object) bool {
+func (s *HashSet) Remove(p *collection.Object) bool {
 	if s.checkNil(p) || !s.checkType(p) {
 		return false
 	}
@@ -108,8 +108,8 @@ func (s *Set) Remove(p *collection.Object) bool {
 	return true
 }
 
-// AddAll appends all of the elements in the specified collection to this set.
-func (s *Set) AddAll(list *collection.Linear) bool {
+// AddAll appends all of the elements in the specified collection to this hashset.
+func (s *HashSet) AddAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
 	}
@@ -124,9 +124,9 @@ func (s *Set) AddAll(list *collection.Linear) bool {
 	return true
 }
 
-// Retains only the elements in this set that are contained in the
+// Retains only the elements in this hashset that are contained in the
 // specified collection.
-func (s *Set) RetainAll(list *collection.Linear) bool {
+func (s *HashSet) RetainAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
 	}
@@ -143,9 +143,9 @@ func (s *Set) RetainAll(list *collection.Linear) bool {
 	return true
 }
 
-// Removes from this set all of its elements that are contained in the
+// Removes from this hashset all of its elements that are contained in the
 // specified collection.
-func (s *Set) RemoveAll(list *collection.Linear) bool {
+func (s *HashSet) RemoveAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
 	}
@@ -161,11 +161,11 @@ func (s *Set) RemoveAll(list *collection.Linear) bool {
 
 // Equals returns true only if the corresponding pairs of the elements
 //in the two sets are equal.
-func (s *Set) Equals(set *Set) bool {
-	if set == nil || set.Size() != s.Size() {
+func (s *HashSet) Equals(set *collection.Set) bool {
+	if set == nil || (*set).Size() != s.Size() {
 		return false
 	}
-	it := set.GetIterator()
+	it := (*set).GetIterator()
 	for it.HashNext() {
 		p := it.Next()
 		if !s.Contains(p) {
@@ -215,14 +215,14 @@ func getKeys(m *map[collection.Object]struct{}) []collection.Object {
 	return keys
 }
 
-func (s *Set) checkNil(p *collection.Object) bool {
+func (s *HashSet) checkNil(p *collection.Object) bool {
 	return p == nil || (*p) == nil
 }
 
-func (s *Set) checkIndex(index int) bool {
+func (s *HashSet) checkIndex(index int) bool {
 	return index >= 0 && index < s.Size()
 }
 
-func (s *Set) checkType(p *collection.Object) bool {
+func (s *HashSet) checkType(p *collection.Object) bool {
 	return reflect.TypeOf(*p) == s.t
 }

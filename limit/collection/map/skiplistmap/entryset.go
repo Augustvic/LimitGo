@@ -93,13 +93,13 @@ func (es *EntrySet) Remove(p *collection.Object) bool {
 	return true
 }
 
-// AddAll appends all of the elements in the specified collection to this set.
+// AddAll appends all of the elements in the specified collection to this hashset.
 // Unsupported operation.
 func (es *EntrySet) AddAll(list *collection.Linear) bool {
 	return false
 }
 
-// Retains only the elements in this set that are contained in the
+// Retains only the elements in this hashset that are contained in the
 // specified collection.
 // Unsupported operation.
 func (es *EntrySet) RetainAll(list *collection.Linear) bool {
@@ -116,7 +116,7 @@ func (es *EntrySet) RetainAll(list *collection.Linear) bool {
 	return true
 }
 
-// Removes from this set all of its elements that are contained in the
+// Removes from this hashset all of its elements that are contained in the
 // specified collection.
 // Unsupported operation.
 func (es *EntrySet) RemoveAll(list *collection.Linear) bool {

@@ -2,7 +2,7 @@ package skiplistmap
 
 import (
 	"LimitGo/limit/collection"
-	"LimitGo/limit/collection/linear/set"
+	"LimitGo/limit/collection/linear/hashset"
 	"reflect"
 	"strconv"
 	"testing"
@@ -52,14 +52,14 @@ func RestartSkipListMap() {
 	st2 = Student{102, "st2"}
 	st3 = Student{103, "st3"}
 	st4 = Student{104, "st4"}
-	s1 = *set.New(reflect.TypeOf(Student{}))
-	s2 = *set.New(reflect.TypeOf(Student{}))
-	s3 = *set.New(reflect.TypeOf(Student{}))
-	s4 = *set.New(reflect.TypeOf(Student{}))
-	s1s := s1.(set.Set)
-	s2s := s2.(set.Set)
-	s3s := s3.(set.Set)
-	s4s := s4.(set.Set)
+	s1 = *hashset.New(reflect.TypeOf(Student{}))
+	s2 = *hashset.New(reflect.TypeOf(Student{}))
+	s3 = *hashset.New(reflect.TypeOf(Student{}))
+	s4 = *hashset.New(reflect.TypeOf(Student{}))
+	s1s := s1.(hashset.HashSet)
+	s2s := s2.(hashset.HashSet)
+	s3s := s3.(hashset.HashSet)
+	s4s := s4.(hashset.HashSet)
 	s1s.Add(&st11)
 	s1s.Add(&st12)
 	s2s.Add(&st2)
@@ -74,7 +74,7 @@ func RestartSkipListMap() {
 	m.Put(&t8, &s4)
 }
 
-func TestSetAll(t *testing.T) {
+func TestSkipListMapAll(t *testing.T) {
 	TestSkipListMap_CeilingEntry(t)
 	TestSkipListMap_Clear(t)
 	TestSkipListMap_ContainsKey(t)
@@ -96,7 +96,6 @@ func TestSetAll(t *testing.T) {
 	TestSkipListMap_Put(t)
 	TestSkipListMap_PutAll(t)
 	TestSkipListMap_Remove(t)
-	TestSkipListMap_SortedKeySet(t)
 	TestSkipListMap_String(t)
 	TestSkipListMap_SubMap(t)
 	TestSkipListMap_TailMap(t)
@@ -157,7 +156,7 @@ func TestSkipListMap_ContainsValue(t *testing.T) {
 	RestartSkipListMap()
 	var st1t collection.Object = Student{100, "st11"}
 	var st2t collection.Object = Student{101, "st12"}
-	s1t := *set.New(reflect.TypeOf(Student{}))
+	s1t := *hashset.New(reflect.TypeOf(Student{}))
 	s1t.Add(&st1t)
 	s1t.Add(&st2t)
 	var s1to collection.Object = s1t
@@ -178,7 +177,11 @@ func TestSkipListMap_Empty(t *testing.T) {
 }
 
 func TestSkipListMap_EntrySet(t *testing.T) {
-
+	RestartSkipListMap()
+	es := m.EntrySet()
+	if (*es).Size() != 4 {
+		t.Error("EntrySet operation fail!")
+	}
 }
 
 func TestSkipListMap_Equals(t *testing.T) {
@@ -208,14 +211,14 @@ func TestSkipListMap_Equals(t *testing.T) {
 	tst2 = Student{102, "st2"}
 	tst3 = Student{103, "st3"}
 	tst4 = Student{104, "st4"}
-	ts1 = *set.New(reflect.TypeOf(Student{}))
-	ts2 = *set.New(reflect.TypeOf(Student{}))
-	ts3 = *set.New(reflect.TypeOf(Student{}))
-	ts4 = *set.New(reflect.TypeOf(Student{}))
-	ts1s := ts1.(set.Set)
-	ts2s := ts2.(set.Set)
-	ts3s := ts3.(set.Set)
-	ts4s := ts4.(set.Set)
+	ts1 = *hashset.New(reflect.TypeOf(Student{}))
+	ts2 = *hashset.New(reflect.TypeOf(Student{}))
+	ts3 = *hashset.New(reflect.TypeOf(Student{}))
+	ts4 = *hashset.New(reflect.TypeOf(Student{}))
+	ts1s := ts1.(hashset.HashSet)
+	ts2s := ts2.(hashset.HashSet)
+	ts3s := ts3.(hashset.HashSet)
+	ts4s := ts4.(hashset.HashSet)
 	ts1s.Add(&tst11)
 	ts1s.Add(&tst12)
 	ts2s.Add(&tst2)
@@ -235,17 +238,41 @@ func TestSkipListMap_Equals(t *testing.T) {
 }
 
 func TestSkipListMap_FirstEntry(t *testing.T) {
-
+	RestartSkipListMap()
+	key := (*m.FirstEntry()).GetKey()
+	if *key != t2 {
+		t.Error("FirstEntry operation fail!")
+	}
 }
 
 func TestSkipListMap_FloorEntry(t *testing.T) {
-
+	RestartSkipListMap()
+	var temp1 collection.Object = Teacher{1, "t1", 0}
+	var temp2 collection.Object = Teacher{5, "t5", 0}
+	var temp3 collection.Object = Teacher{8, "t8", 0}
+	var temp4 collection.Object = Teacher{11, "t10", 0}
+	k1 := m.FloorEntry(&temp1)
+	if k1 != nil {
+		t.Error("FloorEntry operation fail!")
+	}
+	k2 := (*m.FloorEntry(&temp2)).GetKey()
+	if *k2 != t4 {
+		t.Error("FloorEntry operation fail!")
+	}
+	k3 := (*m.FloorEntry(&temp3)).GetKey()
+	if *k3 != t8 {
+		t.Error("FloorEntry operation fail!")
+	}
+	k4 := (*m.FloorEntry(&temp4)).GetKey()
+	if *k4 != t8 {
+		t.Error("FloorEntry operation fail!")
+	}
 }
 
 func TestSkipListMap_Get(t *testing.T) {
 	RestartSkipListMap()
 	oj := m.Get(&t4)
-	s := (*oj).(set.Set)
+	s := (*oj).(hashset.HashSet)
 	if s.Size() != 1 || !s.Contains(&st2) {
 		t.Error("Get operation fail!")
 	}
@@ -272,61 +299,188 @@ func TestSkipListMap_GetEntryIterator(t *testing.T) {
 }
 
 func TestSkipListMap_HeadMap(t *testing.T) {
-
+	RestartSkipListMap()
+	sm := m.HeadMap(&t2, true)
+	if (*sm).Size() != 1 || (*(*(*sm).FirstEntry()).GetKey()) != t2 ||  (*(*(*sm).LastEntry()).GetKey()) != t2 {
+		t.Error("HeadMap operation fail!")
+	}
 }
 
 func TestSkipListMap_HigherEntry(t *testing.T) {
-
+	RestartSkipListMap()
+	var temp1 collection.Object = Teacher{4, "t4", 0}
+	var temp2 collection.Object = Teacher{5, "t5", 0}
+	var temp3 collection.Object = Teacher{8, "t8", 0}
+	k1 := (*m.HigherEntry(&temp1)).GetKey()
+	if *k1 != t6 {
+		t.Error("HigherEntry operation fail!")
+	}
+	k2 := (*m.HigherEntry(&temp2)).GetKey()
+	if *k2 != t6 {
+		t.Error("HigherEntry operation fail!")
+	}
+	k3 := m.HigherEntry(&temp3)
+	if k3 != nil {
+		t.Error("HigherEntry operation fail!")
+	}
 }
 
 func TestSkipListMap_KeySet(t *testing.T) {
-
+	RestartSkipListMap()
+	ks := m.KeySet()
+	if (*ks).String() != "{{\"Id\":2,\"Name\":\"t2\",\"Sex\":0},{\"Id\":4,\"Name\":\"t4\",\"Sex\":0},{\"Id\":6,\"Name\":\"t6\",\"Sex\":0},{\"Id\":8,\"Name\":\"t8\",\"Sex\":0}}" {
+		t.Error("KeySet operation fail!")
+	}
 }
 
 func TestSkipListMap_LastEntry(t *testing.T) {
-
+	RestartSkipListMap()
+	key := (*m.LastEntry()).GetKey()
+	if *key != t8 {
+		t.Error("LastEntry operation fail!")
+	}
 }
 
 func TestSkipListMap_LowerEntry(t *testing.T) {
-
+	RestartSkipListMap()
+	var temp1 collection.Object = Teacher{1, "t1", 0}
+	var temp2 collection.Object = Teacher{5, "t5", 0}
+	var temp3 collection.Object = Teacher{8, "t8", 0}
+	var temp4 collection.Object = Teacher{11, "t10", 0}
+	k1 := m.LowerEntry(&temp1)
+	if k1 != nil {
+		t.Error("LowerEntry operation fail!")
+	}
+	k2 := (*m.LowerEntry(&temp2)).GetKey()
+	if *k2 != t4 {
+		t.Error("LowerEntry operation fail!")
+	}
+	k3 := (*m.LowerEntry(&temp3)).GetKey()
+	if *k3 != t6 {
+		t.Error("LowerEntry operation fail!")
+	}
+	k4 := (*m.LowerEntry(&temp4)).GetKey()
+	if *k4 != t8 {
+		t.Error("LowerEntry operation fail!")
+	}
 }
 
 func TestSkipListMap_PollFirstEntry(t *testing.T) {
-
+	RestartSkipListMap()
+	m.PollFirstEntry()
+	key := (*m.FirstEntry()).GetKey()
+	if m.Size() != 3 || *key != t4 {
+		t.Error("PollFirstEntry operation fail!")
+	}
 }
 
 func TestSkipListMap_PollLastEntry(t *testing.T) {
-
+	RestartSkipListMap()
+	m.PollLastEntry()
+	key := (*m.LastEntry()).GetKey()
+	if m.Size() != 3 || *key != t6 {
+		t.Error("PollLastEntry operation fail!")
+	}
 }
 
 func TestSkipListMap_Put(t *testing.T) {
-
+	RestartSkipListMap()
+	var t5 collection.Object = Teacher{5, "t5", 0}
+	var t10 collection.Object = Teacher{10, "t10", 0}
+	var st5 collection.Object = Student{102, "st2"}
+	var st6 collection.Object = Student{103, "st3"}
+	s5 := *hashset.New(reflect.TypeOf(Student{}))
+	s6 := *hashset.New(reflect.TypeOf(Student{}))
+	s5.Add(&st5)
+	s6.Add(&st6)
+	var s5o collection.Object = s5
+	var s6o collection.Object = s6
+	m.Put(&t5, &s5o)
+	m.Put(&t10, &s6o)
+	m.Put(&t2, &s5o)
+	it := m.GetEntryIterator()
+	s := ""
+	for i := 0; it.HashNext(); i++ {
+		entry := it.Next()
+		teacher := (*(*entry).GetKey()).(Teacher)
+		k := strconv.Itoa(teacher.Id)
+		s += k
+	}
+	if m.Size() != 6 || s != "2456810" {
+		t.Error("Put operation fail!")
+	}
+	v := *m.Get(&t2)
+	if !reflect.DeepEqual(v, s5) {
+		t.Error("Put operation fail!")
+	}
 }
 
 func TestSkipListMap_PutAll(t *testing.T) {
-
+	RestartSkipListMap()
+	var t5 collection.Object = Teacher{5, "t5", 0}
+	var t10 collection.Object = Teacher{10, "t10", 0}
+	var st5 collection.Object = Student{102, "st2"}
+	var st6 collection.Object = Student{103, "st3"}
+	s5 := *hashset.New(reflect.TypeOf(Student{}))
+	s6 := *hashset.New(reflect.TypeOf(Student{}))
+	s5.Add(&st5)
+	s6.Add(&st6)
+	var s5o collection.Object = s5
+	var s6o collection.Object = s6
+	var m2 collection.Map = New(kt, vt, precede)
+	m2.Put(&t5, &s5o)
+	m2.Put(&t10, &s6o)
+	m.PutAll(&m2)
+	it := m.GetEntryIterator()
+	s := ""
+	for i := 0; it.HashNext(); i++ {
+		entry := it.Next()
+		teacher := (*(*entry).GetKey()).(Teacher)
+		k := strconv.Itoa(teacher.Id)
+		s += k
+	}
+	if m.Size() != 6 || s != "2456810" {
+		t.Error("PutAll operation fail!")
+	}
 }
 
 func TestSkipListMap_Remove(t *testing.T) {
-
-}
-
-func TestSkipListMap_SortedKeySet(t *testing.T) {
-
+	RestartSkipListMap()
+	m.Remove(&t2)
+	m.Remove(&t4)
+	key := (*m.FirstEntry()).GetKey()
+	if m.Size() != 2 || *key != t6 {
+		t.Error("Remove operation fail!")
+	}
 }
 
 func TestSkipListMap_String(t *testing.T) {
-
+	RestartSkipListMap()
+	if m.String() != "{{\"Id\":2,\"Name\":\"t2\",\"Sex\":0}={},{\"Id\":4,\"Name\":\"t4\",\"Sex\":0}={},{\"Id\":6,\"Name\":\"t6\",\"Sex\":0}={},{\"Id\":8,\"Name\":\"t8\",\"Sex\":0}={}}" {
+		t.Error("String operation fail!")
+	}
 }
 
 func TestSkipListMap_SubMap(t *testing.T) {
-
+	RestartSkipListMap()
+	sm := m.SubMap(nil, false, nil, false)
+	if (*sm).Size() != 4 || (*(*(*sm).FirstEntry()).GetKey()) != t2 {
+		t.Error("SubMap operation fail!")
+	}
 }
 
 func TestSkipListMap_TailMap(t *testing.T) {
-
+	RestartSkipListMap()
+	sm := m.TailMap(&t4, true)
+	if (*sm).Size() != 3 || (*(*(*sm).FirstEntry()).GetKey()) != t4 ||  (*(*(*sm).LastEntry()).GetKey()) != t8 {
+		t.Error("TailMap operation fail!")
+	}
 }
 
 func TestSkipListMap_Values(t *testing.T) {
-
+	RestartSkipListMap()
+	vs := m.Values()
+	if (*vs).Size() != 4 {
+		t.Error("Values operation fail!")
+	}
 }

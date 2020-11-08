@@ -1,4 +1,4 @@
-package set
+package hashset
 
 import (
 	"LimitGo/limit/collection"
@@ -34,7 +34,7 @@ func TestSetAll(t *testing.T) {
 func TestNew(t *testing.T) {
 	l := New(reflect.TypeOf(Student{}))
 	if l.GetType().Name() != "Student" || l.Size() != 0 {
-		t.Error("Create set fail!")
+		t.Error("Create hashset fail!")
 	}
 }
 
@@ -133,10 +133,12 @@ func TestSet_Equals(t *testing.T) {
 	l2.Add(&b)
 	l3.Add(&c)
 	l3.Add(&d)
-	if !l1.Equals(l2) {
+	var l2s collection.Set = l2
+	var l3s collection.Set = l3
+	if !l1.Equals(&l2s) {
 		t.Error("Equals operation fail!")
 	}
-	if l1.Equals(l3) {
+	if l1.Equals(&l3s) {
 		t.Error("Equals operation fail!")
 	}
 }
@@ -157,7 +159,8 @@ func TestSet_GetIterator(t *testing.T) {
 		p := it.Next()
 		l2.Add(p)
 	}
-	if !l1.Equals(l2) {
+	var l2s collection.Set = l2
+	if !l1.Equals(&l2s) {
 		t.Error("Iterator fail!")
 	}
 }

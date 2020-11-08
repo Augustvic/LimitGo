@@ -1,6 +1,6 @@
 package sortedset
 
-// Sorted set based on SortedMap
+// Sorted hashset based on SortedMap
 type SortedSet struct {
 
 }

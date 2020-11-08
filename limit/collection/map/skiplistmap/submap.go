@@ -115,7 +115,7 @@ func (m *SubMap) ContainsValue(value *collection.Object) bool {
 // Get returns the value to which the specified key is mapped, or null
 // if this map contains no mapping for the key.
 func (m *SubMap) Get(key *collection.Object) *collection.Object {
-	if !m.checkKey(key) {
+	if !m.checkKey(key) || !m.inBounds(key) {
 		return nil
 	}
 	return m.sm.Get(key)
@@ -135,10 +135,10 @@ func (m *SubMap) Put(key *collection.Object, value *collection.Object) (bool, *c
 
 // Remove removes the mapping for a key from this map if it is present.
 func (m *SubMap) Remove(key *collection.Object) *collection.Object {
-	if !m.checkKey(key) {
+	if !m.checkKey(key) || !m.inBounds(key) {
 		return nil
 	}
-	return m.Remove(key)
+	return m.sm.Remove(key)
 }
 
 // PutAll copies all of the mappings from the specified map to this map.
@@ -192,7 +192,7 @@ func (m *SubMap) EntrySet() *collection.Set {
 // Equals returns true only if the corresponding pairs of the elements
 //in the two maps are equal.
 func (m *SubMap) Equals(m2 *collection.Map) bool {
-	if m2 == nil || (*m2) == nil || (*m2).Size() == 0 || m.Size() != (*m2).Size() {
+	if m2 == nil || (*m2) == nil || m.Size() != (*m2).Size() {
 		return false
 	}
 	it := (*m).GetEntryIterator()
@@ -212,7 +212,7 @@ func (m *SubMap) SubMap(fromKey *collection.Object, fromInclusive bool, toKey *c
 	if !m.checkSubMap(fromKey, fromInclusive, toKey, toInclusive) {
 		return nil
 	}
-	if m.lo == nil {
+	if m.lo != nil {
 		if fromKey == nil {
 			fromKey = m.lo
 			fromInclusive = m.loInclusive
@@ -222,7 +222,7 @@ func (m *SubMap) SubMap(fromKey *collection.Object, fromInclusive bool, toKey *c
 			}
 		}
 	}
-	if m.hi == nil {
+	if m.hi != nil {
 		if toKey == nil {
 			toKey = m.lo
 			toInclusive = m.hiInclusive
@@ -367,7 +367,7 @@ func (m *SubMap) isBeforeEnd(node *Node) bool {
 		return true
 	}
 	k := node.key
-	if m.sm.precede(m.hi, k) || (reflect.DeepEqual(*node, *m.hi) && !m.hiInclusive) {
+	if m.sm.precede(m.hi, k) || (reflect.DeepEqual(*k, *m.hi) && !m.hiInclusive) {
 		return false
 	}
 	return true
@@ -454,7 +454,7 @@ func (m *SubMap) highestEntry() *collection.Entry {
 }
 
 func (m *SubMap) checkKey(key *collection.Object) bool {
-	return !m.checkNil(key) && m.checkKeyType(key) && m.inBounds(key)
+	return !m.checkNil(key) && m.checkKeyType(key)
 }
 
 func (m *SubMap) checkValue(value *collection.Object) bool {
@@ -493,7 +493,7 @@ func (it * SubMapEntryIterator) Next() *collection.Entry {
 	if it.HashNext() {
 		it.lastRet = it.next
 		it.next = it.next.next
-		if it.m.tooHigh(it.next.key) {
+		if it.next != nil && it.m.tooHigh(it.next.key) {
 			it.next = nil
 		}
 		var t collection.Entry =  it.lastRet

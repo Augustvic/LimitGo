@@ -105,12 +105,12 @@ type Set interface {
 	Add(p *Object) bool
 	// Remove the first occurrence of the specified element from this collection.
 	Remove(p *Object) bool
-	// AddAll appends all of the elements in the specified collection to this set.
+	// AddAll appends all of the elements in the specified collection to this hashset.
 	AddAll(list *Linear) bool
-	// Retains only the elements in this set that are contained in the
+	// Retains only the elements in this hashset that are contained in the
 	// specified collection.
 	RetainAll(list *Linear) bool
-	// Removes from this set all of its elements that are contained in the
+	// Removes from this hashset all of its elements that are contained in the
 	// specified collection.
 	RemoveAll(list *Linear) bool
 	// Equals returns true only if the corresponding pairs of the elements
@@ -121,37 +121,37 @@ type Set interface {
 }
 
 type SortedSet interface {
-	// SubSet returns a view of the portion of this set whose elements range from
+	// SubSet returns a view of the portion of this hashset whose elements range from
 	// fromElement to toElement.  If fromElement and toElement are equal,
-	// the returned set is empty unless fromInclusive and toInclusive are both true.
+	// the returned hashset is empty unless fromInclusive and toInclusive are both true.
 	SubSet(fromElement *Object, fromInclusive bool, toElement *Object, toInclusive bool) *SortedSet
-	// HeadSet returns a view of the portion of this set whose elements are
+	// HeadSet returns a view of the portion of this hashset whose elements are
 	// less than (or equal to, if inclusive is true) toElement
 	HeadSet(toElement *Object, inclusive bool) *SortedSet
-	// TailSet returns a view of the portion of this set whose elements are
+	// TailSet returns a view of the portion of this hashset whose elements are
 	// greater than (or equal to, if inclusive is true) fromElement.
 	TailSet(fromElement *Object, inclusive bool) *SortedSet
-	// First returns the first (lowest) element currently in this set.
+	// First returns the first (lowest) element currently in this hashset.
 	First() *Object
-	// Last returns the last (highest) element currently in this set.
+	// Last returns the last (highest) element currently in this hashset.
 	Last() *Object
-	// Lower returns the greatest element in this set strictly less than the given
+	// Lower returns the greatest element in this hashset strictly less than the given
 	// element, or null if there is no such element.
 	Lower(p *Object) *Object
-	// Floor returns the greatest element in this set less than or equal to
+	// Floor returns the greatest element in this hashset less than or equal to
 	// the given element, or null if there is no such element.
 	Floor(p *Object) *Object
-	// Ceiling returns the least element in this set greater than or equal to
+	// Ceiling returns the least element in this hashset greater than or equal to
 	// the given element, or null if there is no such element.
 	Ceiling(p *Object) *Object
-	// Higher returns the least element in this set strictly greater than the
+	// Higher returns the least element in this hashset strictly greater than the
 	// given element, or null if there is no such element.
 	Higher(p *Object) *Object
 	// PollFirst retrieves and removes the first (lowest) element, or
-	// returns null if this set is empty.
+	// returns null if this hashset is empty.
 	PollFirst() *Object
 	// PollLast retrieves and removes the last (highest) element, or
-	// returns null if this set is empty.
+	// returns null if this hashset is empty.
 	PollLast() *Object
 	// All Methods from Set
 	Set

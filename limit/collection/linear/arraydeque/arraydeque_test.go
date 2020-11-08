@@ -28,8 +28,8 @@ func TestArrayDequeAll(t *testing.T) {
 
 func TestNew(t *testing.T) {
 	q := New(reflect.TypeOf(Student{}))
-	if q.GetType().Name() != "Student" || q.Size() != 0 ||
-		len(q.elements) != 8 || cap(q.elements) != 8 || q.elements[0] != nil {
+	if q.GetType().Name() != "Student" || Size() != 0 ||
+		len(elements) != 8 || cap(elements) != 8 || elements[0] != nil {
 		t.Error("Create ArrayDeque fail!")
 	}
 }
@@ -37,15 +37,15 @@ func TestNew(t *testing.T) {
 func TestArrayDeque_AddFirst(t *testing.T) {
 	q := New(reflect.TypeOf(Student{}))
 	var a collection.Object = Student{1, "Alice"}
-	q.AddFirst(&a)
-	if q.Size() != 1 || q.String() != "{{\"Id\":1,\"Name\":\"Alice\"}}" {
+	AddFirst(&a)
+	if Size() != 1 || String() != "{{\"Id\":1,\"Name\":\"Alice\"}}" {
 		t.Error("AddFirst operation fail!")
 	}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
-	q.AddFirst(&b)
-	q.AddFirst(&c)
-	if q.Size() != 3 || q.String() != "{{\"Id\":3,\"Name\":\"Mark\"},{\"Id\":2,\"Name\":\"Bob\"},{\"Id\":1,\"Name\":\"Alice\"}}" {
+	AddFirst(&b)
+	AddFirst(&c)
+	if Size() != 3 || String() != "{{\"Id\":3,\"Name\":\"Mark\"},{\"Id\":2,\"Name\":\"Bob\"},{\"Id\":1,\"Name\":\"Alice\"}}" {
 		t.Error("AddFirst operation fail!")
 	}
 }
@@ -53,15 +53,15 @@ func TestArrayDeque_AddFirst(t *testing.T) {
 func TestArrayDeque_AddLast(t *testing.T) {
 	q := New(reflect.TypeOf(Student{}))
 	var a collection.Object = Student{1, "Alice"}
-	q.AddLast(&a)
-	if q.Size() != 1 || q.String() != "{{\"Id\":1,\"Name\":\"Alice\"}}" {
+	AddLast(&a)
+	if Size() != 1 || String() != "{{\"Id\":1,\"Name\":\"Alice\"}}" {
 		t.Error("AddLast operation fail!")
 	}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
-	q.AddLast(&b)
-	q.AddLast(&c)
-	if q.Size() != 3 || q.String() != "{{\"Id\":1,\"Name\":\"Alice\"},{\"Id\":2,\"Name\":\"Bob\"},{\"Id\":3,\"Name\":\"Mark\"}}" {
+	AddLast(&b)
+	AddLast(&c)
+	if Size() != 3 || String() != "{{\"Id\":1,\"Name\":\"Alice\"},{\"Id\":2,\"Name\":\"Bob\"},{\"Id\":3,\"Name\":\"Mark\"}}" {
 		t.Error("AddLast operation fail!")
 	}
 }
@@ -71,11 +71,11 @@ func TestArrayDeque_Clear(t *testing.T) {
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
-	q.AddFirst(&a)
-	q.AddLast(&b)
-	q.AddFirst(&c)
-	q.Clear()
-	if q.Size() != 0 {
+	AddFirst(&a)
+	AddLast(&b)
+	AddFirst(&c)
+	Clear()
+	if Size() != 0 {
 		t.Error("Clear operation fail!")
 	}
 }
@@ -86,27 +86,27 @@ func TestArrayDeque_Contains(t *testing.T) {
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
 	var d collection.Object = Student{4, "Jessie"}
-	q.AddFirst(&a)
-	q.AddLast(&b)
-	q.AddFirst(&c)
-	if !q.Contains(&a) {
+	AddFirst(&a)
+	AddLast(&b)
+	AddFirst(&c)
+	if !Contains(&a) {
 		t.Error("Contains operation fail!")
 	}
-	if q.Contains(&d) {
+	if Contains(&d) {
 		t.Error("Contains operation fail!")
 	}
 }
 
 func TestArrayDeque_Empty(t *testing.T) {
 	q := New(reflect.TypeOf(Student{}))
-	if !q.Empty() {
+	if !Empty() {
 		t.Error("Empty operation fail!")
 	}
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
-	q.AddLast(&a)
-	q.AddLast(&b)
-	if q.Empty() {
+	AddLast(&a)
+	AddLast(&b)
+	if Empty() {
 		t.Error("Empty operation fail!")
 	}
 }
@@ -115,10 +115,10 @@ func TestArrayDeque_GetFirst(t *testing.T) {
 	q := New(reflect.TypeOf(Student{}))
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
-	q.AddLast(&a)
-	q.AddLast(&b)
-	c := q.GetFirst()
-	if *c != a || q.Size() != 2 {
+	AddLast(&a)
+	AddLast(&b)
+	c := GetFirst()
+	if *c != a || Size() != 2 {
 		t.Error("First operation fail!")
 	}
 }
@@ -129,12 +129,12 @@ func TestArrayDeque_GetIterator(t *testing.T) {
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
 	var d collection.Object = Student{4, "Jessie"}
-	q.AddFirst(&a)
-	q.AddFirst(&b)
-	q.AddLast(&c)
-	q.AddLast(&d)
+	AddFirst(&a)
+	AddFirst(&b)
+	AddLast(&c)
+	AddLast(&d)
 	var s = ""
-	it := q.GetIterator()
+	it := GetIterator()
 	for i := 0; it.HashNext(); i++ {
 		p := it.Next()
 		stu := (*p).(Student)
@@ -143,7 +143,7 @@ func TestArrayDeque_GetIterator(t *testing.T) {
 			it.Remove()
 		}
 	}
-	if q.Size() != 2 || s != "BobAliceMarkJessie" {
+	if Size() != 2 || s != "BobAliceMarkJessie" {
 		t.Error("Iterator fail!")
 	}
 }
@@ -152,10 +152,10 @@ func TestArrayDeque_GetLast(t *testing.T) {
 	q := New(reflect.TypeOf(Student{}))
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
-	q.AddLast(&a)
-	q.AddLast(&b)
-	c := q.GetLast()
-	if *c != b || q.Size() != 2 {
+	AddLast(&a)
+	AddLast(&b)
+	c := GetLast()
+	if *c != b || Size() != 2 {
 		t.Error("GetLast operation fail!")
 	}
 }
@@ -166,12 +166,12 @@ func TestArrayDeque_RemoveFirst(t *testing.T) {
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
 	var d collection.Object = Student{4, "Jessie"}
-	q.AddLast(&a)
-	q.AddLast(&b)
-	q.AddLast(&c)
-	q.AddLast(&d)
-	q.RemoveFirst()
-	if q.Contains(&a) || q.Size() != 3 {
+	AddLast(&a)
+	AddLast(&b)
+	AddLast(&c)
+	AddLast(&d)
+	RemoveFirst()
+	if Contains(&a) || Size() != 3 {
 		t.Error("RemoveFirst operation fail!")
 	}
 }
@@ -182,12 +182,12 @@ func TestArrayDeque_RemoveLast(t *testing.T) {
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
 	var d collection.Object = Student{4, "Jessie"}
-	q.AddLast(&a)
-	q.AddLast(&b)
-	q.AddLast(&c)
-	q.AddLast(&d)
-	q.RemoveLast()
-	if q.Contains(&d) || q.Size() != 3 {
+	AddLast(&a)
+	AddLast(&b)
+	AddLast(&c)
+	AddLast(&d)
+	RemoveLast()
+	if Contains(&d) || Size() != 3 {
 		t.Error("RemoveLast operation fail!")
 	}
 }
@@ -203,16 +203,16 @@ func TestArrayDeque_DoubleLen(t *testing.T) {
 	var g collection.Object = Student{7, "August"}
 	var h collection.Object = Student{8, "Jeff"}
 	var i collection.Object = Student{9, "Jerry"}
-	q.AddLast(&d)
-	q.AddLast(&e)
-	q.AddLast(&f)
-	q.AddLast(&g)
-	q.AddLast(&h)
-	q.AddLast(&i)
-	q.AddFirst(&c)
-	q.AddFirst(&b)
-	q.AddFirst(&a)
-	if q.Size() != 9 || len(q.elements) != 16 {
+	AddLast(&d)
+	AddLast(&e)
+	AddLast(&f)
+	AddLast(&g)
+	AddLast(&h)
+	AddLast(&i)
+	AddFirst(&c)
+	AddFirst(&b)
+	AddFirst(&a)
+	if Size() != 9 || len(elements) != 16 {
 		t.Error("DoubleLen operation fail!")
 	}
 }

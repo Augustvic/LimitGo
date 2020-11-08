@@ -253,10 +253,11 @@ func (sm *SkipListMap) LowerEntry(key *collection.Object) *collection.Entry {
 	if sm.checkNil(key) || !sm.checkKeyType(key) {
 		return nil
 	}
-	var entry collection.Entry = sm.findNear(key, LT)
-	if entry == nil {
+	node := sm.findNear(key, LT)
+	if node == nil {
 		return nil
 	} else {
+		var entry collection.Entry = node
 		return &entry
 	}
 }
@@ -267,10 +268,11 @@ func (sm *SkipListMap) FloorEntry(key *collection.Object) *collection.Entry {
 	if sm.checkNil(key) || !sm.checkKeyType(key) {
 		return nil
 	}
-	var entry collection.Entry = sm.findNear(key, LT|EQ)
-	if entry == nil {
+	node := sm.findNear(key, LT|EQ)
+	if node == nil {
 		return nil
 	} else {
+		var entry collection.Entry = node
 		return &entry
 	}
 }
@@ -457,7 +459,6 @@ func (sm *SkipListMap) doRemove(key *collection.Object) *Node {
 		return nil
 	}
 	prev.next = node.next
-	node.next = node
 	sm.size--
 	// remove index
 	h := sm.head
@@ -541,7 +542,7 @@ func (sm *SkipListMap) doRemoveFirstEntry() *Node {
 }
 
 func (sm *SkipListMap) doRemoveLastEntry() *Node {
-	node := sm.findFirst()
+	node := sm.findLast()
 	if node == nil {
 		return nil
 	}
