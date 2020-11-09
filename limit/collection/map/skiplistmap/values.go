@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"reflect"
 )
 
 type Values struct {
@@ -59,19 +58,26 @@ func (v *Values) Clear() bool {
 
 // GetIterator returns an iterator over the elements in this collection.
 func (v *Values) GetIterator() collection.Itr {
-	sm := (*v.sm).(*SkipListMap)
-	var it collection.Itr = &ValuesIterator{v, sm.findFirst(), nil}
+	var m *SkipListMap
+	var sm *SubMap
+	var it collection.Itr
+	m, ok := (*v.sm).(*SkipListMap)
+	if !ok {
+		sm = (*v.sm).(*SubMap)
+	}
+	if ok {
+		it = &ValuesIterator{v, m.findFirst(), nil}
+	} else {
+		if sm != nil {
+			it = &ValuesIterator{v, sm.loNode(), nil}
+		}
+	}
 	return it
 }
 
 // Contains returns true if this list contains the specific element.
 func (v *Values) Contains(p *collection.Object) bool {
-	return (*v.sm).ContainsKey(p)
-}
-
-// GetType returns type of the elements in this collection.
-func (v *Values) GetType() reflect.Type {
-	return (*v.sm).GetValueType()
+	return (*v.sm).ContainsValue(p)
 }
 
 // HashNext returns true if the iteration has more elements.
@@ -92,15 +98,10 @@ func (it *ValuesIterator) Next() *collection.Object {
 // Remove removes from the underlying collection the last element returned
 // by this iterator.
 func (it *ValuesIterator) Remove() (*collection.Object, bool) {
-	if it.lastRet == nil {
-		return nil, false
-	}
-	var last collection.Entry = it.lastRet
-	lastNext := it.lastRet.next
-	(*it.v.sm).Remove(last.GetKey())
-	if it.next == it.lastRet {
-		it.next = lastNext
-	}
-	it.lastRet = nil
-	return last.GetValue(), true
+	return nil, false
+}
+
+// Unsupported operation.
+func (v *Values) Add(p *collection.Object) bool {
+	return false
 }

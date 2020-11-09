@@ -91,7 +91,7 @@ func (m *SubMap) GetEntryIterator() collection.EntryItr {
 
 // ContainsKey returns true if this map contains a mapping for the specified key.
 func (m *SubMap) ContainsKey(key *collection.Object) bool {
-	if !m.checkKey(key) {
+	if m.checkNil(key) {
 		return false
 	}
 	return m.inBounds(key) && m.sm.ContainsKey(key);
@@ -100,7 +100,7 @@ func (m *SubMap) ContainsKey(key *collection.Object) bool {
 // ContainsValue returns true if this map maps one or more keys to the
 // specified value.
 func (m *SubMap) ContainsValue(value *collection.Object) bool {
-	if !m.checkValue(value) {
+	if m.checkNil(value) {
 		return false
 	}
 	for n := m.loNode(); m.isBeforeEnd(n); n = n.next {
@@ -115,7 +115,7 @@ func (m *SubMap) ContainsValue(value *collection.Object) bool {
 // Get returns the value to which the specified key is mapped, or null
 // if this map contains no mapping for the key.
 func (m *SubMap) Get(key *collection.Object) *collection.Object {
-	if !m.checkKey(key) || !m.inBounds(key) {
+	if m.checkNil(key) || !m.inBounds(key) {
 		return nil
 	}
 	return m.sm.Get(key)
@@ -124,10 +124,10 @@ func (m *SubMap) Get(key *collection.Object) *collection.Object {
 // Put associates the specified value with the specified key, returns old value
 // if the specified key has been in this map.
 func (m *SubMap) Put(key *collection.Object, value *collection.Object) (bool, *collection.Object) {
-	if !m.checkKey(key) {
+	if m.checkNil(key) {
 		return false, nil
 	}
-	if !m.checkValue(value) {
+	if m.checkNil(value) {
 		return false, nil
 	}
 	return m.sm.Put(key, value)
@@ -135,7 +135,7 @@ func (m *SubMap) Put(key *collection.Object, value *collection.Object) (bool, *c
 
 // Remove removes the mapping for a key from this map if it is present.
 func (m *SubMap) Remove(key *collection.Object) *collection.Object {
-	if !m.checkKey(key) || !m.inBounds(key) {
+	if m.checkNil(key) || !m.inBounds(key) {
 		return nil
 	}
 	return m.sm.Remove(key)
@@ -240,7 +240,7 @@ func (m *SubMap) SubMap(fromKey *collection.Object, fromInclusive bool, toKey *c
 // HeadMap returns a view of the portion of this map whose keys are strictly
 // less than toKey.
 func (m *SubMap) HeadMap(toKey *collection.Object, inclusive bool) *collection.SortedMap {
-	if !m.checkKeyType(toKey) || !m.inBounds(toKey) {
+	if toKey != nil && !m.inBounds(toKey) {
 		return nil
 	}
 	return m.SubMap(nil, false, toKey, inclusive)
@@ -249,7 +249,7 @@ func (m *SubMap) HeadMap(toKey *collection.Object, inclusive bool) *collection.S
 // TailMap returns a view of the portion of this map whose keys are greater than
 // or equal to fromKey.
 func (m *SubMap) TailMap(fromKey *collection.Object, inclusive bool) *collection.SortedMap {
-	if !m.checkKeyType(fromKey) || !m.inBounds(fromKey) {
+	if fromKey != nil && !m.inBounds(fromKey) {
 		return nil
 	}
 	return m.SubMap(fromKey, inclusive, nil, false)
@@ -264,7 +264,7 @@ func (m *SubMap) SortedKeySet() *collection.SortedSet {
 // LowerEntry returns a key-value mapping associated with the greatest key
 // strictly less than the given key, or nil if there is no such key.
 func (m *SubMap) LowerEntry(key *collection.Object) *collection.Entry {
-	if !m.checkKey(key) {
+	if m.checkNil(key) {
 		return nil
 	}
 	return m.getNearEntry(key, LT)
@@ -273,7 +273,7 @@ func (m *SubMap) LowerEntry(key *collection.Object) *collection.Entry {
 // FloorEntry returns a key-value mapping associated with the greatest key
 // less than or equal to the given key, or nil if there is no such key.
 func (m *SubMap) FloorEntry(key *collection.Object) *collection.Entry {
-	if !m.checkKey(key) {
+	if m.checkNil(key) {
 		return nil
 	}
 	return m.getNearEntry(key, LT|EQ)
@@ -282,7 +282,7 @@ func (m *SubMap) FloorEntry(key *collection.Object) *collection.Entry {
 // CeilingEntry returns a key-value mapping associated with the least key
 // greater than or equal to the given key, or nil if there is no such key.
 func (m *SubMap) CeilingEntry(key *collection.Object) *collection.Entry {
-	if !m.checkKey(key) {
+	if m.checkNil(key) {
 		return nil
 	}
 	return m.getNearEntry(key, GT|EQ)
@@ -291,7 +291,7 @@ func (m *SubMap) CeilingEntry(key *collection.Object) *collection.Entry {
 // HigherEntry returns a key-value mapping associated with the least key
 // strictly greater than the given key, or nil if there is no such key.
 func (m *SubMap) HigherEntry(key *collection.Object) *collection.Entry {
-	if !m.checkKey(key) {
+	if m.checkNil(key) {
 		return nil
 	}
 	return m.getNearEntry(key, GT)
@@ -329,14 +329,6 @@ func (m *SubMap) PollFirstEntry() *collection.Entry {
 // the greatest key in this map, or null if the map is empty.
 func (m *SubMap) PollLastEntry() *collection.Entry {
 	return m.removeHighest()
-}
-
-func (m *SubMap) GetKeyType() reflect.Type {
-	return m.sm.GetKeyType()
-}
-
-func (m *SubMap) GetValueType() reflect.Type {
-	return m.sm.GetValueType()
 }
 
 func (m *SubMap) loNode() *Node {
@@ -453,31 +445,15 @@ func (m *SubMap) highestEntry() *collection.Entry {
 	return &e
 }
 
-func (m *SubMap) checkKey(key *collection.Object) bool {
-	return !m.checkNil(key) && m.checkKeyType(key)
-}
-
-func (m *SubMap) checkValue(value *collection.Object) bool {
-	return !m.checkNil(value) && m.checkValueType(value)
-}
-
 func (m *SubMap) checkNil(p *collection.Object) bool {
 	return p == nil || (*p) == nil
 }
 
-func (m *SubMap) checkKeyType(p *collection.Object) bool {
-	return reflect.TypeOf(*p) == m.sm.kt
-}
-
-func (m *SubMap) checkValueType(p *collection.Object) bool {
-	return reflect.TypeOf(*p) == m.sm.vt
-}
-
 func (m *SubMap) checkSubMap(fromKey *collection.Object, fromInclusive bool, toKey *collection.Object, toInclusive bool) bool {
-	if fromKey != nil && (!m.checkKeyType(fromKey) || !m.inBounds(fromKey)) {
+	if fromKey != nil && !m.inBounds(fromKey) {
 		return false
 	}
-	if toKey != nil && (!m.checkKeyType(toKey) || !m.inBounds(toKey)) {
+	if toKey != nil && !m.inBounds(toKey) {
 		return false
 	}
 	return true

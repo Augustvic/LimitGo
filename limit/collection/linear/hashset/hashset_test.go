@@ -2,19 +2,12 @@ package hashset
 
 import (
 	"LimitGo/limit/collection"
-	"reflect"
 	"testing"
 )
 
 type Student struct {
 	Id int
 	Name string
-}
-
-type Teacher struct {
-	Id int
-	Name string
-	Sex int
 }
 
 func TestSetAll(t *testing.T) {
@@ -32,19 +25,17 @@ func TestSetAll(t *testing.T) {
 }
 
 func TestNew(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
-	if l.GetType().Name() != "Student" || l.Size() != 0 {
+	l := New()
+	if l.Size() != 0 {
 		t.Error("Create hashset fail!")
 	}
 }
 
 func TestSet_Add(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	l.Add(&a)
-	var b collection.Object = Teacher{1, "Bob", 0}
-	l.Add(&b)
-	if l.GetType().Name() != "Student" || l.Size() != 1 {
+	if l.Size() != 1 {
 		t.Error("Append operation fail!")
 	}
 	if l.String() != "{{\"Id\":1,\"Name\":\"Alice\"}}" {
@@ -53,10 +44,10 @@ func TestSet_Add(t *testing.T) {
 }
 
 func TestSet_AddAll(t *testing.T) {
-	l1 := New(reflect.TypeOf(Student{}))
+	l1 := New()
 	var a collection.Object = Student{1, "Alice"}
 	l1.Add(&a)
-	l2 := New(reflect.TypeOf(Student{}))
+	l2 := New()
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
 	l2.Add(&b)
@@ -75,7 +66,7 @@ func TestSet_AddAll(t *testing.T) {
 }
 
 func TestSet_Clear(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -89,7 +80,7 @@ func TestSet_Clear(t *testing.T) {
 }
 
 func TestSet_Contains(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -106,7 +97,7 @@ func TestSet_Contains(t *testing.T) {
 }
 
 func TestSet_Empty(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	if !l.Empty() {
 		t.Error("Empty operation fail!")
 	}
@@ -120,9 +111,9 @@ func TestSet_Empty(t *testing.T) {
 }
 
 func TestSet_Equals(t *testing.T) {
-	l1 := New(reflect.TypeOf(Student{}))
-	l2 := New(reflect.TypeOf(Student{}))
-	l3 := New(reflect.TypeOf(Student{}))
+	l1 := New()
+	l2 := New()
+	l3 := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -144,7 +135,7 @@ func TestSet_Equals(t *testing.T) {
 }
 
 func TestSet_GetIterator(t *testing.T) {
-	l1 := New(reflect.TypeOf(Student{}))
+	l1 := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -153,7 +144,7 @@ func TestSet_GetIterator(t *testing.T) {
 	l1.Add(&b)
 	l1.Add(&c)
 	l1.Add(&d)
-	l2 := New(reflect.TypeOf(Student{}))
+	l2 := New()
 	it := l1.GetIterator()
 	for it.HashNext() {
 		p := it.Next()
@@ -166,7 +157,7 @@ func TestSet_GetIterator(t *testing.T) {
 }
 
 func TestSet_Remove(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -182,8 +173,8 @@ func TestSet_Remove(t *testing.T) {
 }
 
 func TestSet_RemoveAll(t *testing.T) {
-	l1 := New(reflect.TypeOf(Student{}))
-	l2 := New(reflect.TypeOf(Student{}))
+	l1 := New()
+	l2 := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -207,8 +198,8 @@ func TestSet_RemoveAll(t *testing.T) {
 }
 
 func TestSet_RetainAll(t *testing.T) {
-	l1 := New(reflect.TypeOf(Student{}))
-	l2 := New(reflect.TypeOf(Student{}))
+	l1 := New()
+	l2 := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}

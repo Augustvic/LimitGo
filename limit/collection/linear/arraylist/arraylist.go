@@ -13,7 +13,6 @@ const initCap int = 8
 // ArrayList is one of the implementations of the List based on origin slice.
 type ArrayList struct {
 	elements []*collection.Object
-	t        reflect.Type
 }
 
 // Iterator represents the specific iterator of the ArrayList
@@ -24,8 +23,8 @@ type Iterator struct {
 }
 
 // New returns a new ArrayList.
-func New(t reflect.Type) *ArrayList {
-	l := ArrayList{make([]*collection.Object, 0, initCap), t}
+func New() *ArrayList {
+	l := ArrayList{make([]*collection.Object, 0, initCap)}
 	return &l
 }
 
@@ -41,7 +40,7 @@ func (l *ArrayList) Empty() bool {
 
 // Contains returns true if this list contains the specific element.
 func (l *ArrayList) Contains(p *collection.Object) bool {
-	if l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) {
 		return false
 	}
 	for _, v := range l.elements {
@@ -54,7 +53,7 @@ func (l *ArrayList) Contains(p *collection.Object) bool {
 
 // Append appends the specified element to the end of this list.
 func (l *ArrayList) Append(p *collection.Object) bool {
-	if l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) {
 		return false
 	}
 	l.elements = append(l.elements, p)
@@ -63,7 +62,7 @@ func (l *ArrayList) Append(p *collection.Object) bool {
 
 // Insert the specified element at the specified position in this list.
 func (l *ArrayList) Insert(index int, p *collection.Object) bool {
-	if l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) {
 		return false
 	}
 	if index < 0 {
@@ -85,9 +84,6 @@ func (l *ArrayList) AddAll(list *collection.Linear) bool {
 	if list == nil || *list == nil || (*list).Empty() {
 		return true
 	}
-	if (*list).GetType() != l.t {
-		return false
-	}
 	it := (*list).GetIterator()
 	for it.HashNext() {
 		v := it.Next()
@@ -100,9 +96,6 @@ func (l *ArrayList) AddAll(list *collection.Linear) bool {
 func (l *ArrayList) Remove(p *collection.Object) bool {
 	if l.checkNil(p) {
 		return true
-	}
-	if !l.checkType(p) {
-		return false
 	}
 	for i := 0; i < len(l.elements); i++ {
 		if reflect.DeepEqual(*p, *(l.elements[i])) {
@@ -135,9 +128,6 @@ func (l *ArrayList) Clear() bool {
 // Notice that equal do not means same address.
 func (l *ArrayList) Equals(list *collection.List) bool {
 	if list == nil || *list == nil {
-		return false
-	}
-	if l.t != (*list).GetType() {
 		return false
 	}
 	if l.Size() != (*list).Size() {
@@ -193,7 +183,7 @@ func (l *ArrayList) Get(index int) *collection.Object {
 // Set replaces the element at the specified position in this list with
 //the specified element.
 func (l *ArrayList) Set(index int, p *collection.Object) bool {
-	if !l.checkIndex(index) || l.checkNil(p) || !l.checkType(p) || index >= l.Size() {
+	if !l.checkIndex(index) || l.checkNil(p) || index >= l.Size() {
 		return false
 	}
 	l.elements[index] = p
@@ -203,7 +193,7 @@ func (l *ArrayList) Set(index int, p *collection.Object) bool {
 // IndexOf returns the index of the first occurrence of the
 //specified element
 func (l *ArrayList) IndexOf(p *collection.Object) int {
-	if l.checkNil(p) || reflect.TypeOf(*p) != l.t {
+	if l.checkNil(p) {
 		return -1
 	}
 	for i := 0; i < l.Size(); i++ {
@@ -217,11 +207,6 @@ func (l *ArrayList) IndexOf(p *collection.Object) int {
 // GetIterator returns an iterator over the elements in this list.
 func (l *ArrayList) GetIterator() collection.Itr {
 	return &Iterator{l, 0, -1}
-}
-
-// GetType returns type of the elements in this list.
-func (l *ArrayList) GetType() reflect.Type {
-	return l.t
 }
 
 // HashNext returns true if the iteration has more elements.
@@ -263,7 +248,7 @@ func (l *ArrayList) checkIndex(index int) bool {
 	return index >= 0 && index < l.Size()
 }
 
-// checkType returns true if type matches
-func (l *ArrayList) checkType(p *collection.Object) bool {
-	return reflect.TypeOf(*p) == l.t
+// Add inserts the specified element to the end of this queue.
+func (l *ArrayList) Add(p *collection.Object) bool {
+	return l.Append(p)
 }

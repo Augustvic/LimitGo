@@ -18,8 +18,6 @@ const (
 type SkipListMap struct {
 	head    *Index
 	precede func(p1 *collection.Object, p2 *collection.Object) bool
-	kt      reflect.Type
-	vt      reflect.Type
 	size    int
 
 	keySet   *KeySet
@@ -33,9 +31,9 @@ type EntryIterator struct {
 	lastRet *Node
 }
 
-func New(kt reflect.Type, vt reflect.Type, precede func(p1 *collection.Object, p2 *collection.Object) bool) *SkipListMap {
+func New(precede func(p1 *collection.Object, p2 *collection.Object) bool) *SkipListMap {
 	head := &Index{1, &Node{nil, nil, nil}, nil, nil}
-	return &SkipListMap{head, precede, kt, vt, 0, nil, nil, nil}
+	return &SkipListMap{head, precede, 0, nil, nil, nil}
 }
 
 // Size returns the number of elements in this collection.
@@ -92,7 +90,7 @@ func (sm *SkipListMap) GetEntryIterator() collection.EntryItr {
 
 // ContainsKey returns true if this map contains a mapping for the specified key.
 func (sm *SkipListMap) ContainsKey(key *collection.Object) bool {
-	if sm.checkNil(key) || !sm.checkKeyType(key) {
+	if sm.checkNil(key) {
 		return false
 	}
 	return sm.doGet(key) != nil
@@ -101,7 +99,7 @@ func (sm *SkipListMap) ContainsKey(key *collection.Object) bool {
 // ContainsValue returns true if this map maps one or more keys to the
 // specified value.
 func (sm *SkipListMap) ContainsValue(value *collection.Object) bool {
-	if sm.checkNil(value) || !sm.checkValueType(value) {
+	if sm.checkNil(value) {
 		return false
 	}
 	for node := sm.findFirst(); node != nil; node = node.next {
@@ -116,7 +114,7 @@ func (sm *SkipListMap) ContainsValue(value *collection.Object) bool {
 // Get returns the value to which the specified key is mapped, or null
 // if this map contains no mapping for the key.
 func (sm *SkipListMap) Get(key *collection.Object) *collection.Object {
-	if sm.checkNil(key) || !sm.checkKeyType(key) {
+	if sm.checkNil(key) {
 		return nil
 	}
 	return sm.doGet(key)
@@ -125,10 +123,10 @@ func (sm *SkipListMap) Get(key *collection.Object) *collection.Object {
 // Put associates the specified value with the specified key, returns old value
 // if the specified key has been in this map.
 func (sm *SkipListMap) Put(key *collection.Object, value *collection.Object) (bool, *collection.Object) {
-	if sm.checkNil(key) || !sm.checkKeyType(key) {
+	if sm.checkNil(key) {
 		return false, nil
 	}
-	if sm.checkNil(value) || !sm.checkValueType(value) {
+	if sm.checkNil(value) {
 		return false, nil
 	}
 	return true, sm.doPut(key, value)
@@ -136,7 +134,7 @@ func (sm *SkipListMap) Put(key *collection.Object, value *collection.Object) (bo
 
 // Remove removes the mapping for a key from this map if it is present.
 func (sm *SkipListMap) Remove(key *collection.Object) *collection.Object {
-	if sm.checkNil(key) || !sm.checkKeyType(key) {
+	if sm.checkNil(key) {
 		return nil
 	}
 	node := sm.doRemove(key)
@@ -226,18 +224,12 @@ func (sm *SkipListMap) SubMap(fromKey *collection.Object, fromInclusive bool, to
 // HeadMap returns a view of the portion of this map whose keys are strictly
 // less than toKey.
 func (sm *SkipListMap) HeadMap(toKey *collection.Object, inclusive bool) *collection.SortedMap {
-	if !sm.checkKeyType(toKey) {
-		return nil
-	}
 	return sm.SubMap(nil, false, toKey, inclusive)
 }
 
 // TailMap returns a view of the portion of this map whose keys are greater than
 // or equal to fromKey.
 func (sm *SkipListMap) TailMap(fromKey *collection.Object, inclusive bool) *collection.SortedMap {
-	if !sm.checkKeyType(fromKey) {
-		return nil
-	}
 	return sm.SubMap(fromKey, inclusive, nil, false)
 }
 
@@ -250,7 +242,7 @@ func (sm *SkipListMap) SortedKeySet() *collection.SortedSet {
 // LowerEntry returns a key-value mapping associated with the greatest key
 // strictly less than the given key, or nil if there is no such key.
 func (sm *SkipListMap) LowerEntry(key *collection.Object) *collection.Entry {
-	if sm.checkNil(key) || !sm.checkKeyType(key) {
+	if sm.checkNil(key) {
 		return nil
 	}
 	node := sm.findNear(key, LT)
@@ -265,7 +257,7 @@ func (sm *SkipListMap) LowerEntry(key *collection.Object) *collection.Entry {
 // FloorEntry returns a key-value mapping associated with the greatest key
 // less than or equal to the given key, or nil if there is no such key.
 func (sm *SkipListMap) FloorEntry(key *collection.Object) *collection.Entry {
-	if sm.checkNil(key) || !sm.checkKeyType(key) {
+	if sm.checkNil(key) {
 		return nil
 	}
 	node := sm.findNear(key, LT|EQ)
@@ -280,7 +272,7 @@ func (sm *SkipListMap) FloorEntry(key *collection.Object) *collection.Entry {
 // CeilingEntry returns a key-value mapping associated with the least key
 // greater than or equal to the given key, or nil if there is no such key.
 func (sm *SkipListMap) CeilingEntry(key *collection.Object) *collection.Entry {
-	if sm.checkNil(key) || !sm.checkKeyType(key) {
+	if sm.checkNil(key) {
 		return nil
 	}
 	node := sm.findNear(key, GT|EQ)
@@ -295,7 +287,7 @@ func (sm *SkipListMap) CeilingEntry(key *collection.Object) *collection.Entry {
 // HigherEntry returns a key-value mapping associated with the least key
 // strictly greater than the given key, or nil if there is no such key.
 func (sm *SkipListMap) HigherEntry(key *collection.Object) *collection.Entry {
-	if sm.checkNil(key) || !sm.checkKeyType(key) {
+	if sm.checkNil(key) {
 		return nil
 	}
 	node := sm.findNear(key, GT)
@@ -357,14 +349,6 @@ func (sm *SkipListMap) PollLastEntry() *collection.Entry {
 
 func (sm *SkipListMap) checkNil(p *collection.Object) bool {
 	return p == nil || (*p) == nil
-}
-
-func (sm *SkipListMap) checkKeyType(p *collection.Object) bool {
-	return reflect.TypeOf(*p) == sm.kt
-}
-
-func (sm *SkipListMap) checkValueType(p *collection.Object) bool {
-	return reflect.TypeOf(*p) == sm.vt
 }
 
 func (sm *SkipListMap) doGet(key *collection.Object) *collection.Object {
@@ -630,19 +614,11 @@ func (it *EntryIterator) Remove() (*collection.Entry, bool) {
 	return &last, true
 }
 
-func (sm *SkipListMap) GetKeyType() reflect.Type {
-	return sm.kt
-}
-
-func (sm *SkipListMap) GetValueType() reflect.Type {
-	return sm.vt
-}
-
 func (sm *SkipListMap) checkSubMap(fromKey *collection.Object, fromInclusive bool, toKey *collection.Object, toInclusive bool) bool {
-	if fromKey != nil && (!sm.checkKeyType(fromKey) || sm.precede(sm.findLast().key, fromKey)) {
+	if fromKey != nil && sm.precede(sm.findLast().key, fromKey) {
 		return false
 	}
-	if toKey != nil && (!sm.checkKeyType(toKey) || sm.precede(toKey, sm.findFirst().key)) {
+	if toKey != nil && sm.precede(toKey, sm.findFirst().key) {
 		return false
 	}
 	if fromKey != nil && toKey != nil && sm.precede(toKey, fromKey) {

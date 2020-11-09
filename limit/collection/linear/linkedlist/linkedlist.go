@@ -20,7 +20,6 @@ type LinkedList struct {
 	head *Node
 	tail *Node
 	size int
-	t    reflect.Type
 }
 
 // Iterator represents the specific iterator of the LinkedList
@@ -31,8 +30,8 @@ type Iterator struct {
 }
 
 // New returns a new LinkedList.
-func New(t reflect.Type) *LinkedList {
-	l := LinkedList{nil, nil, 0, t}
+func New() *LinkedList {
+	l := LinkedList{nil, nil, 0}
 	return &l
 }
 
@@ -49,11 +48,6 @@ func (l *LinkedList) Empty() bool {
 // GetIterator returns an iterator over the elements in this collection.
 func (l *LinkedList) GetIterator() collection.Itr {
 	return &Iterator{l, l.head, nil}
-}
-
-// GetType returns type of the elements in this collection.
-func (l *LinkedList) GetType() reflect.Type {
-	return l.t
 }
 
 // String returns a string representation of this collection.
@@ -89,7 +83,7 @@ func (l *LinkedList) Clear() bool {
 
 // Contains returns true if this list contains the specific element.
 func (l *LinkedList) Contains(p *collection.Object) bool {
-	if l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) {
 		return false
 	}
 	return l.IndexOf(p) != -1
@@ -97,7 +91,7 @@ func (l *LinkedList) Contains(p *collection.Object) bool {
 
 // Append appends the specified element to the end of this list.
 func (l *LinkedList) Append(p *collection.Object) bool {
-	if l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) {
 		return false
 	}
 	return l.linkLast(p)
@@ -105,7 +99,7 @@ func (l *LinkedList) Append(p *collection.Object) bool {
 
 // Insert the specified element at the specified position in this list.
 func (l *LinkedList) Insert(index int, p *collection.Object) bool {
-	if l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) {
 		return false
 	}
 	if index <= 0 {
@@ -123,9 +117,6 @@ func (l *LinkedList) AddAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
 	}
-	if l.t != (*list).GetType() {
-		return false
-	}
 	it := (*list).GetIterator()
 	for it.HashNext() {
 		p := it.Next()
@@ -138,9 +129,6 @@ func (l *LinkedList) AddAll(list *collection.Linear) bool {
 func (l *LinkedList) AddAllHead(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
-	}
-	if l.t != (*list).GetType() {
-		return false
 	}
 	var p *Node = nil
 	var q *Node = nil
@@ -157,7 +145,7 @@ func (l *LinkedList) AddAllHead(list *collection.Linear) bool {
 			q = q.next
 		}
 	}
-	if p != nil && q != nil {
+	if q != nil {
 		if l.Empty() {
 			l.head = p
 			l.tail = q
@@ -176,9 +164,6 @@ func (l *LinkedList) AddAllHead(list *collection.Linear) bool {
 func (l *LinkedList) Remove(p *collection.Object) bool {
 	if l.checkNil(p) {
 		return true
-	}
-	if !l.checkType(p) {
-		return false
 	}
 	return l.unlink(l.nodeBy(p))
 }
@@ -200,9 +185,6 @@ func (l *LinkedList) RemoveAt(index int) *collection.Object {
 //in the two lists are equal.
 func (l *LinkedList) Equals(list *collection.List) bool {
 	if list == nil || *list == nil {
-		return false
-	}
-	if l.t != (*list).GetType() {
 		return false
 	}
 	if l.Size() != (*list).Size() {
@@ -231,7 +213,7 @@ func (l *LinkedList) Get(index int) *collection.Object {
 // Set replaces the element at the specified position in this list with
 //the specified element.
 func (l *LinkedList) Set(index int, p *collection.Object) bool {
-	if !l.checkIndex(index) || l.checkNil(p) || !l.checkType(p) {
+	if !l.checkIndex(index) || l.checkNil(p) {
 		return false
 	}
 	node := l.node(index)
@@ -242,7 +224,7 @@ func (l *LinkedList) Set(index int, p *collection.Object) bool {
 // IndexOf returns the index of the first occurrence of the
 //specified element
 func (l *LinkedList) IndexOf(p *collection.Object) int {
-	if l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) {
 		return -1
 	}
 	index := 0
@@ -275,7 +257,7 @@ func (l *LinkedList) Add(p *collection.Object) bool {
 
 // AddFirst inserts the specified element at the front of this deque.
 func (l *LinkedList) AddFirst(p *collection.Object) bool {
-	if l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) {
 		return false
 	}
 	return l.linkFirst(p)
@@ -283,7 +265,7 @@ func (l *LinkedList) AddFirst(p *collection.Object) bool {
 
 // AddLast inserts the specified element at the end of this deque.
 func (l *LinkedList) AddLast(p *collection.Object) bool {
-	if l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) {
 		return false
 	}
 	return l.linkLast(p)
@@ -334,7 +316,7 @@ func (l *LinkedList) Pop() *collection.Object {
 
 // Push inserts the specified element at the top of this stack.
 func (l *LinkedList) Push(p *collection.Object) {
-	if l.checkNil(p) || !l.checkType(p) {
+	if l.checkNil(p) {
 		return
 	}
 	l.linkLast(p)
@@ -386,10 +368,6 @@ func (l *LinkedList) checkNil(p *collection.Object) bool {
 
 func (l *LinkedList) checkIndex(index int) bool {
 	return index >= 0 && index < l.size
-}
-
-func (l *LinkedList) checkType(p *collection.Object) bool {
-	return reflect.TypeOf(*p) == l.t
 }
 
 func (l *LinkedList) linkFirst(p *collection.Object) bool {

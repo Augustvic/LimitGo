@@ -1,9 +1,5 @@
 package collection
 
-import (
-	"reflect"
-)
-
 type Collection interface {
 	// Size returns the number of elements in this collection.
 	Size() int
@@ -21,8 +17,8 @@ type Linear interface {
 	GetIterator() Itr
 	// Contains returns true if this list contains the specific element.
 	Contains(p *Object) bool
-	// GetType returns type of the elements in this collection.
-	GetType() reflect.Type
+	// Add inserts the specified element to this collection.
+	Add(p *Object) bool
 	// All Methods from Collection
 	Collection
 }
@@ -35,7 +31,7 @@ type List interface {
 	Insert(index int, p *Object) bool
 	// AddAll appends all of the elements in the specified list to the end of this list.
 	AddAll(list *Linear) bool
-	// Remove the first occurrence of the specified element from this list.
+	// Remove the first occurrence of the specified element from this collection.
 	Remove(p *Object) bool
 	// Removes the element at the specified position in this list.
 	RemoveAt(index int) *Object
@@ -60,8 +56,6 @@ type Queue interface {
 	First() *Object
 	// Poll returns and removes the head of this queue, or nil if this queue is empty
 	Poll() *Object
-	// Add inserts the specified element to the end of this queue.
-	Add(p *Object) bool
 	// All Methods from Linear
 	Linear
 }
@@ -101,8 +95,6 @@ type Stack interface {
 
 // Set is an interface much similar to java.util.Set.
 type Set interface {
-	// Add inserts the specified element to this collection.
-	Add(p *Object) bool
 	// Remove the first occurrence of the specified element from this collection.
 	Remove(p *Object) bool
 	// AddAll appends all of the elements in the specified collection to this hashset.
@@ -121,16 +113,16 @@ type Set interface {
 }
 
 type SortedSet interface {
-	// SubSet returns a view of the portion of this hashset whose elements range from
-	// fromElement to toElement.  If fromElement and toElement are equal,
-	// the returned hashset is empty unless fromInclusive and toInclusive are both true.
-	SubSet(fromElement *Object, fromInclusive bool, toElement *Object, toInclusive bool) *SortedSet
-	// HeadSet returns a view of the portion of this hashset whose elements are
-	// less than (or equal to, if inclusive is true) toElement
-	HeadSet(toElement *Object, inclusive bool) *SortedSet
-	// TailSet returns a view of the portion of this hashset whose elements are
-	// greater than (or equal to, if inclusive is true) fromElement.
-	TailSet(fromElement *Object, inclusive bool) *SortedSet
+	//// SubSet returns a view of the portion of this hashset whose elements range from
+	//// fromElement to toElement.  If fromElement and toElement are equal,
+	//// the returned hashset is empty unless fromInclusive and toInclusive are both true.
+	//SubSet(fromElement *Object, fromInclusive bool, toElement *Object, toInclusive bool) *SortedSet
+	//// HeadSet returns a view of the portion of this hashset whose elements are
+	//// less than (or equal to, if inclusive is true) toElement
+	//HeadSet(toElement *Object, inclusive bool) *SortedSet
+	//// TailSet returns a view of the portion of this hashset whose elements are
+	//// greater than (or equal to, if inclusive is true) fromElement.
+	//TailSet(fromElement *Object, inclusive bool) *SortedSet
 	// First returns the first (lowest) element currently in this hashset.
 	First() *Object
 	// Last returns the last (highest) element currently in this hashset.
@@ -184,8 +176,6 @@ type Map interface {
 	// Equals returns true only if the corresponding pairs of the elements
 	//in the two maps are equal.
 	Equals(list *Map) bool
-	GetKeyType() reflect.Type
-	GetValueType() reflect.Type
 	// All Methods from Collection
 	Collection
 }

@@ -5,14 +5,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"reflect"
 )
 
 var Exists = struct{}{}
 
 type HashSet struct {
 	m map[collection.Object]struct{}
-	t reflect.Type
 }
 
 // Iterator represents the specific iterator of the Set.
@@ -25,8 +23,8 @@ type Iterator struct {
 }
 
 // New returns a new hashset.
-func New(t reflect.Type) *HashSet {
-	l := HashSet{make(map[collection.Object]struct{}), t}
+func New() *HashSet {
+	l := HashSet{make(map[collection.Object]struct{})}
 	return &l
 }
 
@@ -45,11 +43,6 @@ func (s *HashSet) GetIterator() collection.Itr {
 	keys := getKeys(&s.m)
 	it := Iterator{s, keys, 0, -1}
 	return &it
-}
-
-// GetType returns type of the elements in this collection.
-func (s *HashSet) GetType() reflect.Type {
-	return s.t
 }
 
 // String returns a string representation of this collection.
@@ -83,7 +76,7 @@ func (s *HashSet) Clear() bool {
 
 // Contains returns true if this collection contains the specific element.
 func (s *HashSet) Contains(p *collection.Object) bool {
-	if s.checkNil(p) || !s.checkType(p) {
+	if s.checkNil(p) {
 		return false
 	}
 	_, ok := s.m[*p]
@@ -92,7 +85,7 @@ func (s *HashSet) Contains(p *collection.Object) bool {
 
 // Add inserts the specified element to this collection.
 func (s *HashSet) Add(p *collection.Object) bool {
-	if s.checkNil(p) || !s.checkType(p) {
+	if s.checkNil(p) {
 		return false
 	}
 	s.m[*p] = Exists
@@ -101,7 +94,7 @@ func (s *HashSet) Add(p *collection.Object) bool {
 
 // Remove the first occurrence of the specified element from this collection.
 func (s *HashSet) Remove(p *collection.Object) bool {
-	if s.checkNil(p) || !s.checkType(p) {
+	if s.checkNil(p) {
 		return false
 	}
 	delete(s.m, *p)
@@ -112,9 +105,6 @@ func (s *HashSet) Remove(p *collection.Object) bool {
 func (s *HashSet) AddAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
-	}
-	if s.t != (*list).GetType() {
-		return false
 	}
 	it := (*list).GetIterator()
 	for it.HashNext() {
@@ -128,10 +118,8 @@ func (s *HashSet) AddAll(list *collection.Linear) bool {
 // specified collection.
 func (s *HashSet) RetainAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
+		s.Clear()
 		return true
-	}
-	if s.t != (*list).GetType() {
-		return false
 	}
 	it := (*s).GetIterator()
 	for it.HashNext() {
@@ -148,9 +136,6 @@ func (s *HashSet) RetainAll(list *collection.Linear) bool {
 func (s *HashSet) RemoveAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
-	}
-	if s.t != (*list).GetType() {
-		return false
 	}
 	it := (*list).GetIterator()
 	for it.HashNext() {
@@ -221,8 +206,4 @@ func (s *HashSet) checkNil(p *collection.Object) bool {
 
 func (s *HashSet) checkIndex(index int) bool {
 	return index >= 0 && index < s.Size()
-}
-
-func (s *HashSet) checkType(p *collection.Object) bool {
-	return reflect.TypeOf(*p) == s.t
 }

@@ -2,19 +2,12 @@ package linkedlist
 
 import (
 	"LimitGo/limit/collection"
-	"reflect"
 	"testing"
 )
 
 type Student struct {
 	Id int
 	Name string
-}
-
-type Teacher struct {
-	Id int
-	Name string
-	Sex int
 }
 
 func TestLinkedListAll(t *testing.T) {
@@ -46,19 +39,17 @@ func TestLinkedListAll(t *testing.T) {
 }
 
 func TestNew(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
-	if l.GetType().Name() != "Student" || l.Size() != 0 {
+	l := New()
+	if l.Size() != 0 {
 		t.Error("Create LinkedList fail!")
 	}
 }
 
 func TestLinkedList_Append(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	l.Append(&a)
-	var b collection.Object = Teacher{1, "Bob", 0}
-	l.Append(&b)
-	if l.GetType().Name() != "Student" || l.Size() != 1 {
+	if l.Size() != 1 {
 		t.Error("Append operation fail!")
 	}
 	if l.String() != "{{\"Id\":1,\"Name\":\"Alice\"}}" {
@@ -67,10 +58,10 @@ func TestLinkedList_Append(t *testing.T) {
 }
 
 func TestLinkedList_AddAll(t *testing.T) {
-	l1 := New(reflect.TypeOf(Student{}))
+	l1 := New()
 	var a collection.Object = Student{1, "Alice"}
 	l1.Append(&a)
-	l2 := New(reflect.TypeOf(Student{}))
+	l2 := New()
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
 	l2.Append(&b)
@@ -89,10 +80,10 @@ func TestLinkedList_AddAll(t *testing.T) {
 }
 
 func TestLinkedList_AddAllHead(t *testing.T) {
-	l1 := New(reflect.TypeOf(Student{}))
+	l1 := New()
 	var a collection.Object = Student{1, "Alice"}
 	l1.Append(&a)
-	l2 := New(reflect.TypeOf(Student{}))
+	l2 := New()
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
 	l2.Append(&b)
@@ -111,7 +102,7 @@ func TestLinkedList_AddAllHead(t *testing.T) {
 }
 
 func TestLinkedList_AddFirst(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	l.AddFirst(&a)
 	if l.Size() != 1 || l.String() != "{{\"Id\":1,\"Name\":\"Alice\"}}" {
@@ -127,7 +118,7 @@ func TestLinkedList_AddFirst(t *testing.T) {
 }
 
 func TestLinkedList_AddLast(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	l.AddLast(&a)
 	if l.Size() != 1 || l.String() != "{{\"Id\":1,\"Name\":\"Alice\"}}" {
@@ -143,7 +134,7 @@ func TestLinkedList_AddLast(t *testing.T) {
 }
 
 func TestLinkedList_Clear(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -157,7 +148,7 @@ func TestLinkedList_Clear(t *testing.T) {
 }
 
 func TestLinkedList_Contains(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -174,7 +165,7 @@ func TestLinkedList_Contains(t *testing.T) {
 }
 
 func TestLinkedList_Empty(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	if !l.Empty() {
 		t.Error("Empty operation fail!")
 	}
@@ -188,9 +179,9 @@ func TestLinkedList_Empty(t *testing.T) {
 }
 
 func TestLinkedList_Equals(t *testing.T) {
-	l1 := New(reflect.TypeOf(Student{}))
-	var l2 collection.List = New(reflect.TypeOf(Student{}))
-	var l3 collection.List = New(reflect.TypeOf(Student{}))
+	l1 := New()
+	var l2 collection.List = New()
+	var l3 collection.List = New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -210,7 +201,7 @@ func TestLinkedList_Equals(t *testing.T) {
 }
 
 func TestLinkedList_First(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	l.Append(&a)
@@ -222,7 +213,7 @@ func TestLinkedList_First(t *testing.T) {
 }
 
 func TestLinkedList_Get(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -238,7 +229,7 @@ func TestLinkedList_Get(t *testing.T) {
 }
 
 func TestLinkedList_GetIterator(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -263,7 +254,7 @@ func TestLinkedList_GetIterator(t *testing.T) {
 }
 
 func TestLinkedList_GetLast(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	l.Append(&a)
@@ -275,7 +266,7 @@ func TestLinkedList_GetLast(t *testing.T) {
 }
 
 func TestLinkedList_IndexOf(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -291,7 +282,7 @@ func TestLinkedList_IndexOf(t *testing.T) {
 }
 
 func TestLinkedList_Insert(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -317,7 +308,7 @@ func TestLinkedList_Insert(t *testing.T) {
 }
 
 func TestLinkedList_Peek(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	l.Append(&a)
@@ -330,7 +321,7 @@ func TestLinkedList_Peek(t *testing.T) {
 
 // Queue
 func TestLinkedList_Poll(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	l.Append(&a)
@@ -343,7 +334,7 @@ func TestLinkedList_Poll(t *testing.T) {
 
 // Stack
 func TestLinkedList_Pop(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	l.Append(&a)
@@ -355,7 +346,7 @@ func TestLinkedList_Pop(t *testing.T) {
 }
 
 func TestLinkedList_Push(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	l.Push(&a)
@@ -366,7 +357,7 @@ func TestLinkedList_Push(t *testing.T) {
 }
 
 func TestLinkedList_Remove(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -382,7 +373,7 @@ func TestLinkedList_Remove(t *testing.T) {
 }
 
 func TestLinkedList_RemoveFirst(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -398,7 +389,7 @@ func TestLinkedList_RemoveFirst(t *testing.T) {
 }
 
 func TestLinkedList_RemoveAt(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -414,7 +405,7 @@ func TestLinkedList_RemoveAt(t *testing.T) {
 }
 
 func TestLinkedList_RemoveLast(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -430,7 +421,7 @@ func TestLinkedList_RemoveLast(t *testing.T) {
 }
 
 func TestLinkedList_Set(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}

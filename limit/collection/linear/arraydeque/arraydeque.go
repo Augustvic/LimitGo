@@ -14,7 +14,6 @@ type ArrayDeque struct {
 	elements []*collection.Object
 	head     int
 	tail     int
-	t        reflect.Type
 }
 
 // Iterator represents the specific iterator of the ArrayDeque
@@ -25,8 +24,8 @@ type Iterator struct {
 	fence   int
 }
 
-func New(t reflect.Type) *ArrayDeque {
-	l := ArrayDeque{make([]*collection.Object, initLen, initLen), 0, 0, t}
+func New() *ArrayDeque {
+	l := ArrayDeque{make([]*collection.Object, initLen, initLen), 0, 0}
 	return &l
 }
 
@@ -43,11 +42,6 @@ func (q *ArrayDeque) Empty() bool {
 // GetIterator returns an iterator over the elements in this collection.
 func (q *ArrayDeque) GetIterator() collection.Itr {
 	return &Iterator{q, q.head, -1, q.tail}
-}
-
-// GetType returns type of the elements in this collection.
-func (q *ArrayDeque) GetType() reflect.Type {
-	return q.t
 }
 
 // String returns a string representation of this collection.
@@ -85,7 +79,7 @@ func (q *ArrayDeque) Clear() bool {
 
 // Contains returns true if this collection contains the specific element.
 func (q *ArrayDeque) Contains(p *collection.Object) bool {
-	if q.checkNil(p) || !q.checkType(p) {
+	if q.checkNil(p) {
 		return false
 	}
 	mask := len(q.elements) - 1
@@ -103,7 +97,7 @@ func (q *ArrayDeque) Contains(p *collection.Object) bool {
 
 // AddFirst inserts the specified element at the front of this deque.
 func (q *ArrayDeque) AddFirst(p *collection.Object) bool {
-	if q.checkNil(p) || !q.checkType(p) {
+	if q.checkNil(p) {
 		return false
 	}
 	q.head = (q.head - 1) & (len(q.elements) - 1)
@@ -116,7 +110,7 @@ func (q *ArrayDeque) AddFirst(p *collection.Object) bool {
 
 // AddLast inserts the specified element at the end of this deque.
 func (q *ArrayDeque) AddLast(p *collection.Object) bool {
-	if q.checkNil(p) || !q.checkType(p) {
+	if q.checkNil(p) {
 		return false
 	}
 	q.elements[q.tail] = p
@@ -252,11 +246,6 @@ func (q *ArrayDeque) checkIndex(index int) bool {
 	}
 }
 
-// checkType returns true if type matches
-func (q *ArrayDeque) checkType(p *collection.Object) bool {
-	return reflect.TypeOf(*p) == q.t
-}
-
 func (q *ArrayDeque) doubleLen() {
 	newLen := 2 * len(q.elements)
 	if newLen < 0 {
@@ -271,4 +260,9 @@ func (q *ArrayDeque) doubleLen() {
 	q.elements = slice
 	q.head = 0
 	q.tail = n
+}
+
+// Add inserts the specified element to the end of this queue.
+func (q *ArrayDeque) Add(p *collection.Object) bool {
+	return q.AddLast(p)
 }

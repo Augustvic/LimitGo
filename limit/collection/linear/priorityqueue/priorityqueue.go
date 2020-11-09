@@ -12,7 +12,6 @@ const initCap = 8
 
 type PriorityQueue struct {
 	elements []*collection.Object
-	t reflect.Type
 	precede func(p1 *collection.Object, p2 *collection.Object) bool
 }
 
@@ -23,9 +22,8 @@ type Iterator struct {
 	lastRet int
 }
 
-func New(t reflect.Type, precede func(p1 *collection.Object, p2 *collection.Object) bool) *PriorityQueue {
-	return &PriorityQueue{make([]*collection.Object, 0, initCap),
-		t, precede}
+func New(precede func(p1 *collection.Object, p2 *collection.Object) bool) *PriorityQueue {
+	return &PriorityQueue{make([]*collection.Object, 0, initCap), precede}
 }
 
 func (q *PriorityQueue) GetFunc() func(p1 *collection.Object, p2 *collection.Object) bool {
@@ -45,11 +43,6 @@ func (q *PriorityQueue) Empty() bool {
 // GetIterator returns an iterator over the elements in this collection.
 func (q *PriorityQueue) GetIterator() collection.Itr {
 	return &Iterator{q, 0, -1}
-}
-
-// GetType returns type of the elements in this collection.
-func (q *PriorityQueue) GetType() reflect.Type {
-	return q.t
 }
 
 // String returns a string representation of this collection.
@@ -83,7 +76,7 @@ func (q *PriorityQueue) Clear() bool {
 
 // Contains returns true if this collection contains the specific element.
 func (q *PriorityQueue) Contains(p *collection.Object) bool {
-	if q.checkNil(p) || !q.checkType(p) {
+	if q.checkNil(p) {
 		return false
 	}
 	for _, v := range q.elements {
@@ -119,7 +112,7 @@ func (q *PriorityQueue) Poll() *collection.Object {
 
 // Add inserts the specified element to the end of this queue.
 func (q *PriorityQueue) Add(p *collection.Object) bool {
-	if q.checkNil(p) || !q.checkType(p) {
+	if q.checkNil(p) {
 		return false
 	}
 	if q.Size() == 0 {
@@ -139,11 +132,6 @@ func (q *PriorityQueue) checkNil(p *collection.Object) bool {
 // checkIndex return true if index within the range
 func (q *PriorityQueue) checkIndex(index int) bool {
 	return index >= 0 && index < q.Size()
-}
-
-// checkType returns true if type matches
-func (q *PriorityQueue) checkType(p *collection.Object) bool {
-	return reflect.TypeOf(*p) == q.t
 }
 
 // HashNext returns true if the iteration has more elements.

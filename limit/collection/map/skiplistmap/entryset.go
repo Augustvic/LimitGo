@@ -61,8 +61,18 @@ func (es *EntrySet) Clear() bool {
 
 // GetIterator returns an iterator over the elements in this collection.
 func (es *EntrySet) GetIterator() collection.Itr {
-	sm := (*es.sm).(*SkipListMap)
-	var it collection.Itr = &EntrySetIterator{es, sm.findFirst(), nil}
+	var m *SkipListMap
+	var sm *SubMap
+	var it collection.Itr
+	m, ok := (*es.sm).(*SkipListMap)
+	if !ok {
+		sm = (*es.sm).(*SubMap)
+	}
+	if ok {
+		it = &EntrySetIterator{es, m.findFirst(), nil}
+	} else {
+		it = &EntrySetIterator{es, sm.loNode(), nil}
+	}
 	return it
 }
 
@@ -71,12 +81,6 @@ func (es *EntrySet) Contains(p *collection.Object) bool {
 	entry := (*p).(collection.Entry)
 	value := (*es.sm).Get(entry.GetKey())
 	return value != nil && (*value) != nil && reflect.DeepEqual(entry.GetValue(), value)
-}
-
-// GetType returns type of the elements in this collection.
-// Unsupported operation.
-func (es *EntrySet) GetType() reflect.Type {
-	return nil
 }
 
 // Add inserts the specified element to this collection.
@@ -104,6 +108,7 @@ func (es *EntrySet) AddAll(list *collection.Linear) bool {
 // Unsupported operation.
 func (es *EntrySet) RetainAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
+		es.Clear()
 		return true
 	}
 	it := (*es).GetIterator()
@@ -157,7 +162,8 @@ func (it *EntrySetIterator) Next() *collection.Object {
 	if it.HashNext() {
 		it.lastRet = it.next
 		it.next = it.next.next
-		return it.lastRet.key
+		var oj collection.Object = it.lastRet
+		return &oj
 	}
 	return nil
 }

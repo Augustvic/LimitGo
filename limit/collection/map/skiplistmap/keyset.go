@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"reflect"
 )
 
 type KeySet struct {
@@ -13,7 +12,7 @@ type KeySet struct {
 }
 
 type KeySetIterator struct {
-	ks *KeySet
+	ks      *KeySet
 	next    *Node
 	lastRet *Node
 }
@@ -69,11 +68,6 @@ func (ks *KeySet) Contains(p *collection.Object) bool {
 	return (*ks.sm).ContainsKey(p)
 }
 
-// GetType returns type of the elements in this collection.
-func (ks *KeySet) GetType() reflect.Type {
-	return (*ks.sm).GetKeyType()
-}
-
 // Add inserts the specified element to this collection.
 // Unsupported operation.
 func (ks *KeySet) Add(p *collection.Object) bool {
@@ -96,10 +90,8 @@ func (ks *KeySet) AddAll(list *collection.Linear) bool {
 // specified collection.
 func (ks *KeySet) RetainAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
+		ks.Clear()
 		return true
-	}
-	if (*ks.sm).GetKeyType() != (*list).GetType() {
-		return false
 	}
 	it := (*ks).GetIterator()
 	for it.HashNext() {
@@ -116,9 +108,6 @@ func (ks *KeySet) RetainAll(list *collection.Linear) bool {
 func (ks *KeySet) RemoveAll(list *collection.Linear) bool {
 	if list == nil || (*list) == nil || (*list).Empty() {
 		return true
-	}
-	if (*ks.sm).GetKeyType() != (*list).GetType() {
-		return false
 	}
 	it := (*list).GetIterator()
 	for it.HashNext() {
@@ -147,14 +136,32 @@ func (ks *KeySet) Equals(set *collection.Set) bool {
 // fromElement to toElement.  If fromElement and toElement are equal,
 // the returned hashset is empty unless fromInclusive and toInclusive are both true.
 func (ks *KeySet) SubSet(fromElement *collection.Object, fromInclusive bool, toElement *collection.Object, toInclusive bool) *collection.SortedSet {
-	if fromElement != nil && !ks.checkType(fromElement) {
-		return nil
+	var m1 *SkipListMap
+	var m2 *SubMap
+	m1, ok := (*ks.sm).(*SkipListMap)
+	if !ok {
+		m2 = (*ks.sm).(*SubMap)
 	}
-	if toElement != nil && !ks.checkType(toElement) {
-		return nil
+	if fromElement != nil {
+		if !ok && m2 != nil && !m2.inBounds(fromElement) {
+			return nil
+		}
 	}
-	sm := (*ks.sm).(*SkipListMap)
-	p := SubMap{sm, fromElement, toElement, fromInclusive, toInclusive, nil, nil, nil}
+	if toElement != nil {
+		if !ok && m2 != nil && !m2.inBounds(toElement) {
+			return nil
+		}
+	}
+	var p SubMap
+	if ok {
+		p = SubMap{m1, fromElement, toElement, fromInclusive, toInclusive, nil, nil, nil}
+	} else {
+		if m2 != nil {
+			e1, i1 := ks.fromKeyBoundSelect(m2, fromElement, fromInclusive)
+			e2, i2 := ks.toKeyBoundSelect(m2, toElement, toInclusive)
+			p = SubMap{m2.sm, e1, e2, i1, i2, nil, nil, nil}
+		}
+	}
 	var t collection.SortedMap = &p
 	var ret collection.SortedSet = &KeySet{&t}
 	return &ret
@@ -163,25 +170,19 @@ func (ks *KeySet) SubSet(fromElement *collection.Object, fromInclusive bool, toE
 // HeadSet returns a view of the portion of this hashset whose elements are
 // less than (or equal to, if inclusive is true) toElement
 func (ks *KeySet) HeadSet(toElement *collection.Object, inclusive bool) *collection.SortedSet {
-	if !ks.checkType(toElement) {
-		return nil
-	}
 	return ks.SubSet(nil, false, toElement, inclusive)
 }
 
 // TailSet returns a view of the portion of this hashset whose elements are
 // greater than (or equal to, if inclusive is true) fromElement.
 func (ks *KeySet) TailSet(fromElement *collection.Object, inclusive bool) *collection.SortedSet {
-	if !ks.checkType(fromElement) {
-		return nil
-	}
 	return ks.SubSet(fromElement, inclusive, nil, false)
 }
 
 // First returns the first (lowest) element currently in this hashset.
 func (ks *KeySet) First() *collection.Object {
-	 entry := (*ks.sm).FirstEntry()
-	 return (*entry).GetKey()
+	entry := (*ks.sm).FirstEntry()
+	return (*entry).GetKey()
 }
 
 // Last returns the last (highest) element currently in this hashset.
@@ -287,6 +288,20 @@ func (it *KeySetIterator) Remove() (*collection.Object, bool) {
 	return last.GetKey(), true
 }
 
-func (ks *KeySet) checkType(p *collection.Object) bool {
-	return reflect.TypeOf(*p) == (*ks.sm).GetKeyType()
+func (ks *KeySet) toKeyBoundSelect(sm *SubMap, toElement *collection.Object, inclusive bool) (*collection.Object, bool) {
+	// if toElement is nil or sm.hi smaller than toElement, choose sm.hi and sm.hiInclusion
+	if toElement == nil || (sm.hi != nil && sm.sm.precede(sm.hi, toElement)) {
+		toElement = sm.hi
+		inclusive = sm.hiInclusive
+	}
+	return toElement, inclusive
+}
+
+func (ks *KeySet) fromKeyBoundSelect(sm *SubMap, fromElement *collection.Object, inclusive bool) (*collection.Object, bool) {
+	// if fromElement is nil or sm.lo bigger than fromElement, choose sm.lo and sm.loInclusion
+	if fromElement == nil || (sm.lo != nil && sm.sm.precede(fromElement, sm.lo)) {
+		fromElement = sm.lo
+		inclusive = sm.loInclusive
+	}
+	return fromElement, inclusive
 }

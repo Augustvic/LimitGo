@@ -2,7 +2,6 @@ package arraylist
 
 import (
 	"LimitGo/limit/collection"
-	"reflect"
 	"testing"
 )
 
@@ -35,20 +34,18 @@ func TestArrayListAll(t *testing.T) {
 }
 
 func TestNew(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
-	if l.GetType().Name() != "Student" || l.Size() != 0 ||
+	l := New()
+	if l.Size() != 0 ||
 		len(l.elements) != 0 || cap(l.elements) != 8 {
 		t.Error("Create ArrayList fail!")
 	}
 }
 
 func TestArrayList_Append(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	l.Append(&a)
-	var b collection.Object = Teacher{1, "Bob", 0}
-	l.Append(&b)
-	if l.GetType().Name() != "Student" || l.Size() != 1 {
+	if l.Size() != 1 {
 		t.Error("Append operation fail!")
 	}
 	if l.String() != "{{\"Id\":1,\"Name\":\"Alice\"}}" {
@@ -57,10 +54,10 @@ func TestArrayList_Append(t *testing.T) {
 }
 
 func TestArrayList_AddAll(t *testing.T) {
-	l1 := New(reflect.TypeOf(Student{}))
+	l1 := New()
 	var a collection.Object = Student{1, "Alice"}
 	l1.Append(&a)
-	l2 := New(reflect.TypeOf(Student{}))
+	l2 := New()
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
 	l2.Append(&b)
@@ -79,7 +76,7 @@ func TestArrayList_AddAll(t *testing.T) {
 }
 
 func TestArrayList_Clear(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -93,7 +90,7 @@ func TestArrayList_Clear(t *testing.T) {
 }
 
 func TestArrayList_Contains(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -110,7 +107,7 @@ func TestArrayList_Contains(t *testing.T) {
 }
 
 func TestArrayList_Empty(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	if !l.Empty() {
 		t.Error("Empty operation fail!")
 	}
@@ -125,9 +122,9 @@ func TestArrayList_Empty(t *testing.T) {
 
 
 func TestArrayList_Equals(t *testing.T) {
-	l1 := New(reflect.TypeOf(Student{}))
-	var l2 collection.List = New(reflect.TypeOf(Student{}))
-	var l3 collection.List = New(reflect.TypeOf(Student{}))
+	l1 := New()
+	var l2 collection.List = New()
+	var l3 collection.List = New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -147,7 +144,7 @@ func TestArrayList_Equals(t *testing.T) {
 }
 
 func TestArrayList_Get(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -164,7 +161,7 @@ func TestArrayList_Get(t *testing.T) {
 }
 
 func TestArrayList_IndexOf(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -180,7 +177,7 @@ func TestArrayList_IndexOf(t *testing.T) {
 }
 
 func TestArrayList_Insert(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -206,7 +203,7 @@ func TestArrayList_Insert(t *testing.T) {
 }
 
 func TestArrayList_Remove(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -222,7 +219,7 @@ func TestArrayList_Remove(t *testing.T) {
 }
 
 func TestArrayList_Set(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -237,7 +234,7 @@ func TestArrayList_Set(t *testing.T) {
 }
 
 func TestArrayList_GetIterator(t *testing.T) {
-	l := New(reflect.TypeOf(Student{}))
+	l := New()
 	var a collection.Object = Student{1, "Alice"}
 	var b collection.Object = Student{2, "Bob"}
 	var c collection.Object = Student{3, "Mark"}
@@ -262,7 +259,7 @@ func TestArrayList_GetIterator(t *testing.T) {
 }
 
 func TestArrayList_IntType(t *testing.T) {
-	l := New(reflect.TypeOf(0))
+	l := New()
 	var a collection.Object = 1
 	var b collection.Object = 2
 	var c collection.Object = 3

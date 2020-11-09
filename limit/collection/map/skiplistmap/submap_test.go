@@ -106,8 +106,8 @@ func TestSubMap_ContainsValue(t *testing.T) {
 	var st1t collection.Object = Student{100, "st11"}
 	var st2t collection.Object = Student{101, "st12"}
 	var st3t collection.Object = Student{104, "st4"}
-	s1t := *hashset.New(reflect.TypeOf(Student{}))
-	s2t := *hashset.New(reflect.TypeOf(Student{}))
+	s1t := *hashset.New()
+	s2t := *hashset.New()
 	s1t.Add(&st1t)
 	s1t.Add(&st2t)
 	s2t.Add(&st3t)
@@ -168,10 +168,10 @@ func TestSubMap_Equals(t *testing.T) {
 	tst2 = Student{102, "st2"}
 	tst3 = Student{103, "st3"}
 	tst4 = Student{104, "st4"}
-	ts1 = *hashset.New(reflect.TypeOf(Student{}))
-	ts2 = *hashset.New(reflect.TypeOf(Student{}))
-	ts3 = *hashset.New(reflect.TypeOf(Student{}))
-	ts4 = *hashset.New(reflect.TypeOf(Student{}))
+	ts1 = *hashset.New()
+	ts2 = *hashset.New()
+	ts3 = *hashset.New()
+	ts4 = *hashset.New()
 	ts1s := ts1.(hashset.HashSet)
 	ts2s := ts2.(hashset.HashSet)
 	ts3s := ts3.(hashset.HashSet)
@@ -360,8 +360,8 @@ func TestSubMap_Put(t *testing.T) {
 	var t10 collection.Object = Teacher{10, "t10", 0}
 	var st5 collection.Object = Student{102, "st2"}
 	var st6 collection.Object = Student{103, "st3"}
-	s5 := *hashset.New(reflect.TypeOf(Student{}))
-	s6 := *hashset.New(reflect.TypeOf(Student{}))
+	s5 := *hashset.New()
+	s6 := *hashset.New()
 	s5.Add(&st5)
 	s6.Add(&st6)
 	var s5o collection.Object = s5
@@ -392,8 +392,8 @@ func TestSubMap_PutAll(t *testing.T) {
 	var t10 collection.Object = Teacher{10, "t10", 0}
 	var st5 collection.Object = Student{102, "st2"}
 	var st6 collection.Object = Student{103, "st3"}
-	s5 := *hashset.New(reflect.TypeOf(Student{}))
-	s6 := *hashset.New(reflect.TypeOf(Student{}))
+	s5 := *hashset.New()
+	s6 := *hashset.New()
 	s5.Add(&st5)
 	s6.Add(&st6)
 	var s5o collection.Object = s5

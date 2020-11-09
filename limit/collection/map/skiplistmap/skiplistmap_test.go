@@ -38,8 +38,6 @@ var s1 collection.Object
 var s2 collection.Object
 var s3 collection.Object
 var s4 collection.Object
-var kt reflect.Type
-var vt reflect.Type
 var m *SkipListMap
 
 func RestartSkipListMap() {
@@ -52,10 +50,10 @@ func RestartSkipListMap() {
 	st2 = Student{102, "st2"}
 	st3 = Student{103, "st3"}
 	st4 = Student{104, "st4"}
-	s1 = *hashset.New(reflect.TypeOf(Student{}))
-	s2 = *hashset.New(reflect.TypeOf(Student{}))
-	s3 = *hashset.New(reflect.TypeOf(Student{}))
-	s4 = *hashset.New(reflect.TypeOf(Student{}))
+	s1 = *hashset.New()
+	s2 = *hashset.New()
+	s3 = *hashset.New()
+	s4 = *hashset.New()
 	s1s := s1.(hashset.HashSet)
 	s2s := s2.(hashset.HashSet)
 	s3s := s3.(hashset.HashSet)
@@ -65,9 +63,7 @@ func RestartSkipListMap() {
 	s2s.Add(&st2)
 	s3s.Add(&st3)
 	s4s.Add(&st4)
-	kt = reflect.TypeOf(t2)
-	vt = reflect.TypeOf(s1)
-	m = New(kt, vt, precede)
+	m = New(precede)
 	m.Put(&t2, &s1)
 	m.Put(&t4, &s2)
 	m.Put(&t6, &s3)
@@ -156,7 +152,7 @@ func TestSkipListMap_ContainsValue(t *testing.T) {
 	RestartSkipListMap()
 	var st1t collection.Object = Student{100, "st11"}
 	var st2t collection.Object = Student{101, "st12"}
-	s1t := *hashset.New(reflect.TypeOf(Student{}))
+	s1t := *hashset.New()
 	s1t.Add(&st1t)
 	s1t.Add(&st2t)
 	var s1to collection.Object = s1t
@@ -199,8 +195,6 @@ func TestSkipListMap_Equals(t *testing.T) {
 	var ts2 collection.Object
 	var ts3 collection.Object
 	var ts4 collection.Object
-	var tkt reflect.Type
-	var tvt reflect.Type
 	var tm *SkipListMap
 	tt2 = Teacher{2, "t2", 0}
 	tt4 = Teacher{4, "t4", 0}
@@ -211,10 +205,10 @@ func TestSkipListMap_Equals(t *testing.T) {
 	tst2 = Student{102, "st2"}
 	tst3 = Student{103, "st3"}
 	tst4 = Student{104, "st4"}
-	ts1 = *hashset.New(reflect.TypeOf(Student{}))
-	ts2 = *hashset.New(reflect.TypeOf(Student{}))
-	ts3 = *hashset.New(reflect.TypeOf(Student{}))
-	ts4 = *hashset.New(reflect.TypeOf(Student{}))
+	ts1 = *hashset.New()
+	ts2 = *hashset.New()
+	ts3 = *hashset.New()
+	ts4 = *hashset.New()
 	ts1s := ts1.(hashset.HashSet)
 	ts2s := ts2.(hashset.HashSet)
 	ts3s := ts3.(hashset.HashSet)
@@ -224,9 +218,7 @@ func TestSkipListMap_Equals(t *testing.T) {
 	ts2s.Add(&tst2)
 	ts3s.Add(&tst3)
 	ts4s.Add(&tst4)
-	tkt = reflect.TypeOf(tt2)
-	tvt = reflect.TypeOf(ts1)
-	tm = New(tkt, tvt, precede)
+	tm = New(precede)
 	tm.Put(&tt2, &ts1)
 	tm.Put(&tt4, &ts2)
 	tm.Put(&tt6, &ts3)
@@ -389,8 +381,8 @@ func TestSkipListMap_Put(t *testing.T) {
 	var t10 collection.Object = Teacher{10, "t10", 0}
 	var st5 collection.Object = Student{102, "st2"}
 	var st6 collection.Object = Student{103, "st3"}
-	s5 := *hashset.New(reflect.TypeOf(Student{}))
-	s6 := *hashset.New(reflect.TypeOf(Student{}))
+	s5 := *hashset.New()
+	s6 := *hashset.New()
 	s5.Add(&st5)
 	s6.Add(&st6)
 	var s5o collection.Object = s5
@@ -421,13 +413,13 @@ func TestSkipListMap_PutAll(t *testing.T) {
 	var t10 collection.Object = Teacher{10, "t10", 0}
 	var st5 collection.Object = Student{102, "st2"}
 	var st6 collection.Object = Student{103, "st3"}
-	s5 := *hashset.New(reflect.TypeOf(Student{}))
-	s6 := *hashset.New(reflect.TypeOf(Student{}))
+	s5 := *hashset.New()
+	s6 := *hashset.New()
 	s5.Add(&st5)
 	s6.Add(&st6)
 	var s5o collection.Object = s5
 	var s6o collection.Object = s6
-	var m2 collection.Map = New(kt, vt, precede)
+	var m2 collection.Map = New(precede)
 	m2.Put(&t5, &s5o)
 	m2.Put(&t10, &s6o)
 	m.PutAll(&m2)
