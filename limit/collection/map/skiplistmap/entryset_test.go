@@ -3,7 +3,6 @@ package skiplistmap
 import (
 	"LimitGo/limit/collection"
 	"LimitGo/limit/collection/linear/hashset"
-	"reflect"
 	"testing"
 )
 
@@ -100,8 +99,6 @@ func TestEntrySet_Equals(t *testing.T) {
 	var ts2 collection.Object
 	var ts3 collection.Object
 	var ts4 collection.Object
-	var tkt reflect.Type
-	var tvt reflect.Type
 	var tm *SkipListMap
 	tt2 = Teacher{2, "t2", 0}
 	tt4 = Teacher{4, "t4", 0}
@@ -125,9 +122,7 @@ func TestEntrySet_Equals(t *testing.T) {
 	ts2s.Add(&tst2)
 	ts3s.Add(&tst3)
 	ts4s.Add(&tst4)
-	tkt = reflect.TypeOf(tt2)
-	tvt = reflect.TypeOf(ts1)
-	tm = New(tkt, tvt, precede)
+	tm = New(precede)
 	tm.Put(&tt2, &ts1)
 	tm.Put(&tt4, &ts2)
 	tm.Put(&tt6, &ts3)

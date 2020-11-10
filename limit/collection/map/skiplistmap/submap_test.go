@@ -155,8 +155,6 @@ func TestSubMap_Equals(t *testing.T) {
 	var ts2 collection.Object
 	var ts3 collection.Object
 	var ts4 collection.Object
-	var tkt reflect.Type
-	var tvt reflect.Type
 	var tm *SkipListMap
 	var tm2 *SkipListMap
 	tt2 = Teacher{2, "t2", 0}
@@ -181,10 +179,8 @@ func TestSubMap_Equals(t *testing.T) {
 	ts2s.Add(&tst2)
 	ts3s.Add(&tst3)
 	ts4s.Add(&tst4)
-	tkt = reflect.TypeOf(tt2)
-	tvt = reflect.TypeOf(ts1)
-	tm = New(tkt, tvt, precede)
-	tm2 = New(tkt, tvt, precede)
+	tm = New(precede)
+	tm2 = New(precede)
 	tm.Put(&tt2, &ts1)
 	tm.Put(&tt4, &ts2)
 	tm.Put(&tt6, &ts3)
@@ -398,7 +394,7 @@ func TestSubMap_PutAll(t *testing.T) {
 	s6.Add(&st6)
 	var s5o collection.Object = s5
 	var s6o collection.Object = s6
-	var m2 collection.Map = New(kt, vt, precede)
+	var m2 collection.Map = New(precede)
 	m2.Put(&t5, &s5o)
 	m2.Put(&t10, &s6o)
 	sm.PutAll(&m2)

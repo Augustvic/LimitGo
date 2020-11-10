@@ -10,12 +10,6 @@ type Student struct {
 	Name string
 }
 
-type Teacher struct {
-	Id int
-	Name string
-	Sex int
-}
-
 func TestArrayListAll(t *testing.T) {
 	TestNew(t)
 	TestArrayList_Append(t)

@@ -190,7 +190,7 @@ func TestKeySet_First(t *testing.T) {
 
 func TestKeySet_Floor(t *testing.T) {
 	RestartKeySet()
-	var temp1 collection.Object = Teacher{3, "t1", 0}
+	var temp1 collection.Object = Teacher{3, "t3", 0}
 	var temp2 collection.Object = Teacher{5, "t5", 0}
 	var temp3 collection.Object = Teacher{8, "t8", 0}
 	var temp4 collection.Object = Teacher{11, "t10", 0}
