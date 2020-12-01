@@ -2,7 +2,7 @@
 
 LimitGo is a set of Go libraries that includes collections and utils for math, limiting, caching, and more. The content of collections nearly has been completed, which draws on the experience of JDK8. The other parts are in progress.
 
-**Please see [Wiki](https://github.com/Augustvic/LimitGo/wiki), which explains detailed introduction and more samples. The tests in this project may also helps a lot.**
+**Please see [wiki](https://github.com/Augustvic/LimitGo/wiki), which explains detailed introduction and more samples. The tests in the source code may also helpful.**
 
 ## Feature
 
