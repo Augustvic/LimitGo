@@ -124,7 +124,7 @@ func (m *SubMap) Get(key *collection.Object) *collection.Object {
 // Put associates the specified value with the specified key, returns old value
 // if the specified key has been in this map.
 func (m *SubMap) Put(key *collection.Object, value *collection.Object) (bool, *collection.Object) {
-	if m.checkNil(key) {
+	if m.checkNil(key) || !m.inBounds(key) {
 		return false, nil
 	}
 	if m.checkNil(value) {
